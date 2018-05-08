@@ -24,27 +24,24 @@
         <!-- sidebar menu -->
         <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
             <div class="menu_section">
-                {{--<h3>{{ __('views.backend.section.navigation.sub_header_0') }}</h3>--}}
-                <h3>Основное</h3>
+                <h3>{{ __('views.backend.section.navigation.sub_header_0') }}</h3>
                 <ul class="nav side-menu">
                     <li>
                         <a href="{{ route('admin.dashboard') }}">
                             <i class="fa fa-home" aria-hidden="true"></i>
-                            {{--{{ __('views.backend.section.navigation.menu_0_1') }}--}}
-                            Панель
+                            {{ __('views.backend.section.navigation.menu_0_1') }}
                         </a>
                     </li>
                 </ul>
             </div>
             <div class="menu_section">
-                {{--<h3>{{ __('views.backend.section.navigation.sub_header_1') }}</h3>--}}
-                <h3>Управление</h3>
+                <h3>{{ __('views.backend.section.navigation.sub_header_1') }}</h3>
                 <ul class="nav side-menu">
                     <li>
                         <a href="{{ route('admin.users') }}">
                             <i class="fa fa-users" aria-hidden="true"></i>
-                            {{--{{ __('views.backend.section.navigation.menu_1_1') }}--}}
-                            Пользователи
+                            {{ __('views.backend.section.navigation.menu_1_1') }}
+                            <span class="badge bg-orange">@if (isset($counts['users_unconfirmed']) && $counts['users_unconfirmed'] > 0){{ $counts['users_unconfirmed'] }} @endif</span>
                         </a>
                     </li>
                     {{--<li>--}}

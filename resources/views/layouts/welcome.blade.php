@@ -87,18 +87,14 @@
                     @if (Route::has('login'))
                         @if (!Auth::check())
                             @if(config('auth.users.registration'))
-                                {{--<a href="{{ url('/register') }}">{{ __('views.welcome.register') }}</a>--}}
-                                <a href="{{ url('/register') }}">Зарегистрироваться</a>
+                                <a href="{{ url('/register') }}">{{ __('views.welcome.register') }}</a>
                             @endif
-                            {{--<a href="{{ url('/login') }}">{{ __('views.welcome.login') }}</a>--}}
-                            <a href="{{ url('/login') }}">Вход</a>
+                            <a href="{{ url('/login') }}">{{ __('views.welcome.login') }}</a>
                         @else
-                            @if(auth()->user()->hasRole('administrator') || auth()->user()->hasRole('moderator'))
-                                {{--<a href="{{ url('/admin') }}">{{ __('views.welcome.admin') }}</a>--}}
-                                <a href="{{ url('/admin') }}">Панель</a>
+                            @if(auth()->user()->hasRole('administrator'))
+                                <a href="{{ url('/admin') }}">{{ __('views.welcome.admin') }}</a>
                             @endif
-                            {{--<a href="{{ url('/logout') }}">{{ __('views.welcome.logout') }}</a>--}}
-                            <a href="{{ url('/logout') }}">Выход</a>
+                            <a href="{{ url('/logout') }}">{{ __('views.welcome.logout') }}</a>
                         @endif
                     @endif
                 </div>
