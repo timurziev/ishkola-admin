@@ -63,7 +63,7 @@
                     </li>
                     <li>
                         <a href="{{ route('admin.langs') }}">
-                            <i class="fa fa-users"></i>
+                            <i class="fa fa-language"></i>
                             Языки
                         </a>
                     </li>

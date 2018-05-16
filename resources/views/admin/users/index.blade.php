@@ -11,8 +11,8 @@
                 <th>@sortablelink('email', __('views.admin.users.index.table_header_0'),['page' => $users->currentPage()])</th>
                 <th>@sortablelink('name',  __('views.admin.users.index.table_header_1'),['page' => $users->currentPage()])</th>
                 <th>{{ __('views.admin.users.index.table_header_2') }}</th>
+                <th>Языки</th>
                 @if(Request::is('admin/roles/*'))
-                    <th>Языки</th>
                     <th>Ставка или скидка</th>
                 @endif
                 <th>@sortablelink('active', __('views.admin.users.index.table_header_3'),['page' => $users->currentPage()])</th>
