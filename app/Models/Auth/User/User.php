@@ -13,6 +13,7 @@ use App\Models\Auth\User\Traits\Relations\UserRelations;
 use Kyslik\ColumnSortable\Sortable;
 use App\Models\Lang;
 use App\Models\Rate;
+use App\Models\Discount;
 
 /**
  * App\Models\Auth\User\User
@@ -100,5 +101,17 @@ class User extends Authenticatable
     public function rates()
     {
         return $this->hasMany(Rate::class);
+    }
+
+    public function discounts()
+    {
+        return $this->hasMany(Discount::class);
+    }
+
+    public function userHasRole($role)
+    {
+        if($this->roles()->where('name', $role)->first()) {
+            return true;
+        }
     }
 }
