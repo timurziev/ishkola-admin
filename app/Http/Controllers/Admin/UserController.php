@@ -16,9 +16,17 @@ class UserController extends Controller
      * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index(Request $request, $role = null)
     {
-        return view('admin.users.index', ['users' => User::with('roles')->sortable(['email' => 'asc'])->paginate()]);
+        $users = User::whereHas('roles', function($q) use($role) {
+            $q->where('role_id', $role);
+        });
+
+        if (!$role) {
+            $users = User::with('roles');
+        }
+
+        return view('admin.users.index', ['users' => $users->sortable(['email' => 'asc'])->paginate()]);
     }
 
     /**

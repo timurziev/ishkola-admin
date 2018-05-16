@@ -11,6 +11,8 @@ use App\Models\Auth\User\Traits\Ables\Rolable;
 use App\Models\Auth\User\Traits\Scopes\UserScopes;
 use App\Models\Auth\User\Traits\Relations\UserRelations;
 use Kyslik\ColumnSortable\Sortable;
+use App\Models\Lang;
+use App\Models\Rate;
 
 /**
  * App\Models\Auth\User\User
@@ -89,4 +91,14 @@ class User extends Authenticatable
      * @var array
      */
     protected $dates = ['deleted_at'];
+
+    public function langs()
+    {
+        return $this->belongsToMany(Lang::class);
+    }
+
+    public function rates()
+    {
+        return $this->hasMany(Rate::class);
+    }
 }

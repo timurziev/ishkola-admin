@@ -11,6 +11,10 @@
                 <th>@sortablelink('email', __('views.admin.users.index.table_header_0'),['page' => $users->currentPage()])</th>
                 <th>@sortablelink('name',  __('views.admin.users.index.table_header_1'),['page' => $users->currentPage()])</th>
                 <th>{{ __('views.admin.users.index.table_header_2') }}</th>
+                @if(Request::is('admin/roles/*'))
+                    <th>Языки</th>
+                    <th>Ставка</th>
+                @endif
                 <th>@sortablelink('active', __('views.admin.users.index.table_header_3'),['page' => $users->currentPage()])</th>
                 <th>@sortablelink('confirmed', __('views.admin.users.index.table_header_4'),['page' => $users->currentPage()])</th>
                 <th>@sortablelink('created_at', __('views.admin.users.index.table_header_5'),['page' => $users->currentPage()])</th>
@@ -24,6 +28,20 @@
                     <td>{{ $user->email }}</td>
                     <td>{{ $user->name }}</td>
                     <td>{{ $user->roles->pluck('name')->implode(',') }}</td>
+                    @if(Request::is('admin/roles/*'))
+                        <td>{{ $user->langs->pluck('name')->implode(',') }}</td>
+                        <td>
+                            @foreach($user->rates as $rate)
+                                {{ $rate->lang_name }}:
+                                <br>Индивидуально 60 мин - {{ $rate->indiv_60 }} руб
+                                <br>Индивидуально 45 мин - {{ $rate->indiv_45 }} руб
+                                <br>Мини группа -  {{ $rate->mini_group }} руб
+                                <br>Группа больше 2-х - {{ $rate->large_group }} руб
+                                <br>Продвинутый курс - {{ $rate->pro_course }} руб
+                                <br><br>
+                            @endforeach
+                        </td>
+                    @endif
                     <td>
                         @if($user->active)
                             <span class="label label-primary">{{ __('views.admin.users.index.active') }}</span>

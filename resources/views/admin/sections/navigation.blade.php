@@ -37,11 +37,34 @@
             <div class="menu_section">
                 <h3>{{ __('views.backend.section.navigation.sub_header_1') }}</h3>
                 <ul class="nav side-menu">
+                    <li class="">
+                        <a><i class="fa fa-users"></i> {{ __('views.backend.section.navigation.menu_1_1') }} <span class="fa fa-chevron-down"></span></a>
+                        <ul class="nav child_menu">
+                            <li>
+                                <a href="{{ route('admin.users') }}">
+                                    <i aria-hidden="true"></i>
+                                    Все пользователи
+                                    <span class="badge bg-orange">@if ($count['users_unconfirmed'] > 0){{ $count['users_unconfirmed'] }} @endif</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('admin.roles', [$role = 4]) }}">
+                                    <i aria-hidden="true"></i>
+                                    Учителя
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('admin.roles', [$role = 5]) }}">
+                                    <i aria-hidden="true"></i>
+                                    Ученики
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
                     <li>
-                        <a href="{{ route('admin.users') }}">
-                            <i class="fa fa-users" aria-hidden="true"></i>
-                            {{ __('views.backend.section.navigation.menu_1_1') }}
-                            <span class="badge bg-orange">@if (isset($counts['users_unconfirmed']) && $counts['users_unconfirmed'] > 0){{ $counts['users_unconfirmed'] }} @endif</span>
+                        <a href="{{ route('admin.langs') }}">
+                            <i class="fa fa-users"></i>
+                            Языки
                         </a>
                     </li>
                     {{--<li>--}}

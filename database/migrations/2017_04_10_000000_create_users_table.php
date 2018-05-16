@@ -21,6 +21,7 @@ class CreateUsersTable extends Migration
             $table->tinyInteger('active')->default(1)->unsigned();
             $table->uuid('confirmation_code')->nullable();
             $table->boolean('confirmed')->default(config('access.users.confirm_email') ? false : true);
+            $table->integer('miraID')->nullable();
             $table->rememberToken();
             $table->timestamps();
             $table->softDeletes();
