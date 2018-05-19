@@ -5,7 +5,16 @@
 @section('content')
     <div class="row">
         <div class="col-md-12 col-sm-12 col-xs-12">
-            {{ Form::open(['route'=>['admin.users.update', $user->id],'method' => 'put','class'=>'form-horizontal form-label-left']) }}
+            {{ Form::open(['route'=>['admin.users.update', $user->id],'method' => 'put','class'=>'form-horizontal form-label-left', 'files' => true]) }}
+
+                <div class="form-group">
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="image" style="padding-top: 0;">
+                        Аватар
+                    </label>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <input type="file" name="file">
+                    </div>
+                </div>
 
                 <div class="form-group">
                     <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name" >

@@ -41,12 +41,12 @@ trait UserAttributes
      * Get User avatar
      */
 
-    public function getAvatarAttribute()
-    {
-        $avatar = $this->getSocialAvatar();
-
-        return ($avatar) ? $avatar : $this->getGravatar();
-    }
+//    public function getAvatarAttribute()
+//    {
+//        $avatar = $this->getSocialAvatar();
+//
+//        return ($avatar) ? $avatar : $this->getGravatar();
+//    }
 
     /**
      * Get User licensee number

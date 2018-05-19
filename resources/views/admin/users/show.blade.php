@@ -8,7 +8,7 @@
             <tbody>
             <tr>
                 <th>{{ __('views.admin.users.show.table_header_0') }}</th>
-                <td><img src="{{ $user->avatar }}" class="user-profile-image"></td>
+                <td><img src="{{ url('uploads/avatars') }}/{{ $user->avatar->name }}" class="user-profile-image"></td>
             </tr>
 
             <tr>

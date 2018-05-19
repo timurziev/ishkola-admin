@@ -11,7 +11,7 @@
         <!-- menu profile quick info -->
         <div class="profile clearfix">
             <div class="profile_pic">
-                <img src="{{ auth()->user()->avatar }}" alt="..." class="img-circle profile_img">
+                <img src="{{ url('/uploads/avatars') }}/{{ auth()->user()->avatar->name }}" alt="..." class="img-circle profile_img">
             </div>
             <div class="profile_info">
                 <h2>{{ auth()->user()->name }}</h2>
@@ -38,7 +38,7 @@
                 <h3>{{ __('views.backend.section.navigation.sub_header_1') }}</h3>
                 <ul class="nav side-menu">
                     <li class="">
-                        <a><i class="fa fa-users"></i> {{ __('views.backend.section.navigation.menu_1_1') }} <span class="fa fa-chevron-down"></span></a>
+                        <a><i class="fa fa-user"></i> {{ __('views.backend.section.navigation.menu_1_1') }} <span class="fa fa-chevron-down"></span></a>
                         <ul class="nav child_menu">
                             <li>
                                 <a href="{{ route('admin.users') }}">
@@ -66,6 +66,21 @@
                             <i class="fa fa-language"></i>
                             Языки
                         </a>
+                    </li>
+                    <li class="">
+                        <a><i class="fa fa-group"></i> Группы <span class="fa fa-chevron-down"></span></a>
+                        <ul class="nav child_menu">
+                            <li>
+                                <a href="{{ route('admin.groups') }}">
+                                    Группы
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('admin.groups.create') }}">
+                                    Создать группу
+                                </a>
+                            </li>
+                        </ul>
                     </li>
                     {{--<li>--}}
                         {{--<a href="{{ route('admin.permissions') }}">--}}

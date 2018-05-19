@@ -14,6 +14,7 @@
                 <th>Продвинутый курс в группе</th>
                 <th>Индивидуально 60 мин</th>
                 <th>Индивидуально 45 мин</th>
+                <th>Действие</th>
             </tr>
             </thead>
             <tbody>
@@ -25,6 +26,10 @@
                     <td>{{ $lang->pro_price }}</td>
                     <td>{{ $lang->indiv_price_60 }}</td>
                     <td>{{ $lang->indiv_price_45 }}</td>
+                    <td>
+                        <a href="#" class="btn btn-info btn-xs"><i class="fa fa-pencil"></i></a>
+                        <a href="#" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i></a>
+                    </td>
                 </tr>
             @endforeach
             </tbody>

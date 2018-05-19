@@ -53,6 +53,14 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
     // Dashboard
     Route::get('/', 'DashboardController@index')->name('dashboard');
 
+    // Groups
+    Route::get('groups', 'GroupController@index')->name('groups');
+    Route::get('groups/create', 'GroupController@create')->name('groups.create');
+    Route::put('groups/store', 'GroupController@store')->name('groups.store');
+    Route::get('groups/{group}/edit', 'GroupController@edit')->name('groups.edit');
+    Route::put('groups/{group}', 'GroupController@update')->name('groups.update');
+    Route::get('groups/{group}', 'GroupController@destroy')->name('groups.destroy');
+
     //Users
     Route::get('users', 'UserController@index')->name('users');
     Route::get('roles/{role}', 'UserController@index')->name('roles');

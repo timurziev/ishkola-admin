@@ -114,4 +114,9 @@ class User extends Authenticatable
             return true;
         }
     }
+
+    public function avatar()
+    {
+        return $this->hasOne(Avatar::class);
+    }
 }

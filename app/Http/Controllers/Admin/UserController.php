@@ -2,11 +2,15 @@
 
 namespace App\Http\Controllers\Admin;
 
+use Auth;
+use App\Models\Auth\User\Avatar;
 use App\Models\Auth\Role\Role;
 use App\Models\Auth\User\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Validator;
+use Illuminate\Support\Facades\Input;
+use Image;
 
 class UserController extends Controller
 {
@@ -110,6 +114,8 @@ class UserController extends Controller
 
         $user->save();
 
+        $this->uploadAvatar();
+
         //roles
         if ($request->has('roles')) {
             $user->roles()->detach();
@@ -131,5 +137,24 @@ class UserController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    /**
+     * Upload profile avatar.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function uploadAvatar()
+    {
+        if (Input::file('file')) {
+            $input = Input::file('file');
+
+            $extension = $input->getClientOriginalExtension();
+            $fileName = rand(11111, 99999) . '.' . $extension;
+            $destinationPath = public_path('uploads/avatars/' . $fileName);
+
+            Image::make($input)->fit(140, 140)->save($destinationPath);
+            Avatar::create(['name' => $fileName, 'user_id' => Auth::user()->id]);
+        }
     }
 }
