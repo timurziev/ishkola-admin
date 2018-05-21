@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Admin;
 use App\Models\Lang;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Input;
+use Image;
 
 class LangsController extends Controller
 {
@@ -27,7 +29,7 @@ class LangsController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.languages.create');
     }
 
     /**
@@ -38,7 +40,27 @@ class LangsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        if (Input::file('file')) {
+            $input = Input::file('file');
+
+            $extension = $input->getClientOriginalExtension();
+            $fileName = rand(11111, 99999) . '.' . $extension;
+            $destinationPath = public_path('uploads/images/' . $fileName);
+
+            Image::make($input)->fit(35, 20)->save($destinationPath);
+        }
+
+        $fields = array_merge($request->only([
+            'name',
+            'basic_price',
+            'pro_price',
+            'indiv_price_60',
+            'indiv_price_45'
+        ]), ['image' => $fileName]);
+
+        Lang::create($fields);
+
+        return redirect()->intended(route('admin.langs'));
     }
 
     /**
@@ -60,7 +82,9 @@ class LangsController extends Controller
      */
     public function edit($id)
     {
-        //
+        $lang = Lang::whereId($id)->firstOrFail();
+
+        return view('admin.languages.create', ['lang' => $lang]);
     }
 
     /**
@@ -72,7 +96,29 @@ class LangsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $lang = Lang::whereId($id)->firstOrFail();
+
+        if (Input::file('file')) {
+            $input = Input::file('file');
+
+            $extension = $input->getClientOriginalExtension();
+            $fileName = rand(11111, 99999) . '.' . $extension;
+            $destinationPath = public_path('uploads/images/' . $fileName);
+
+            Image::make($input)->fit(35, 20)->save($destinationPath);
+        }
+
+        $fields = array_merge($request->only([
+            'name',
+            'basic_price',
+            'pro_price',
+            'indiv_price_60',
+            'indiv_price_45'
+        ]), ['image' => $fileName]);
+
+        $lang->update($fields);
+
+        return redirect()->back()->with('message', 'Настройки сохранены');
     }
 
     /**
@@ -83,6 +129,9 @@ class LangsController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $group  = Lang::whereId($id)->firstOrFail();
+        $group->delete();
+
+        return redirect()->back();
     }
 }

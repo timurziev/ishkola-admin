@@ -1,7 +1,5 @@
 @extends('admin.layouts.admin')
 
-@section('title', 'Группы')
-
 @section('content')
     <div class="row">
         <div class="col-md-12">

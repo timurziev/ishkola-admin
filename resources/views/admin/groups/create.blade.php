@@ -1,13 +1,12 @@
 @extends('admin.layouts.admin')
 
-@section('title', 'Группа')
-
 @section('content')
 
     <div class="row">
         <div class="col-md-12 col-sm-12 col-xs-12">
             <div class="x_panel">
                 <div class="x_title">
+                    <h2>Создать группу</h2>
                     <ul class="nav navbar-right panel_toolbox" style="min-width: 0;">
                         <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                         </li>
@@ -45,10 +44,10 @@
                             <label class="control-label col-md-3 col-sm-3 col-xs-12" for="input-options" style="padding-top: 25px;">Пользователи</label>
                             <div class="col-md-6 col-sm-6 col-xs-12">
                             <span class="tip">(выберите пользователя из списка)</span>
-                            <select multiple name="users[]" class="form-control" placeholder="Введите email или имя пользователя..." id="input-options">
+                            <select multiple name="users[]" class="form-control select-user" placeholder="Введите email или имя пользователя..." >
                                 <option value="">Введите email или имя пользователя...</option>
                                 @foreach($users as $user)
-                                    <option value="{{ $user->id }}"
+                                    <option active value="{{ $user->id }}"
                                             @if ( (Request::is('*/edit') && in_array($user->id, $group->userList)))
                                                 selected
                                             @endif
@@ -74,12 +73,12 @@
 
 @endsection
 
-@section('scripts')
-    @parent
-    {{ Html::script(mix('assets/admin/js/dashboard.js')) }}
-@endsection
-
 @section('styles')
     @parent
-    {{ Html::style(mix('assets/admin/css/dashboard.css')) }}
+    {{ Html::style(mix('assets/admin/css/users/edit.css')) }}
+@endsection
+
+@section('scripts')
+    @parent
+    {{ Html::script(mix('assets/admin/js/users/edit.js')) }}
 @endsection

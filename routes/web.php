@@ -61,14 +61,21 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
     Route::put('groups/{group}', 'GroupController@update')->name('groups.update');
     Route::get('groups/{group}', 'GroupController@destroy')->name('groups.destroy');
 
-    //Users
+    // Languages
+    Route::get('langs', 'LangsController@index')->name('langs');
+    Route::get('langs/create', 'LangsController@create')->name('langs.create');
+    Route::put('langs/store', 'LangsController@store')->name('langs.store');
+    Route::get('langs/{lang}/edit', 'LangsController@edit')->name('langs.edit');
+    Route::put('langs/{lang}', 'LangsController@update')->name('langs.update');
+    Route::get('langs/{group}', 'LangsController@destroy')->name('langs.destroy');
+
+    // Users
     Route::get('users', 'UserController@index')->name('users');
     Route::get('roles/{role}', 'UserController@index')->name('roles');
     Route::get('users/{user}', 'UserController@show')->name('users.show');
     Route::get('users/{user}/edit', 'UserController@edit')->name('users.edit');
     Route::put('users/{user}', 'UserController@update')->name('users.update');
     Route::delete('users/{user}', 'UserController@destroy')->name('users.destroy');
-    Route::get('langs', 'LangsController@index')->name('langs');
     Route::get('permissions', 'PermissionController@index')->name('permissions');
     Route::get('permissions/{user}/repeat', 'PermissionController@repeat')->name('permissions.repeat');
     Route::get('dashboard/log-chart', 'DashboardController@getLogChartData')->name('dashboard.log.chart');
