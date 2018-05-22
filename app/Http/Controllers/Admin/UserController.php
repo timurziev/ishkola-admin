@@ -105,12 +105,14 @@ class UserController extends Controller
         $user->name = $request->get('name');
         $user->email = $request->get('email');
 
-        if ($request->has('password')) {
+        if ($request['password'] !== null) {
             $user->password = bcrypt($request->get('password'));
         }
 
-        $user->active = $request->get('active', 0);
-        $user->confirmed = $request->get('confirmed', 0);
+        if (!Auth::user()->hasRole('administrator')) {
+            $user->active = $request->get('active', 0);
+            $user->confirmed = $request->get('confirmed', 0);
+        }
 
         $user->save();
 

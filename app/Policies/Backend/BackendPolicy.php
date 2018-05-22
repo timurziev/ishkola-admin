@@ -11,7 +11,7 @@ class BackendPolicy
 
     public function before(User $user, $ability)
     {
-        if ($user->hasRole('administrator')) return true;
+        if ($user->hasRoles(['administrator', 'moderator'])) return true;
         if (!$user->active) return false;
 
         return null;
