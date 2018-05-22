@@ -7,6 +7,11 @@
                 <div class="x_title">
                     <h2>Языки</h2>
                     <ul class="nav navbar-right panel_toolbox" style="min-width: 0;">
+                        <li>
+                            <form action="{{ route('admin.langs.create') }}">
+                                <button class="btn btn-default">Добавить новый</button>
+                            </form>
+                        </li>
                         <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                         </li>
                     </ul>

@@ -6,7 +6,11 @@
         <div class="col-md-12 col-sm-12 col-xs-12">
             <div class="x_panel">
                 <div class="x_title">
-                    <h2>Добавить язык</h2>
+                    @if (Request::is('*/edit'))
+                        <h2>Редактировать язык</h2>
+                    @else
+                        <h2>Добавить язык</h2>
+                    @endif
                     <ul class="nav navbar-right panel_toolbox" style="min-width: 0;">
                         <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                         </li>

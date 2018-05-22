@@ -62,34 +62,13 @@
                         </ul>
                     </li>
                     <li>
-                        <a><i class="fa fa-language"></i> Языки <span class="fa fa-chevron-down"></span></a>
-                        <ul class="nav child_menu">
-                            <li>
-                                <a href="{{ route('admin.langs') }}">
-                                    Языки
-                                </a>
-                            </li>
-                            <li>
-                                <a href="{{ route('admin.langs.create') }}">
-                                    Добавить язык
-                                </a>
-                            </li>
-                        </ul>
+                        <a href="{{ route('admin.langs') }}"><i class="fa fa-language"></i> Языки</a>
+                    </li>
+                    <li>
+                        <a href="{{ route('admin.groups') }}"><i class="fa fa-group"></i> Группы</a>
                     </li>
                     <li class="">
-                        <a><i class="fa fa-group"></i> Группы <span class="fa fa-chevron-down"></span></a>
-                        <ul class="nav child_menu">
-                            <li>
-                                <a href="{{ route('admin.groups') }}">
-                                    Группы
-                                </a>
-                            </li>
-                            <li>
-                                <a href="{{ route('admin.groups.create') }}">
-                                    Создать группу
-                                </a>
-                            </li>
-                        </ul>
+                        <a href="{{ route('admin.groups') }}"><i class="fa fa-book"></i> Занятия</a>
                     </li>
                     {{--<li>--}}
                         {{--<a href="{{ route('admin.permissions') }}">--}}

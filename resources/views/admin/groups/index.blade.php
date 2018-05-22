@@ -7,6 +7,11 @@
                 <div class="x_title">
                     <h2>Группы</h2>
                     <ul class="nav navbar-right panel_toolbox" style="min-width: 0;">
+                        <li>
+                            <form action="{{ route('admin.groups.create') }}">
+                                <button class="btn btn-default">Добавить новую</button>
+                            </form>
+                        </li>
                         <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                         </li>
                     </ul>
