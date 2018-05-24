@@ -68,7 +68,7 @@
                         <a href="{{ route('admin.groups') }}"><i class="fa fa-group"></i> Группы</a>
                     </li>
                     <li class="">
-                        <a href="{{ route('admin.groups') }}"><i class="fa fa-book"></i> Занятия</a>
+                        <a href="{{ route('admin.lessons') }}"><i class="fa fa-book"></i> Занятия</a>
                     </li>
                     {{--<li>--}}
                         {{--<a href="{{ route('admin.permissions') }}">--}}

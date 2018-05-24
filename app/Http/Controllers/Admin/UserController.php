@@ -109,10 +109,10 @@ class UserController extends Controller
             $user->password = bcrypt($request->get('password'));
         }
 
-        if (!Auth::user()->hasRole('administrator')) {
+//        if (!Auth::user()->hasRole('administrator')) {
             $user->active = $request->get('active', 0);
             $user->confirmed = $request->get('confirmed', 0);
-        }
+//        }
 
         $user->save();
 

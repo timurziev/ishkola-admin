@@ -6,10 +6,12 @@
     <div class="row">
         <table class="table table-striped table-hover">
             <tbody>
-            <tr>
-                <th>{{ __('views.admin.users.show.table_header_0') }}</th>
-                <td><img src="{{ url('uploads/avatars') }}/{{ $user->avatar->name }}" class="user-profile-image"></td>
-            </tr>
+            @if(isset($user->avatar))
+                <tr>
+                    <th>{{ __('views.admin.users.show.table_header_0') }}</th>
+                    <td><img src="{{ url('uploads/avatars') }}/{{ $user->avatar->name }}" class="user-profile-image"></td>
+                </tr>
+            @endif
 
             <tr>
                 <th>{{ __('views.admin.users.show.table_header_1') }}</th>
