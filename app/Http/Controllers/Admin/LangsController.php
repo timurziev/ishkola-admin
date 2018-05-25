@@ -40,6 +40,8 @@ class LangsController extends Controller
      */
     public function store(Request $request)
     {
+        $fileName = null;
+
         if (Input::file('file')) {
             $input = Input::file('file');
 
@@ -97,6 +99,7 @@ class LangsController extends Controller
     public function update(Request $request, $id)
     {
         $lang = Lang::whereId($id)->firstOrFail();
+        $fileName = $lang->image;
 
         if (Input::file('file')) {
             $input = Input::file('file');

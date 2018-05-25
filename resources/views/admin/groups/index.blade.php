@@ -41,7 +41,7 @@
                                             @foreach($group->users as $user)
                                                 <li>
                                                     <a href="{{ route('admin.users.show', [$user->id]) }}" title="{{ $user->name }}" target="_blank">
-                                                        <img src="{{ url('uploads/avatars') }}/{{ $user->avatar->name }}" class="avatar" alt="Avatar">
+                                                        <img src="{{ url('uploads/avatars') }}/{{ $user->avatar ? $user->avatar->name : 'default.png' }}" class="avatar" alt="Avatar">
                                                     </a>
                                                 </li>
                                             @endforeach

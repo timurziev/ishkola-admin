@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\Group;
+use App\Schedule;
 use Illuminate\Http\Request;
 use App\Models\Lesson;
 use App\Models\Lang;
@@ -48,7 +49,16 @@ class LessonController extends Controller
 //        $tempDate = $request['datetimes'];
 //        echo date('l', strtotime( $tempDate));
 
-        dd($request['datetimes']);
+        $lesson = Lesson::create($request->all());
+
+        foreach ($request['datetimes'] as $date) {
+            $fields = ['lesson_id' => $lesson->id, 'schedule' => $date];
+            $schedule = Schedule::create($fields);
+        }
+
+        $lesson->users()->attach($request['users']);
+
+        return redirect()->intended(route('admin.lessons'));
     }
 
     /**

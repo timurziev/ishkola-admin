@@ -23,30 +23,35 @@
                                width="100%">
                             <thead>
                             <tr>
-                                <th>Флаг</th>
                                 <th>Язык</th>
-                                <th>Базовый курс в группе</th>
-                                <th>Продвинутый курс в группе</th>
-                                <th>Индивидуально 60 мин</th>
-                                <th>Индивидуально 45 мин</th>
-                                <th>Действие</th>
+                                <th>Группа/ученик</th>
+                                <th>Учитель</th>
+                                <th>Продолжительность урока</th>
+                                <th>Формат урока</th>
+                                <th>Стоимость за урок с человека</th>
+                                <th>Количество занятий</th>
                             </tr>
                             </thead>
                             <tbody>
-                            @foreach($lessons as $lessons)
-                                <tr>
-                                    <th scope="row"></th>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td>
-                                        <a href="" class="btn btn-info btn-xs"><i class="fa fa-pencil"></i></a>
-                                        <a href="" class="btn btn-danger btn-xs" onclick="return confirm('Удалить занятие?');"><i class="fa fa-trash"></i></a>
-                                    </td>
-                                </tr>
-                            @endforeach
+                                @foreach($lessons as $lesson)
+                                    <tr>
+                                        <th scope="row">{{ $lesson->lang->name }}</th>
+                                        @foreach($lesson->users as $user)
+                                            @if($user->userHasRole('student'))<td>{{ $user->name }}</td>@endif
+                                        @endforeach
+                                        @if($lesson->group)<td>{{ $lesson->group->name }}</td>@endif
+                                        @foreach($lesson->users as $user)
+                                            @if($user->userHasRole('teacher'))<td>{{ $user->name }}</td>@endif
+                                        @endforeach
+                                        <td>{{ $lesson->lesson_duration }}</td>
+                                        <td>{{ $lesson->lesson_format }}</td>
+                                        <td>{{ $lesson->price }}</td>
+                                        <td>
+                                            <a href="" class="btn btn-info btn-xs"><i class="fa fa-pencil"></i></a>
+                                            <a href="" class="btn btn-danger btn-xs" onclick="return confirm('Удалить занятие?');"><i class="fa fa-trash"></i></a>
+                                        </td>
+                                    </tr>
+                                @endforeach
                             </tbody>
                         </table>
                     </div>
