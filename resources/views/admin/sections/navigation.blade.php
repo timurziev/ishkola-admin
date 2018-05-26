@@ -14,6 +14,7 @@
                 <img src="{{ url('/uploads/avatars') }}/{{ auth()->user()->avatar ? auth()->user()->avatar->name : 'default.png' }}" alt="..." class="img-circle profile_img">
             </div>
             <div class="profile_info">
+                <span>Приветствую, </span>
                 <h2>{{ auth()->user()->name }}</h2>
             </div>
         </div>

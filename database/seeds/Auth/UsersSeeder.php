@@ -41,6 +41,26 @@ class UsersSeeder extends Seeder
                 'confirmed' => true,
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
+            ],
+            [
+                'name' => 'Учитель',
+                'email' => 'mail@mail.ru',
+                'password' => bcrypt('111111'),
+                'active' => true,
+                'confirmation_code' => \Ramsey\Uuid\Uuid::uuid4(),
+                'confirmed' => true,
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+            [
+                'name' => 'Ученик',
+                'email' => 'mail1@mail.ru',
+                'password' => bcrypt('111111'),
+                'active' => true,
+                'confirmation_code' => \Ramsey\Uuid\Uuid::uuid4(),
+                'confirmed' => true,
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
             ]
         ];
 
