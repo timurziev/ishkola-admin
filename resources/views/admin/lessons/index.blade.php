@@ -43,8 +43,8 @@
                                         @foreach($lesson->users as $user)
                                             @if($user->userHasRole('teacher'))<td>{{ $user->name }}</td>@endif
                                         @endforeach
-                                        <td>{{ $lesson->lesson_duration }}</td>
-                                        <td>{{ $lesson->lesson_format }}</td>
+                                        <td>{{ $lesson->duration }}</td>
+                                        <td>{{ $lesson->format }}</td>
                                         <td>{{ $lesson->price }}</td>
                                         <td>
                                             <a href="{{ route('admin.lessons.edit', $lesson->id) }}" class="btn btn-info btn-xs"><i class="fa fa-pencil"></i></a>
