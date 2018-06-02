@@ -48,8 +48,8 @@
                                         </ul>
                                     </td>
                                 <td>
-                                    <a href="{{ route('admin.groups.edit', [$group->id]) }}" class="btn btn-info btn-xs"><i class="fa fa-pencil"></i></a>
-                                    <a href="{{ route('admin.groups.destroy', [$group->id]) }}" class="btn btn-danger btn-xs" onclick="return confirm('Удалить группу?');"><i class="fa fa-trash"></i></a>
+                                    <a href="{{ route('admin.groups.edit', $group->id) }}" class="btn btn-info btn-xs"><i class="fa fa-pencil"></i></a>
+                                    <a href="{{ route('admin.groups.destroy', $group->id) }}" class="btn btn-danger btn-xs" onclick="return confirm('Удалить группу?');"><i class="fa fa-trash"></i></a>
                                 </td>
                             </tr>
                         @endforeach

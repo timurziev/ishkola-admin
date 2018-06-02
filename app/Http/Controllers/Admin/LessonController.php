@@ -146,6 +146,9 @@ class LessonController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $group  = Lesson::whereId($id)->firstOrFail();
+        $group->delete();
+
+        return redirect()->back();
     }
 }

@@ -85,13 +85,15 @@
                             <input type="text" id="price" name="price" @if (Request::is('*/edit')) value="{{ $lesson->price }}" @endif  class="form-control col-md-7 col-xs-12" required>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="quantity">Количество занятий <span class="required">*</span>
-                        </label>
-                        <div class="col-md-6 col-sm-6 col-xs-12">
-                            <input type="text" id="quantity" name="quantity" @if (Request::is('*/edit')) value="{{ $lesson->quantity }}" @endif  class="form-control col-md-7 col-xs-12" required>
+                    @if (Request::is('/create'))
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="quantity">Количество занятий <span class="required">*</span>
+                            </label>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <input type="text" id="quantity" name="quantity" @if (Request::is('*/edit')) value="{{ $lesson->quantity }}" @endif  class="form-control col-md-7 col-xs-12" required>
+                            </div>
                         </div>
-                    </div>
+                    @endif
                     <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="reservation-time">Дата и время занятий <span class="required">*</span>
                         </label>
