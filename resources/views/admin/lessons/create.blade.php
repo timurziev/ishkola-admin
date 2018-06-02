@@ -20,7 +20,7 @@
                 <div class="x_content">
                     <br>
                     @if (Request::is('*/edit'))
-                        {{ Form::open(['route'=> ['admin.groups.update', $lesson->id],'method' => 'put','class'=>'form-horizontal form-label-left']) }}
+                        {{ Form::open(['route'=> ['admin.lessons.update', $lesson->id],'method' => 'put','class'=>'form-horizontal form-label-left']) }}
                     @else
                         {{ Form::open(['route'=> 'admin.lessons.store','method' => 'put','class'=>'form-horizontal form-label-left']) }}
                     @endif
@@ -43,9 +43,9 @@
                                 <option value="">Введите email или имя пользователя...</option>
                                 @foreach($users as $user)
                                     <option active value="{{ $user->id }}"
-                                            {{--@if ( (Request::is('*/edit') && in_array($user->id, $lesson->userList)))--}}
-                                                {{--selected--}}
-                                            {{--@endif--}}
+                                            @if ( (Request::is('*/edit') && in_array($user->id, $lesson->userList)))
+                                                selected
+                                            @endif
                                     >{{ $user->name . ' ' . $user->email }}</option>
                                 @endforeach
                             </select>
@@ -68,28 +68,28 @@
                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="lesson_duration">Продолжительность урока <span class="required">*</span>
                         </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                            <input type="text" id="lesson_duration" name="lesson_duration" @if (Request::is('*/edit')) value="{{ $lesson->name }}" @endif  class="form-control col-md-7 col-xs-12" required>
+                            <input type="text" id="lesson_duration" name="duration" @if (Request::is('*/edit')) value="{{ $lesson->duration }}" @endif  class="form-control col-md-7 col-xs-12" required>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="lesson_format">Формат урока <span class="required">*</span>
                         </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                            <input type="text" id="lesson_format" name="lesson_format" @if (Request::is('*/edit')) value="{{ $lesson->name }}" @endif  class="form-control col-md-7 col-xs-12" required>
+                            <input type="text" id="lesson_format" name="format" @if (Request::is('*/edit')) value="{{ $lesson->format }}" @endif  class="form-control col-md-7 col-xs-12" required>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="price">Стоимость за урок с человека <span class="required">*</span>
                         </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                            <input type="text" id="price" name="price" @if (Request::is('*/edit')) value="{{ $lesson->name }}" @endif  class="form-control col-md-7 col-xs-12" required>
+                            <input type="text" id="price" name="price" @if (Request::is('*/edit')) value="{{ $lesson->price }}" @endif  class="form-control col-md-7 col-xs-12" required>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="quantity">Количество занятий <span class="required">*</span>
                         </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                            <input type="text" id="quantity" name="quantity" @if (Request::is('*/edit')) value="{{ $lesson->name }}" @endif  class="form-control col-md-7 col-xs-12" required>
+                            <input type="text" id="quantity" name="quantity" @if (Request::is('*/edit')) value="{{ $lesson->quantity }}" @endif  class="form-control col-md-7 col-xs-12" required>
                         </div>
                     </div>
                     <div class="form-group">
@@ -134,7 +134,7 @@
                     <div class="ln_solid"></div>
                     <div class="form-group">
                         <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
-                            <button type="submit" class="btn btn-success" style="margin-bottom: 0; padding-right: 10px">Создать</button>
+                            <button type="submit" class="btn btn-success" style="margin-bottom: 0; padding-right: 10px">{{ Request::is('*/edit') ? 'Отправить' : 'Создать' }}</button>
                             @if (session('message'))
                                 {{ session('message') }}
                             @endif

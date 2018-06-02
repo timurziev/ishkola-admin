@@ -17,8 +17,8 @@ class CreateLessonsTable extends Migration
             $table->increments('id');
             $table->integer('lang_id');
             $table->integer('group_id')->nullable();
-            $table->string('lesson_format');
-            $table->integer('lesson_duration');
+            $table->string('format');
+            $table->integer('duration');
             $table->integer('price');
             $table->integer('quantity')->default(40);
             $table->timestamps();

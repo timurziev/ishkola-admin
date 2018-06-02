@@ -2,13 +2,12 @@
 
 namespace App\Models;
 
-use App\Models\Schedule;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Auth\User\User;
 
 class Lesson extends Model
 {
-    protected $fillable = ['lang_id', 'group_id', 'lesson_format', 'lesson_duration', 'price', 'quantity'];
+    protected $fillable = ['lang_id', 'group_id', 'format', 'duration', 'price', 'quantity'];
 
     public function users()
     {
@@ -28,5 +27,10 @@ class Lesson extends Model
     public function group()
     {
         return $this->belongsTo(Group::class);
+    }
+
+    public function getUserListAttribute()
+    {
+        return $this->users->pluck('id')->toArray();
     }
 }

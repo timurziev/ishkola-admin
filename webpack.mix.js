@@ -123,6 +123,8 @@ mix.scripts([
     'node_modules/gentelella/vendors/Chart.js/dist/Chart.js',
     'node_modules/jcarousel/dist/jquery.jcarousel.min.js',
 
+    'node_modules/datatables/media/js/jquery.dataTables.js',
+
     'resources/assets/admin/js/dashboard.js',
 ], 'public/assets/admin/js/dashboard.js').version();
 
@@ -130,6 +132,7 @@ mix.styles([
     // 'node_modules/gentelella/vendors/bootstrap-daterangepicker/daterangepicker.css',
     'node_modules/gentelella/vendors/bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css',
     'resources/assets/admin/css/dashboard.css',
+    'node_modules/datatables/media/css/jquery.dataTables.css',
 ], 'public/assets/admin/css/dashboard.css').version();
 
 

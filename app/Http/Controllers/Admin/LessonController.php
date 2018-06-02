@@ -115,7 +115,27 @@ class LessonController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $lesson = Lesson::whereId($id)->firstOrFail();
+
+        $lesson->update($request->all());
+
+        if ($request['datetimes'] != null) {
+            $schedules = Schedule::where('lesson_id', $id);
+            $schedules->delete();
+
+            foreach ($request['datetimes'] as $date) {
+                $newdate = Carbon::createFromFormat('d.m.Y H:i', $date, 'Europe/Moscow')->format('d.m.Y H:i');
+
+                $fields = ['lesson_id' => $id, 'schedule' => $newdate];
+//            dd($fields);
+
+                Schedule::create($fields);
+            }
+        }
+
+        $lesson->users()->sync($request['users']);
+
+        return redirect()->back();
     }
 
     /**

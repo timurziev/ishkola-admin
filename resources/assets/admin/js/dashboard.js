@@ -306,6 +306,8 @@
         $(this).parent('.datetimes').remove();
     });
 
+    $('#datatable').DataTable();
+
 
 })(jQuery);
 
