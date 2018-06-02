@@ -139,13 +139,13 @@
             var $dateEl = $el.find('.date_piker');
             var $chartEl = $el.find('.chart');
 
-            $dateEl.daterangepicker(this.options.date, function (start, end) {
-                $dateEl.find('.date_piker_label').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
-            });
-
-            $dateEl.on('apply.daterangepicker', function (ev, picker) {
-                self.gteChartData($chartEl, picker.startDate.format('YYYY-MM-DD'), picker.endDate.format('YYYY-MM-DD'));
-            });
+            // $dateEl.daterangepicker(this.options.date, function (start, end) {
+            //     $dateEl.find('.date_piker_label').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+            // });
+            //
+            // $dateEl.on('apply.daterangepicker', function (ev, picker) {
+            //     self.gteChartData($chartEl, picker.startDate.format('YYYY-MM-DD'), picker.endDate.format('YYYY-MM-DD'));
+            // });
 
             self.gteChartData($chartEl, this.options.date.startDate.format('YYYY-MM-DD'), this.options.date.endDate.format('YYYY-MM-DD'));
         }
@@ -269,48 +269,10 @@
         }
     });
 
+
     function setPicker(inst) {
-        $(inst).daterangepicker({
-            timePicker24Hour: true,
-            timePicker: true,
-            drops: "up",
-            singleDatePicker: true,
-            startDate: moment().startOf('hour'),
-            endDate: moment().startOf('hour').add(32, 'hour'),
-            locale: {
-                format: 'MM/DD/YYYY HH:mm',
-                separator: " - ",
-                applyLabel: "Подтвердить",
-                cancelLabel: "Отмена",
-                fromLabel: "От",
-                toLabel: "До",
-                customRangeLabel: "По умолчанию",
-                weekLabel: "Н",
-                daysOfWeek: [
-                    "Вс",
-                    "Пн",
-                    "Вт",
-                    "Ср",
-                    "Чт",
-                    "Пт",
-                    "Сб"
-                ],
-                monthNames: [
-                    "Январь",
-                    "Февраль",
-                    "Март",
-                    "Апрель",
-                    "Май",
-                    "Июнь",
-                    "Июль",
-                    "Август",
-                    "Сентябрь",
-                    "Октябрь",
-                    "Ноябрь",
-                    "Декабрь"
-                ],
-                "firstDay": 1
-            }
+        $(inst).datetimepicker({
+            locale: 'ru'
         });
     }
 
@@ -337,5 +299,13 @@
         cloned.attr('id', 'cloned-input-' + count);
     });
 
+    //delete existing timepicker
+
+    $(".remove").click(function() {
+        event.preventDefault();
+        $(this).parent('.datetimes').remove();
+    });
+
 
 })(jQuery);
+

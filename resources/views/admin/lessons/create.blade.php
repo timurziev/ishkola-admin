@@ -20,7 +20,7 @@
                 <div class="x_content">
                     <br>
                     @if (Request::is('*/edit'))
-                        {{ Form::open(['route'=> ['admin.groups.update', $group->id],'method' => 'put','class'=>'form-horizontal form-label-left']) }}
+                        {{ Form::open(['route'=> ['admin.groups.update', $lesson->id],'method' => 'put','class'=>'form-horizontal form-label-left']) }}
                     @else
                         {{ Form::open(['route'=> 'admin.lessons.store','method' => 'put','class'=>'form-horizontal form-label-left']) }}
                     @endif
@@ -29,7 +29,7 @@
                         <div class="col-md-6 col-sm-6 col-xs-12">
                             <select class="form-control" name="lang_id">
                                 @foreach($langs as $lang)
-                                    <option @if (Request::is('*/edit') && $group->lang_id == $lang->id) selected @endif
+                                    <option @if (Request::is('*/edit') && $lesson->lang_id == $lang->id) selected @endif
                                     value="{{ $lang->id }}">{{ $lang->name }}
                                     </option>
                                 @endforeach
@@ -39,13 +39,13 @@
                     <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="input-options">Учитель и/или ученик</label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                            <select multiple name="users[]" class="form-control select-user" placeholder="Введите email или имя пользователя..." style="width: 100%">
+                            <select required multiple name="users[]" class="form-control select-user" placeholder="Введите email или имя пользователя..." style="width: 100%">
                                 <option value="">Введите email или имя пользователя...</option>
                                 @foreach($users as $user)
                                     <option active value="{{ $user->id }}"
-                                            @if ( (Request::is('*/edit') && in_array($user->id, $group->userList)))
-                                                selected
-                                            @endif
+                                            {{--@if ( (Request::is('*/edit') && in_array($user->id, $lesson->userList)))--}}
+                                                {{--selected--}}
+                                            {{--@endif--}}
                                     >{{ $user->name . ' ' . $user->email }}</option>
                                 @endforeach
                             </select>
@@ -68,28 +68,28 @@
                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="lesson_duration">Продолжительность урока <span class="required">*</span>
                         </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                            <input type="text" id="lesson_duration" name="lesson_duration" @if (Request::is('*/edit')) value="{{ $group->name }}" @endif  class="form-control col-md-7 col-xs-12" required>
+                            <input type="text" id="lesson_duration" name="lesson_duration" @if (Request::is('*/edit')) value="{{ $lesson->name }}" @endif  class="form-control col-md-7 col-xs-12" required>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="lesson_format">Формат урока <span class="required">*</span>
                         </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                            <input type="text" id="lesson_format" name="lesson_format" @if (Request::is('*/edit')) value="{{ $group->name }}" @endif  class="form-control col-md-7 col-xs-12" required>
+                            <input type="text" id="lesson_format" name="lesson_format" @if (Request::is('*/edit')) value="{{ $lesson->name }}" @endif  class="form-control col-md-7 col-xs-12" required>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="price">Стоимость за урок с человека <span class="required">*</span>
                         </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                            <input type="text" id="price" name="price" @if (Request::is('*/edit')) value="{{ $group->name }}" @endif  class="form-control col-md-7 col-xs-12" required>
+                            <input type="text" id="price" name="price" @if (Request::is('*/edit')) value="{{ $lesson->name }}" @endif  class="form-control col-md-7 col-xs-12" required>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="quantity">Количество занятий <span class="required">*</span>
                         </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                            <input type="text" id="quantity" name="quantity" @if (Request::is('*/edit')) value="{{ $group->name }}" @endif  class="form-control col-md-7 col-xs-12" required>
+                            <input type="text" id="quantity" name="quantity" @if (Request::is('*/edit')) value="{{ $lesson->name }}" @endif  class="form-control col-md-7 col-xs-12" required>
                         </div>
                     </div>
                     <div class="form-group">
@@ -97,18 +97,37 @@
                         </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
                             <div class="controls">
-                                <div class="input-prepend input-group datetimes" id="parent-input">
-                                    <span class="add-on input-group-addon">
-                                        <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
-                                    </span>
-                                    <input type="text" name="datetimes[]" id="reservation-time" class="form-control datetime" value="01/01/2016 - 01/25/2016">
-                                    <a href="" id="date-time" style="top: 9px; position: absolute; padding-left: 8px;">
-                                        <i class="glyphicon glyphicon-plus"></i>
-                                    </a>
-                                    <a href="" class="hide" id="remove-date" style="top: 9px; position: absolute; margin-left: 25px;">
-                                        <i class="glyphicon glyphicon-remove"></i>
-                                    </a>
-                                </div>
+                                @if (Request::is('*/edit'))
+                                    @foreach($lesson->schedules as $key => $schedule)
+                                    <div class="input-prepend input-group datetimes" @if($key != 0) id="parent-input-{{ $key }}" @else id="parent-input" @endif>
+                                        <span class="add-on input-group-addon">
+                                            <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
+                                        </span>
+                                        <input type="text" name="datetimes[]" id="reservation-time" class="form-control datetime" value="{{ $schedule->schedule }}">
+                                        @if($key == 0)
+                                            <a href="" id="date-time" style="top: 9px; position: absolute; padding-left: 8px;">
+                                                <i class="glyphicon glyphicon-plus"></i>
+                                            </a>
+                                        @endif
+                                        <a href="" @if($key == 0) class="hide" @else class="remove" @endif id="remove-date" style="top: 9px; position: absolute; margin-left: 8px;">
+                                            <i class="glyphicon glyphicon-remove"></i>
+                                        </a>
+                                    </div>
+                                    @endforeach
+                                @else
+                                    <div class="input-prepend input-group datetimes" id="parent-input">
+                                        <span class="add-on input-group-addon">
+                                            <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
+                                        </span>
+                                        <input type="text" name="datetimes[]" id="reservation-time" class="form-control datetime" value="">
+                                        <a href="" id="date-time" style="top: 9px; position: absolute; padding-left: 8px;">
+                                            <i class="glyphicon glyphicon-plus"></i>
+                                        </a>
+                                        <a href="" class="hide" id="remove-date" style="top: 9px; position: absolute; margin-left: 25px;">
+                                            <i class="glyphicon glyphicon-remove"></i>
+                                        </a>
+                                    </div>
+                                @endif
                             </div>
                         </div>
                     </div>

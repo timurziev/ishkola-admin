@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Schedule;
+use App\Models\Schedule;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Auth\User\User;
 

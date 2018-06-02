@@ -116,8 +116,9 @@ mix.scripts([
     'node_modules/gentelella/vendors/flot-spline/js/jquery.flot.spline.min.js',
 
     'node_modules/gentelella/production/js/moment/moment.min.js',
-    'node_modules/gentelella/vendors/bootstrap-daterangepicker/daterangepicker.js',
-
+    'node_modules/gentelella/vendors/moment/min/moment-with-locales.js',
+    // 'node_modules/gentelella/vendors/bootstrap-daterangepicker/daterangepicker.js',
+    'node_modules/gentelella/vendors/bootstrap-datetimepicker/src/js/bootstrap-datetimepicker.js',
 
     'node_modules/gentelella/vendors/Chart.js/dist/Chart.js',
     'node_modules/jcarousel/dist/jquery.jcarousel.min.js',
@@ -126,7 +127,8 @@ mix.scripts([
 ], 'public/assets/admin/js/dashboard.js').version();
 
 mix.styles([
-    'node_modules/gentelella/vendors/bootstrap-daterangepicker/daterangepicker.css',
+    // 'node_modules/gentelella/vendors/bootstrap-daterangepicker/daterangepicker.css',
+    'node_modules/gentelella/vendors/bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css',
     'resources/assets/admin/css/dashboard.css',
 ], 'public/assets/admin/css/dashboard.css').version();
 

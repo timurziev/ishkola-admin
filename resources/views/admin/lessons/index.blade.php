@@ -47,7 +47,7 @@
                                         <td>{{ $lesson->lesson_format }}</td>
                                         <td>{{ $lesson->price }}</td>
                                         <td>
-                                            <a href="" class="btn btn-info btn-xs"><i class="fa fa-pencil"></i></a>
+                                            <a href="{{ route('admin.lessons.edit', $lesson->id) }}" class="btn btn-info btn-xs"><i class="fa fa-pencil"></i></a>
                                             <a href="" class="btn btn-danger btn-xs" onclick="return confirm('Удалить занятие?');"><i class="fa fa-trash"></i></a>
                                         </td>
                                     </tr>

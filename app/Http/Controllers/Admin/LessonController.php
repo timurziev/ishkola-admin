@@ -3,12 +3,13 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\Group;
-use App\Schedule;
+use App\Models\Schedule;
 use Illuminate\Http\Request;
 use App\Models\Lesson;
 use App\Models\Lang;
 use App\Models\Auth\User\User;
 use App\Http\Controllers\Controller;
+use Carbon\Carbon;
 
 class LessonController extends Controller
 {
@@ -31,7 +32,7 @@ class LessonController extends Controller
      */
     public function create()
     {
-        $langs = lang::all();
+        $langs = Lang::all();
         $users = User::all();
         $groups = Group::all();
 
@@ -46,19 +47,39 @@ class LessonController extends Controller
      */
     public function store(Request $request)
     {
-//        $tempDate = $request['datetimes'];
-//        echo date('l', strtotime( $tempDate));
-
         $lesson = Lesson::create($request->all());
 
         foreach ($request['datetimes'] as $date) {
-            $fields = ['lesson_id' => $lesson->id, 'schedule' => $date];
-            $schedule = Schedule::create($fields);
+            $newdate[] = Carbon::createFromFormat('d.m.Y H:i', $date, 'Europe/Moscow');
+        }
+
+        $addDays = [];
+        $date = [];
+
+        foreach ($newdate as $var) {
+            $date[] = $var->format('d.m.Y H:i');
+        }
+
+        while (count($addDays) < $request['quantity']) {
+            foreach ($newdate as $day) {
+                $addDays[] = $day->addDays(7)->format('d.m.Y H:i');
+            }
+        }
+
+        $mergedDate = array_merge($date, $addDays);
+
+        $number = count($mergedDate) - $request['quantity'];
+
+        array_splice($mergedDate, - $number);
+
+        foreach ($mergedDate as $finalDate) {
+            $fields = ['lesson_id' => $lesson->id, 'schedule' => $finalDate];
+            Schedule::create($fields);
         }
 
         $lesson->users()->attach($request['users']);
 
-        return redirect()->intended(route('admin.lessons'));
+        return redirect()->route('admin.lessons');
     }
 
     /**
@@ -80,7 +101,9 @@ class LessonController extends Controller
      */
     public function edit($id)
     {
-        //
+        $lesson = Lesson::whereId($id)->firstOrFail();
+
+        return view('admin.lessons.create', ['lesson' => $lesson, 'langs' => $langs = Lang::all(), 'users' => $users = User::all(), 'groups' => $groups = Group::all()]);
     }
 
     /**
