@@ -106,11 +106,11 @@
                                             <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
                                         </span>
                                         <input type="text" name="datetimes[]" id="reservation-time" class="form-control datetime" value="{{ $schedule->schedule }}">
-                                        @if($key == 0)
-                                            <a href="" id="date-time" style="top: 9px; position: absolute; padding-left: 8px;">
-                                                <i class="glyphicon glyphicon-plus"></i>
-                                            </a>
-                                        @endif
+                                        {{--@if($key == 0)--}}
+                                            {{--<a href="" id="date-time" style="top: 9px; position: absolute; padding-left: 8px;">--}}
+                                                {{--<i class="glyphicon glyphicon-plus"></i>--}}
+                                            {{--</a>--}}
+                                        {{--@endif--}}
                                         <a href="" @if($key == 0) class="hide" @else class="remove" @endif id="remove-date" style="top: 9px; position: absolute; margin-left: 8px;">
                                             <i class="glyphicon glyphicon-remove"></i>
                                         </a>
@@ -122,15 +122,17 @@
                                             <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
                                         </span>
                                         <input type="text" name="datetimes[]" id="reservation-time" class="form-control datetime" value="">
-                                        <a href="" id="date-time" style="top: 9px; position: absolute; padding-left: 8px;">
-                                            <i class="glyphicon glyphicon-plus"></i>
-                                        </a>
+                                        {{--<a href="" id="date-time" style="top: 9px; position: absolute; padding-left: 8px;">--}}
+                                            {{--<i class="glyphicon glyphicon-plus"></i>--}}
+                                        {{--</a>--}}
                                         <a href="" class="hide" id="remove-date" style="top: 9px; position: absolute; margin-left: 25px;">
                                             <i class="glyphicon glyphicon-remove"></i>
                                         </a>
                                     </div>
                                 @endif
                             </div>
+                            <button class="btn btn-default" id="date-time">Добавить</button>
+
                         </div>
                     </div>
                     <div class="ln_solid"></div>
