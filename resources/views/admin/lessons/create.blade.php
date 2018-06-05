@@ -85,7 +85,7 @@
                             <input type="text" id="price" name="price" @if (Request::is('*/edit')) value="{{ $lesson->price }}" @endif  class="form-control col-md-7 col-xs-12" required>
                         </div>
                     </div>
-                    @if (Request::is('/create'))
+                    @if (Request::is('*/create'))
                         <div class="form-group">
                             <label class="control-label col-md-3 col-sm-3 col-xs-12" for="quantity">Количество занятий <span class="required">*</span>
                             </label>
@@ -131,7 +131,7 @@
                                     </div>
                                 @endif
                             </div>
-                            <button class="btn btn-default" id="date-time">Добавить</button>
+                            <button class="btn btn-default" id="date-time" style="border: 1px solid #169F85;">Добавить</button>
 
                         </div>
                     </div>

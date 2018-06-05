@@ -2,11 +2,31 @@
 
 @section('content')
     <!-- page content -->
-    <div class="row">
-        <div class="col-md-12 col-sm-12 col-xs-12">
-            <h2>Здесь должна быть общая информация и статистика</h2>
+    <div class="row tile_count">
+        <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
+            <span class="count_top"><i class="fa fa-user"></i> Пользователи</span>
+            <div class="count">{{ $counts['users'] }}</div>
         </div>
-
+        <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
+            <span class="count_top"><i class="fa fa-briefcase"></i> Учителя</span>
+            <div class="count">{{ $counts['teachers'] }}</div>
+        </div>
+        <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
+            <span class="count_top"><i class="fa fa-mortar-board"></i> Ученики</span>
+            <div class="count">{{ $counts['students'] }}</div>
+        </div>
+        <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
+            <span class="count_top"><i class="fa fa-book"></i> Занятия</span>
+            <div class="count green">{{ $counts['lessons'] }}</div>
+        </div>
+        <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
+            <span class="count_top"><i class="fa fa-users"></i> Группы</span>
+            <div class="count">{{ $counts['groups'] }}</div>
+        </div>
+        <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
+            <span class="count_top"><i class="fa fa-language"></i> Языки</span>
+            <div class="count">{{ $counts['langs'] }}</div>
+        </div>
     </div>
 
 @endsection
