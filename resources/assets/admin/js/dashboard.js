@@ -343,7 +343,7 @@
             "firstDay": 1
         }
     }, function (start, end, label) {
-        window.location.href = 'http://ishkola-admin:8080/admin/lessons_table?date=' + start.format('YYYY-MM-DD');
+        window.location.href = "{{ url('/') }}" + '/admin/lessons_table?date=' + start.format('YYYY-MM-DD');
     });
 
 
