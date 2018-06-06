@@ -276,37 +276,75 @@
         });
     }
 
-    $(function() {
+    $(function () {
         setPicker('.datetime');
     });
 
     var count = 1;
 
-    $( "#date-time" ).click(function() {
+    $("#date-time").click(function () {
         event.preventDefault();
         count++;
         var cloned = $('#parent-input').clone();
-        cloned.find('input').attr('id', 'reservation-time-'+ count);
-        cloned.insertAfter("#reservation-time").appendTo( ".controls" );
+        cloned.find('input').attr('id', 'reserve-' + count);
+        cloned.insertAfter("#reserve").appendTo(".controls");
         cloned.find('#date-time').remove();
         cloned.find('#remove-date').css('margin-left', '8px').removeClass('hide').attr('class', count);
         var num = cloned.find('#remove-date').attr('class');
         cloned.find('#remove-date').click(function (e) {
             e.preventDefault();
-            $('#cloned-input-'+ num).remove();
+            $('#cloned-input-' + num).remove();
         });
-        setPicker('#reservation-time-'+ count);
+        setPicker('#reserve-' + count);
         cloned.attr('id', 'cloned-input-' + count);
     });
 
     //delete existing timepicker
 
-    $(".remove").click(function() {
+    $(".remove").click(function () {
         event.preventDefault();
         $(this).parent('.datetimes').remove();
     });
 
-    $('#datatable').DataTable();
+    $('.calendar').daterangepicker({
+        singleDatePicker: true,
+        locale: {
+            format: 'DD.MM.YYYY',
+            separator: " - ",
+            applyLabel: "Подтвердить",
+            cancelLabel: "Отмена",
+            fromLabel: "От",
+            toLabel: "До",
+            customRangeLabel: "По умолчанию",
+            weekLabel: "Н",
+            daysOfWeek: [
+                "Вс",
+                "Пн",
+                "Вт",
+                "Ср",
+                "Чт",
+                "Пт",
+                "Сб"
+            ],
+            monthNames: [
+                "Январь",
+                "Февраль",
+                "Март",
+                "Апрель",
+                "Май",
+                "Июнь",
+                "Июль",
+                "Август",
+                "Сентябрь",
+                "Октябрь",
+                "Ноябрь",
+                "Декабрь"
+            ],
+            "firstDay": 1
+        }
+    }, function (start, end, label) {
+        window.location.href = 'http://ishkola-admin:8080/admin/lessons_table?date=' + start.format('YYYY-MM-DD');
+    });
 
 
 })(jQuery);

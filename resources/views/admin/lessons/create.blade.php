@@ -105,7 +105,7 @@
                                         <span class="add-on input-group-addon">
                                             <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
                                         </span>
-                                        <input type="text" name="datetimes[]" id="reservation-time" class="form-control datetime" value="{{ $schedule->schedule }}">
+                                        <input type="text" name="datetimes[]" id="reservation-time" class="form-control datetime" value="{{ $schedule->schedule->format('d.m.Y H:i') }}">
                                         {{--@if($key == 0)--}}
                                             {{--<a href="" id="date-time" style="top: 9px; position: absolute; padding-left: 8px;">--}}
                                                 {{--<i class="glyphicon glyphicon-plus"></i>--}}
@@ -119,9 +119,9 @@
                                 @else
                                     <div class="input-prepend input-group datetimes" id="parent-input">
                                         <span class="add-on input-group-addon">
-                                            <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
+                                            <i class="fa fa-calendar"></i>
                                         </span>
-                                        <input type="text" name="datetimes[]" id="reservation-time" class="form-control datetime" value="">
+                                        <input type="text" name="datetimes[]" id="reserve" class="form-control datetime" value="">
                                         {{--<a href="" id="date-time" style="top: 9px; position: absolute; padding-left: 8px;">--}}
                                             {{--<i class="glyphicon glyphicon-plus"></i>--}}
                                         {{--</a>--}}

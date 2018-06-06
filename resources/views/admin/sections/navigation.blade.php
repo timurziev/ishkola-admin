@@ -30,7 +30,8 @@
                     <li>
                         <a href="{{ route('admin.dashboard') }}">
                             <i class="fa fa-home" aria-hidden="true"></i>
-                            {{ __('views.backend.section.navigation.menu_0_1') }}
+                            {{--{{ __('views.backend.section.navigation.menu_0_1') }}--}}
+                            Главная
                         </a>
                     </li>
                 </ul>
@@ -69,7 +70,15 @@
                         <a href="{{ route('admin.groups') }}"><i class="fa fa-group"></i> Группы</a>
                     </li>
                     <li class="">
-                        <a href="{{ route('admin.lessons') }}"><i class="fa fa-book"></i> Занятия</a>
+                        <a><i class="fa fa-book"></i> Занятия <span class="fa fa-chevron-down"></span></a>
+                        <ul class="nav child_menu">
+                            <li class="">
+                                <a href="{{ route('admin.lessons') }}"> Занятия</a>
+                            </li>
+                            <li class="">
+                                <a href="{{ route('admin.lessons_table') }}"> Сводная таблица</a>
+                            </li>
+                        </ul>
                     </li>
                     {{--<li>--}}
                         {{--<a href="{{ route('admin.permissions') }}">--}}

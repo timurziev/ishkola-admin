@@ -22,15 +22,15 @@
                         <table class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0"
                                width="100%">
                             <thead>
-                            <tr>
-                                <th>Язык</th>
-                                <th>Группа/ученик</th>
-                                <th>Учитель</th>
-                                <th>Продолжительность урока</th>
-                                <th>Формат урока</th>
-                                <th>Стоимость за урок с человека</th>
-                                <th>Количество занятий</th>
-                            </tr>
+                                <tr>
+                                    <th>Язык</th>
+                                    <th>Группа/ученик</th>
+                                    <th>Учитель</th>
+                                    <th>Продолжительность урока</th>
+                                    <th>Формат урока</th>
+                                    <th>Стоимость за урок с человека</th>
+                                    <th>Действие</th>
+                                </tr>
                             </thead>
                             <tbody>
                                 @foreach($lessons as $lesson)

@@ -26,6 +26,24 @@ class LessonController extends Controller
     }
 
     /**
+     * Display a listing of the resource listed by date.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function lessons(Request  $request)
+    {
+        $date = $request['date'];
+        $schedules = Schedule::orderBy('schedule', 'asc')->paginate(20);
+
+        if ($request['date'] != null) {
+            $schedules = Schedule::where('schedule', 'LIKE', "%$date%")->orderBy('schedule', 'asc')->paginate(20);
+        }
+
+        return view('admin.lessons.table', ['schedules' => $schedules]);
+    }
+
+    /**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
@@ -57,12 +75,13 @@ class LessonController extends Controller
         $date = [];
 
         foreach ($newdate as $var) {
-            $date[] = $var->format('d.m.Y H:i');
+            $date[] = $var->format('Y-m-d H:i');
         }
+
 
         while (count($addDays) < $request['quantity']) {
             foreach ($newdate as $day) {
-                $addDays[] = $day->addDays(7)->format('d.m.Y H:i');
+                $addDays[] = $day->addDays(7)->format('Y-m-d H:i');
             }
         }
 
@@ -73,7 +92,7 @@ class LessonController extends Controller
         array_splice($mergedDate, - $number);
 
         foreach ($mergedDate as $finalDate) {
-            $fields = ['lesson_id' => $lesson->id, 'schedule' => $finalDate];
+            $fields = ['lesson_id' => $lesson->id, 'schedule' => $finalDate . ':00'];
             Schedule::create($fields);
         }
 
@@ -124,10 +143,9 @@ class LessonController extends Controller
             $schedules->delete();
 
             foreach ($request['datetimes'] as $date) {
-                $newdate = Carbon::createFromFormat('d.m.Y H:i', $date, 'Europe/Moscow')->format('d.m.Y H:i');
+                $newdate = Carbon::createFromFormat('d.m.Y H:i', $date, 'Europe/Moscow')->format('Y-m-d H:i');
 
-                $fields = ['lesson_id' => $id, 'schedule' => $newdate];
-//            dd($fields);
+                $fields = ['lesson_id' => $id, 'schedule' => $newdate . ':00'];
 
                 Schedule::create($fields);
             }
