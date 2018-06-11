@@ -299,8 +299,6 @@
         cloned.attr('id', 'cloned-input-' + count);
     });
 
-    //delete existing timepicker
-
     $(".remove").click(function () {
         event.preventDefault();
         $(this).parent('.datetimes').remove();
@@ -342,8 +340,27 @@
             ],
             "firstDay": 1
         }
-    }, function (start, end, label) {
-        window.location.href = "{{ url('/') }}" + '/admin/lessons_table?date=' + start.format('YYYY-MM-DD');
+    }, function (start) {
+        window.location.href = '/admin/lessons_table?date=' + start.format('YYYY-MM-DD');
+    });
+
+
+    $('#calendar').fullCalendar({
+        locale: 'ru',
+        header: {
+            left: 'prev',
+            center: 'title',
+            right : 'next'
+        },
+        events: function(start, end, timezone, callback) {
+            $.ajax({
+                url: 'http://ishkola-admin:8080/admin/lessons_table',
+                dataType: 'json',
+                success: function(data) {
+                    callback(data);
+                },
+            });
+        },
     });
 
 

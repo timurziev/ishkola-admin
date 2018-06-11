@@ -36,6 +36,23 @@ class LessonController extends Controller
         $date = $request['date'];
         $schedules = Schedule::orderBy('schedule', 'asc')->paginate(20);
 
+        if ($request->ajax()) {
+            $schedules = Schedule::orderBy('schedule', 'asc')->get();
+
+            foreach ($schedules as $schedule) {
+                foreach ($schedule->lesson->users as $user) {
+                    if ($user->userHasRole('student')) {
+                        $student = $user->name;
+                    }
+                }
+                $title = $schedule->lesson->lang->name;
+                $start = $schedule->schedule->format('Y-m-d H:i');;
+                $events[] = ['title' => ' | ' . $student . ' | ' . $title, 'start' => $start];
+            }
+
+            return $events;
+        }
+
         if ($request['date'] != null) {
             $schedules = Schedule::where('schedule', 'LIKE', "%$date%")->orderBy('schedule', 'asc')->paginate(20);
         }
@@ -65,21 +82,21 @@ class LessonController extends Controller
      */
     public function store(Request $request)
     {
-        $lesson = Lesson::create($request->all());
-
-        foreach ($request['datetimes'] as $date) {
-            $newdate[] = Carbon::createFromFormat('d.m.Y H:i', $date, 'Europe/Moscow');
-        }
-
         $addDays = [];
         $date = [];
+        $quantity = $request['quantity'] != null ? $request['quantity'] : $request['quantity'] = 40;
+        $lesson = Lesson::create($request->all());
+
+        foreach ($request['datetimes'] as $datetime) {
+            $newdate[] = Carbon::createFromFormat('d.m.Y H:i', $datetime, 'Europe/Moscow');
+        }
 
         foreach ($newdate as $var) {
             $date[] = $var->format('Y-m-d H:i');
         }
 
 
-        while (count($addDays) < $request['quantity']) {
+        while (count($addDays) < $quantity) {
             foreach ($newdate as $day) {
                 $addDays[] = $day->addDays(7)->format('Y-m-d H:i');
             }

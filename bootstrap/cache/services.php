@@ -26,12 +26,12 @@
     22 => 'AlbertCht\\InvisibleReCaptcha\\InvisibleReCaptchaServiceProvider',
     23 => 'Arcanedev\\LogViewer\\LogViewerServiceProvider',
     24 => 'Creativeorange\\Gravatar\\GravatarServiceProvider',
-    25 => 'Kyslik\\ColumnSortable\\ColumnSortableServiceProvider',
-    26 => 'Laravel\\Socialite\\SocialiteServiceProvider',
-    27 => 'Laravel\\Tinker\\TinkerServiceProvider',
-    28 => 'Collective\\Html\\HtmlServiceProvider',
-    29 => 'Barryvdh\\LaravelIdeHelper\\IdeHelperServiceProvider',
-    30 => 'Intervention\\Image\\ImageServiceProvider',
+    25 => 'Collective\\Html\\HtmlServiceProvider',
+    26 => 'Barryvdh\\LaravelIdeHelper\\IdeHelperServiceProvider',
+    27 => 'Intervention\\Image\\ImageServiceProvider',
+    28 => 'Kyslik\\ColumnSortable\\ColumnSortableServiceProvider',
+    29 => 'Laravel\\Socialite\\SocialiteServiceProvider',
+    30 => 'Laravel\\Tinker\\TinkerServiceProvider',
     31 => 'Intervention\\Image\\ImageServiceProvider',
     32 => 'Laravel\\Tinker\\TinkerServiceProvider',
     33 => 'Arcanedev\\LogViewer\\LogViewerServiceProvider',
@@ -65,8 +65,8 @@
     10 => 'AlbertCht\\InvisibleReCaptcha\\InvisibleReCaptchaServiceProvider',
     11 => 'Arcanedev\\LogViewer\\LogViewerServiceProvider',
     12 => 'Creativeorange\\Gravatar\\GravatarServiceProvider',
-    13 => 'Kyslik\\ColumnSortable\\ColumnSortableServiceProvider',
-    14 => 'Intervention\\Image\\ImageServiceProvider',
+    13 => 'Intervention\\Image\\ImageServiceProvider',
+    14 => 'Kyslik\\ColumnSortable\\ColumnSortableServiceProvider',
     15 => 'Intervention\\Image\\ImageServiceProvider',
     16 => 'Arcanedev\\LogViewer\\LogViewerServiceProvider',
     17 => 'Creativeorange\\Gravatar\\GravatarServiceProvider',
@@ -180,14 +180,14 @@
     'translation.loader' => 'Illuminate\\Translation\\TranslationServiceProvider',
     'validator' => 'Illuminate\\Validation\\ValidationServiceProvider',
     'validation.presence' => 'Illuminate\\Validation\\ValidationServiceProvider',
-    'Laravel\\Socialite\\Contracts\\Factory' => 'Laravel\\Socialite\\SocialiteServiceProvider',
-    'command.tinker' => 'Laravel\\Tinker\\TinkerServiceProvider',
     'html' => 'Collective\\Html\\HtmlServiceProvider',
     'form' => 'Collective\\Html\\HtmlServiceProvider',
     'Collective\\Html\\HtmlBuilder' => 'Collective\\Html\\HtmlServiceProvider',
     'Collective\\Html\\FormBuilder' => 'Collective\\Html\\HtmlServiceProvider',
     'command.ide-helper.generate' => 'Barryvdh\\LaravelIdeHelper\\IdeHelperServiceProvider',
     'command.ide-helper.models' => 'Barryvdh\\LaravelIdeHelper\\IdeHelperServiceProvider',
+    'Laravel\\Socialite\\Contracts\\Factory' => 'Laravel\\Socialite\\SocialiteServiceProvider',
+    'command.tinker' => 'Laravel\\Tinker\\TinkerServiceProvider',
   ),
   'when' => 
   array (
@@ -227,16 +227,16 @@
     'Illuminate\\Validation\\ValidationServiceProvider' => 
     array (
     ),
-    'Laravel\\Socialite\\SocialiteServiceProvider' => 
-    array (
-    ),
-    'Laravel\\Tinker\\TinkerServiceProvider' => 
-    array (
-    ),
     'Collective\\Html\\HtmlServiceProvider' => 
     array (
     ),
     'Barryvdh\\LaravelIdeHelper\\IdeHelperServiceProvider' => 
+    array (
+    ),
+    'Laravel\\Socialite\\SocialiteServiceProvider' => 
+    array (
+    ),
+    'Laravel\\Tinker\\TinkerServiceProvider' => 
     array (
     ),
   ),

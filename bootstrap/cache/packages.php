@@ -24,31 +24,6 @@
       'Gravatar' => 'Creativeorange\\Gravatar\\Facades\\Gravatar',
     ),
   ),
-  'kyslik/column-sortable' => 
-  array (
-    'providers' => 
-    array (
-      0 => 'Kyslik\\ColumnSortable\\ColumnSortableServiceProvider',
-    ),
-  ),
-  'laravel/socialite' => 
-  array (
-    'providers' => 
-    array (
-      0 => 'Laravel\\Socialite\\SocialiteServiceProvider',
-    ),
-    'aliases' => 
-    array (
-      'Socialite' => 'Laravel\\Socialite\\Facades\\Socialite',
-    ),
-  ),
-  'laravel/tinker' => 
-  array (
-    'providers' => 
-    array (
-      0 => 'Laravel\\Tinker\\TinkerServiceProvider',
-    ),
-  ),
   'laravelcollective/html' => 
   array (
     'providers' => 
@@ -77,6 +52,31 @@
     'aliases' => 
     array (
       'Image' => 'Intervention\\Image\\Facades\\Image',
+    ),
+  ),
+  'kyslik/column-sortable' => 
+  array (
+    'providers' => 
+    array (
+      0 => 'Kyslik\\ColumnSortable\\ColumnSortableServiceProvider',
+    ),
+  ),
+  'laravel/socialite' => 
+  array (
+    'providers' => 
+    array (
+      0 => 'Laravel\\Socialite\\SocialiteServiceProvider',
+    ),
+    'aliases' => 
+    array (
+      'Socialite' => 'Laravel\\Socialite\\Facades\\Socialite',
+    ),
+  ),
+  'laravel/tinker' => 
+  array (
+    'providers' => 
+    array (
+      0 => 'Laravel\\Tinker\\TinkerServiceProvider',
     ),
   ),
 );

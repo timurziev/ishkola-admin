@@ -20,7 +20,7 @@ class CreateLessonsTable extends Migration
             $table->string('format');
             $table->integer('duration');
             $table->integer('price');
-            $table->integer('quantity')->default(40);
+            $table->integer('quantity');
             $table->timestamps();
         });
     }

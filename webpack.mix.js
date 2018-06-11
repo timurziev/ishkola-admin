@@ -125,6 +125,8 @@ mix.scripts([
 
     'node_modules/datatables/media/js/jquery.dataTables.js',
 
+    'node_modules/gentelella/vendors/fullcalendar/dist/fullcalendar.js',
+
     'resources/assets/admin/js/dashboard.js',
 ], 'public/assets/admin/js/dashboard.js').version();
 
@@ -133,6 +135,7 @@ mix.styles([
     'node_modules/gentelella/vendors/bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css',
     'resources/assets/admin/css/dashboard.css',
     'node_modules/datatables/media/css/jquery.dataTables.css',
+    'node_modules/gentelella/vendors/fullcalendar/dist/fullcalendar.css',
 ], 'public/assets/admin/css/dashboard.css').version();
 
 
