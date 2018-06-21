@@ -34,7 +34,8 @@ class LessonController extends Controller
     public function lessons(Request  $request)
     {
         $date = $request['date'];
-        $schedules = Schedule::orderBy('schedule', 'asc')->paginate(20);
+        $data = $request['data'];
+        $schedules = Schedule::orderBy('schedule', 'asc');
 
         if ($request->ajax()) {
             $schedules = Schedule::orderBy('schedule', 'asc')->get();
@@ -54,8 +55,18 @@ class LessonController extends Controller
         }
 
         if ($request['date'] != null) {
-            $schedules = Schedule::where('schedule', 'LIKE', "%$date%")->orderBy('schedule', 'asc')->paginate(20);
+            $schedules = Schedule::where('schedule', 'LIKE', "%$date%")->orderBy('schedule', 'asc');
         }
+
+        if ($data != null) {
+            $schedules = $schedules->whereHas('lesson.users', function($q) use ($data) {
+                $q->where('name', 'LIKE', "%$data%");
+            })->orWhereHas('lesson.lang', function ($q) use ($data) {
+                $q->where('name', 'LIKE', "%$data%");
+            });
+        }
+
+        $schedules = $schedules->paginate(20);
 
         return view('admin.lessons.table', ['schedules' => $schedules]);
     }

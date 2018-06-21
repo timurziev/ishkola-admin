@@ -344,7 +344,6 @@
         window.location.href = '/admin/lessons_table?date=' + start.format('YYYY-MM-DD');
     });
 
-
     $('#calendar').fullCalendar({
         locale: 'ru',
         header: {

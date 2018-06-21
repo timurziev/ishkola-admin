@@ -8,6 +8,9 @@
                     <h2>Занятия</h2>
 
                     <ul class="nav navbar-right panel_toolbox" style="min-width: 0;">
+                        @if(Request::get('date'))
+                            <a href="{{ route('admin.lessons_table') }}" class="btn btn-default" style="border: 1px solid #169F85; float: left">Назад</a>
+                        @endif
                         <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                         </li>
                     </ul>
@@ -20,6 +23,16 @@
                             </span>
                         </div>
                     </div>
+                    {{ Form::open(['route'=> 'admin.lessons_table', 'method' => 'get'])  }}
+                        <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
+                            <div class="input-group">
+                                <input type="text" class="form-control" name="data" placeholder="Введите имя учителя или язык...">
+                                <span class="input-group-btn">
+                                  <button class="btn btn-default" style="border-left: 1px solid rgba(221, 226, 232, 0.49);">Поиск</button>
+                                </span>
+                            </div>
+                        </div>
+                    {{ Form::close() }}
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content">

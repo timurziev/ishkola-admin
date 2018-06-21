@@ -20,9 +20,9 @@
                 <div class="x_content">
                     <br>
                     @if (Request::is('*/edit'))
-                        {{ Form::open(['route'=> ['admin.lessons.update', $lesson->id],'method' => 'put','class'=>'form-horizontal form-label-left']) }}
+                        {{ Form::open(['route' => ['admin.lessons.update', $lesson->id], 'method' => 'put', 'class' => 'form-horizontal form-label-left']) }}
                     @else
-                        {{ Form::open(['route'=> 'admin.lessons.store','method' => 'put','class'=>'form-horizontal form-label-left']) }}
+                        {{ Form::open(['route' => 'admin.lessons.store', 'method' => 'put', 'class' => 'form-horizontal form-label-left']) }}
                     @endif
                     <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12">Язык<span class="required">*</label>
@@ -105,7 +105,7 @@
                                         <span class="add-on input-group-addon">
                                             <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
                                         </span>
-                                        <input type="text" name="datetimes[]" id="reservation-time" class="form-control datetime" value="{{ $schedule->schedule->format('d.m.Y H:i') }}">
+                                        <input type="text" name="datetimes[]" id="reserve" class="form-control datetime" value="{{ $schedule->schedule->format('d.m.Y H:i') }}">
                                         {{--@if($key == 0)--}}
                                             {{--<a href="" id="date-time" style="top: 9px; position: absolute; padding-left: 8px;">--}}
                                                 {{--<i class="glyphicon glyphicon-plus"></i>--}}
@@ -132,7 +132,6 @@
                                 @endif
                             </div>
                             <button class="btn btn-default" id="date-time" style="border: 1px solid #169F85;">Добавить</button>
-
                         </div>
                     </div>
                     <div class="ln_solid"></div>
