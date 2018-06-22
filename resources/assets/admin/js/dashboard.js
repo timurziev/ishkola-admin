@@ -362,6 +362,24 @@
         },
     });
 
+    $('#user-calendar').fullCalendar({
+        locale: 'ru',
+        header: {
+            left: 'prev',
+            center: 'title',
+            right : 'next'
+        },
+        events: function(start, end, timezone, callback) {
+            $.ajax({
+                url: 'http://ishkola-admin:8080/user/lessons_table',
+                dataType: 'json',
+                success: function(data) {
+                    callback(data);
+                },
+            });
+        },
+    });
+
 
 })(jQuery);
 

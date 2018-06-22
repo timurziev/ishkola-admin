@@ -98,6 +98,21 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
     Route::get('dashboard/registration-chart', 'DashboardController@getRegistrationChartData')->name('dashboard.registration.chart');
 });
 
+Route::group(['prefix' => 'user', 'as' => 'user.', 'namespace' => 'User'], function () {
+    Route::get('/', 'DashboardController@index')->name('dashboard');
+
+    Route::get('roles/{role}', 'UserController@index')->name('roles');
+
+    // Lessons
+    Route::get('lessons', 'LessonController@index')->name('lessons');
+    Route::get('lessons_table', 'LessonController@lessons')->name('lessons_table');
+
+    // Users
+    Route::get('users/{user}', 'UserController@show')->name('users.show');
+    Route::get('users/{user}/edit', 'UserController@edit')->name('users.edit');
+    Route::put('users/{user}', 'UserController@update')->name('users.update');
+});
+
 
 Route::get('/', 'HomeController@index');
 
