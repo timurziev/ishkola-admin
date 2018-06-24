@@ -9,21 +9,21 @@
 
                     <ul class="nav navbar-right panel_toolbox" style="min-width: 0;">
                         @if(Request::get('date'))
-                            <a href="{{ route('admin.lessons_table') }}" class="btn btn-default" style="border: 1px solid #169F85; float: left">Назад</a>
+                            <a href="{{ route('user.lessons_table') }}" class="btn btn-default" style="border: 1px solid #169F85; float: left">Назад</a>
                         @endif
                         <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                         </li>
                     </ul>
                     <div class="col-md-4 col-sm-4 col-xs-12" style="float: right;">
                         <div class='input-prepend input-group'>
-                            <input type='text' class="form-control calendar" value="{{ Request::get('date') ? \Carbon\Carbon::createFromFormat('Y-m-d', Request::get('date'), 'Europe/Moscow')->format('d.m.Y') : '' }}"/>
+                            <input type='text' class="form-control user-calendar" value="{{ Request::get('date') ? \Carbon\Carbon::createFromFormat('Y-m-d', Request::get('date'), 'Europe/Moscow')->format('d.m.Y') : '' }}"/>
                             <span class="add-on input-group-addon">
                                 <i class="fa fa-calendar" style="color: #555">
                                 </i>
                             </span>
                         </div>
                     </div>
-                    {{ Form::open(['route'=> 'admin.lessons_table', 'method' => 'get'])  }}
+                    {{ Form::open(['route'=> 'user.lessons_table', 'method' => 'get'])  }}
                         <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
                             <div class="input-group">
                                 <input type="text" class="form-control" name="data" placeholder="">
@@ -46,10 +46,6 @@
                                     <th>Учитель</th>
                                     <th>Дата</th>
                                     <th>Время</th>
-                                    <th>К оплате</th>
-                                    <th>Остаток</th>
-                                    <th>Оплата</th>
-                                    <th>Действие</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -65,13 +61,6 @@
                                     @endforeach
                                     <td>{{ $schedule->schedule->format('d.m.Y') }}</td>
                                     <td>{{ $schedule->schedule->format('H:i') }}</td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td>
-                                        <a href="{{ route('admin.lessons.edit', $schedule->lesson->id) }}" class="btn btn-info btn-xs"><i class="fa fa-pencil"></i></a>
-                                        <a href="{{ route('admin.schedule.destroy', $schedule->id) }}" class="btn btn-danger btn-xs" onclick="return confirm('Удалить занятие?');"><i class="fa fa-trash"></i></a>
-                                    </td>
                                 </tr>
                             @endforeach
                             </tbody>

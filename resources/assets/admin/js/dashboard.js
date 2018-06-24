@@ -304,45 +304,59 @@
         $(this).parent('.datetimes').remove();
     });
 
-    $('.calendar').daterangepicker({
-        singleDatePicker: true,
-        locale: {
-            format: 'DD.MM.YYYY',
-            separator: " - ",
-            applyLabel: "Подтвердить",
-            cancelLabel: "Отмена",
-            fromLabel: "От",
-            toLabel: "До",
-            customRangeLabel: "По умолчанию",
-            weekLabel: "Н",
-            daysOfWeek: [
-                "Вс",
-                "Пн",
-                "Вт",
-                "Ср",
-                "Чт",
-                "Пт",
-                "Сб"
-            ],
-            monthNames: [
-                "Январь",
-                "Февраль",
-                "Март",
-                "Апрель",
-                "Май",
-                "Июнь",
-                "Июль",
-                "Август",
-                "Сентябрь",
-                "Октябрь",
-                "Ноябрь",
-                "Декабрь"
-            ],
-            "firstDay": 1
-        }
-    }, function (start) {
-        window.location.href = '/admin/lessons_table?date=' + start.format('YYYY-MM-DD');
+    $(function () {
+        setCalendar('.calendar');
     });
+
+    $(function () {
+        setCalendar('.user-calendar');
+    });
+
+    function setCalendar(inst) {
+        $(inst).daterangepicker({
+            singleDatePicker: true,
+            locale: {
+                format: 'DD.MM.YYYY',
+                separator: " - ",
+                applyLabel: "Подтвердить",
+                cancelLabel: "Отмена",
+                fromLabel: "От",
+                toLabel: "До",
+                customRangeLabel: "По умолчанию",
+                weekLabel: "Н",
+                daysOfWeek: [
+                    "Вс",
+                    "Пн",
+                    "Вт",
+                    "Ср",
+                    "Чт",
+                    "Пт",
+                    "Сб"
+                ],
+                monthNames: [
+                    "Январь",
+                    "Февраль",
+                    "Март",
+                    "Апрель",
+                    "Май",
+                    "Июнь",
+                    "Июль",
+                    "Август",
+                    "Сентябрь",
+                    "Октябрь",
+                    "Ноябрь",
+                    "Декабрь"
+                ],
+                "firstDay": 1
+            }
+        }, function (start) {
+            if (inst === '.user-calendar') {
+                window.location.href = '/user/lessons_table?date=' + start.format('YYYY-MM-DD');
+            } else {
+                window.location.href = '/admin/lessons_table?date=' + start.format('YYYY-MM-DD');
+            }
+        });
+    }
 
     $('#calendar').fullCalendar({
         locale: 'ru',
