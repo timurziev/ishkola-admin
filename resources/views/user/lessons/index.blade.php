@@ -26,7 +26,7 @@
                             <tbody>
                                 @foreach($lessons as $lesson)
                                     <tr>
-                                        <td><a href="{{ $lesson['link'] }}">{{ $lesson['mename'] }}</a></td>
+                                        <td><a href="{{ $lesson['link'] }}" target="_blank">{{ $lesson['mename'] }}</a></td>
                                         <td>{{ $lesson['mestartdate'] }}</td>
                                         <td>{{ $lesson['meenddate'] }}</td>
                                     </tr>
