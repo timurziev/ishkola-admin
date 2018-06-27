@@ -78,7 +78,7 @@ return [
     |
     */
 
-    'locale' => env('APP_LOCALE', 'en'),
+    'locale' => env('APP_LOCALE', 'ru'),
 
     /*
     |--------------------------------------------------------------------------
@@ -187,6 +187,8 @@ return [
         DaveJamesMiller\Breadcrumbs\ServiceProvider::class,
         Laravel\Socialite\SocialiteServiceProvider::class,
         AlbertCht\InvisibleReCaptcha\InvisibleReCaptchaServiceProvider::class,
+        Laravelrus\LocalizedCarbon\LocalizedCarbonServiceProvider::class,
+        Jenssegers\Date\DateServiceProvider::class,
 
         /*
          * Application Service Providers...
@@ -262,6 +264,8 @@ return [
         'ToJs' => \App\Helpers\ToJs\Facades\ToJsFacade::class,
         'Meta' => \App\Helpers\Meta\Facades\MetaFacade::class,
         'Image' => Intervention\Image\Facades\Image::class,
+        'LocalizedCarbon' => Laravelrus\LocalizedCarbon\LocalizedCarbon::class,
+        'Date' => Jenssegers\Date\Date::class,
 
     ],
 

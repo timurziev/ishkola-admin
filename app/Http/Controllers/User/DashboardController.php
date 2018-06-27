@@ -8,8 +8,8 @@ use Arcanedev\LogViewer\Entities\LogEntry;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Illuminate\Routing\Route;
-use Illuminate\Support\Facades\Auth;
+use App\Models\Lesson;
+use Cache;
 
 class DashboardController extends Controller
 {
@@ -52,7 +52,10 @@ class DashboardController extends Controller
             }
         }
 
-        return view('user.dashboard', ['counts' => $counts]);
+        $lesson = new Lesson;
+        $lessons =  array_slice($lesson->cachedLessons(), 0, 5);
+
+        return view('user.dashboard', ['counts' => $counts, 'lessons' => $lessons]);
     }
 
 

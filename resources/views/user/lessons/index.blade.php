@@ -34,9 +34,9 @@
                             </tbody>
                         </table>
                     </div>
-                    {{--<div class="pull-right">--}}
-                        {{--{{ $lessons->links() }}--}}
-                    {{--</div>--}}
+                    <div class="pull-right">
+                        {{ $lessons->links() }}
+                    </div>
                 </div>
             </div>
         </div>

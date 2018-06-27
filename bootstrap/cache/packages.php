@@ -1,11 +1,4 @@
 <?php return array (
-  'albertcht/invisible-recaptcha' => 
-  array (
-    'providers' => 
-    array (
-      0 => 'AlbertCht\\InvisibleReCaptcha\\InvisibleReCaptchaServiceProvider',
-    ),
-  ),
   'arcanedev/log-viewer' => 
   array (
     'providers' => 
@@ -77,6 +70,43 @@
     'providers' => 
     array (
       0 => 'Laravel\\Tinker\\TinkerServiceProvider',
+    ),
+  ),
+  'nesbot/carbon' => 
+  array (
+    'providers' => 
+    array (
+      0 => 'Carbon\\Laravel\\ServiceProvider',
+    ),
+  ),
+  'albertcht/invisible-recaptcha' => 
+  array (
+    'providers' => 
+    array (
+      0 => 'AlbertCht\\InvisibleReCaptcha\\InvisibleReCaptchaServiceProvider',
+    ),
+  ),
+  'laravelrus/localized-carbon' => 
+  array (
+    'providers' => 
+    array (
+      0 => 'Laravelrus\\LocalizedCarbon\\LocalizedCarbonServiceProvider',
+    ),
+    'aliases' => 
+    array (
+      'LocalizedCarbon' => 'Laravelrus\\LocalizedCarbon\\LocalizedCarbon',
+      'DiffFormatter' => 'Laravelrus\\LocalizedCarbon\\DiffFactoryFacade',
+    ),
+  ),
+  'jenssegers/date' => 
+  array (
+    'providers' => 
+    array (
+      0 => 'Jenssegers\\Date\\DateServiceProvider',
+    ),
+    'aliases' => 
+    array (
+      'Date' => 'Jenssegers\\Date\\Date',
     ),
   ),
 );

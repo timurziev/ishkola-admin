@@ -30,22 +30,52 @@
     </div>
 
     <div class="row">
-        <div class="col-md-12">
-            <div class="x_panel">
-                <div class="x_title">
-                    <h2>Календарь занятий</h2>
-                    <ul class="nav navbar-right panel_toolbox" style="min-width: 0;">
-                        <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-                        </li>
-                    </ul>
-                    <div class="clearfix"></div>
-                </div>
-                <div class="x_content">
-                    <div id="user-calendar">
+        @if(Auth::user()->userHasRole('teacher'))
+            <div class="col-md-12">
+                <div class="x_panel">
+                    <div class="x_title">
+                        <h2>Календарь занятий</h2>
+                        <ul class="nav navbar-right panel_toolbox" style="min-width: 0;">
+                            <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                            </li>
+                        </ul>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="x_content">
+                        <div id="user-calendar">
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+        @else
+            <div class="col-md-4">
+                <div class="x_panel">
+                    <div class="x_title">
+                        <h2>Последние занятия</h2>
+                        <ul class="nav navbar-right panel_toolbox" style="min-width: 0;">
+                            <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                            </li>
+                        </ul>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="x_content">
+                        @foreach($lessons as $lesson)
+                            <article class="media event">
+                                <a class="pull-left date">
+                                    <p class="month">{{  \Date::parse($lesson['mestartdate'])->format('M') }}</p>
+                                    <p class="day">{{ \Carbon\Carbon::parse($lesson['mestartdate'])->format('d') }}</p>
+                                </a>
+                                <div class="media-body">
+                                    <a class="title" href="{{ $lesson['link'] }}" target="_blank">{{ $lesson['mename'] }}</a>
+                                    <p>Начало: {{ \Carbon\Carbon::parse($lesson['mestartdate'])->format('H:i:s') }}</p>
+                                    <p>Окончание: {{ \Carbon\Carbon::parse($lesson['meenddate'])->format('H:i:s') }}</p>
+                                </div>
+                            </article>
+                        @endforeach
+                    </div>
+                </div>
+            </div>
+        @endif
     </div>
 
 @endsection
