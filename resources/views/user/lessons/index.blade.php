@@ -26,7 +26,7 @@
                             <tbody>
                                 @foreach($lessons as $lesson)
                                     <tr>
-                                        <td><a href="{{ $lesson['link'] }}" target="_blank">{{ $lesson['mename'] }}</a></td>
+                                        <td>@if(isset($lesson[0]))<a href="{{ $lesson[0]['downloadLink'] }}">@endif{{ $lesson['mename'] }}</a></td>
                                         <td>{{ $lesson['mestartdate'] }}</td>
                                         <td>{{ $lesson['meenddate'] }}</td>
                                     </tr>

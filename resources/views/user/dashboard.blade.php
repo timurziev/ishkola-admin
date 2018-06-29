@@ -66,7 +66,7 @@
                                     <p class="day">{{ \Carbon\Carbon::parse($lesson['mestartdate'])->format('d') }}</p>
                                 </a>
                                 <div class="media-body">
-                                    <a class="title" href="{{ $lesson['link'] }}" target="_blank">{{ $lesson['mename'] }}</a>
+                                    <p>{{ $lesson['mename'] }}</p>
                                     <p>Начало: {{ \Carbon\Carbon::parse($lesson['mestartdate'])->format('H:i:s') }}</p>
                                     <p>Окончание: {{ \Carbon\Carbon::parse($lesson['meenddate'])->format('H:i:s') }}</p>
                                 </div>
@@ -95,7 +95,6 @@
 
                             <div class="sidebar-widget" id="chart_gauge">
                                 <h4>Время до начала</h4>
-
                             </div>
                         </div>
                     </div>

@@ -12,6 +12,8 @@ use Cache;
 
 class Lesson extends Model
 {
+    use \Illuminate\Foundation\Bus\DispatchesJobs;
+
     protected $fillable = ['lang_id', 'group_id', 'format', 'duration', 'price', 'quantity'];
 
     public function users()
@@ -96,21 +98,49 @@ class Lesson extends Model
         return $response;
     }
 
+    public function tempLessons()
+    {
+        $lesson = new Lesson;
+        $email = 'ykcontacts@gmail.com';
+        $service_url ="https://room.nohchalla.com/mira/service/v2/persons/byLogin/$email";
+        $res = $lesson->sendRequest($service_url, [3]);
+        $id = $res['personid'];
+
+        $service_url ="https://room.nohchalla.com/mira/service/v2/myMeasures/$id/webinars";
+
+        return $lessons = $lesson->sendRequest($service_url, []);
+    }
+
     public function cachedLessons()
     {
-        $minutes = Carbon::now()->addMinutes(10);
+        $minutes = Carbon::now()->addMinutes(60);
 
         $lessons = Cache::remember('lessons', $minutes, function () {
             $lesson = new Lesson;
-            $email = 'ykcontacts@gmail.com';
-            $service_url ="https://room.nohchalla.com/mira/service/v2/persons/byLogin/$email";
-            $res = $lesson->sendRequest($service_url, array());
-            $id=$res['personid'];
+            $lessons = $lesson->tempLessons();
 
-            $service_url ="https://room.nohchalla.com/mira/service/v2/myMeasures/".$id."/webinars";
-            return $lessons = $lesson->sendRequest($service_url, array());
+            foreach ($lessons as $item) {
+                $url ="https://room.nohchalla.com/mira/service/v2/measures/" . $item['meid'] . "/webinarRecords";
+
+                $records[] = array_merge($lesson->sendRequest($url, []), $item);
+            }
+
+            return $lessons = $records;
         });
 
         return $lessons;
+    }
+
+    public function demoLessons()
+    {
+        $minutes = Carbon::now()->addMinutes(1);
+
+        $demo_lessons = Cache::remember('demo_lessons', $minutes, function () {
+            $lessons = $this->tempLessons();
+
+            return $lessons;
+        });
+
+        return $demo_lessons;
     }
 }
