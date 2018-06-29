@@ -75,6 +75,32 @@
                     </div>
                 </div>
             </div>
+            <div class="col-md-4 col-sm-6 col-xs-12">
+                <div class="x_panel fixed_height_300">
+                    <div class="x_title">
+                        <h2>Ближайшее занятие</h2>
+                        <ul class="nav navbar-right panel_toolbox" style="min-width: 0;">
+                            <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                            </li>
+                        </ul>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="x_content">
+                        <div class="dashboard-widget-content">
+                            <ul class="quick-list">
+                                <li><i class="fa fa-clock-o"></i>{{ $lessons[0]['mename'] }}</li>
+                                <li><i class="fa fa-clock-o"></i><a href="#">Начало: {{ \Carbon\Carbon::parse($lessons[0]['mestartdate'])->format('H:i:s') }}</a></li>
+                                <li><i class="fa fa-clock-o"></i><a href="#">Конец: {{ \Carbon\Carbon::parse($lessons[0]['meenddate'])->format('H:i:s') }}</a></li>
+                            </ul>
+
+                            <div class="sidebar-widget" id="chart_gauge">
+                                <h4>Время до начала</h4>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         @endif
     </div>
 

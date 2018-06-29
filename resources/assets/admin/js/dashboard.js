@@ -394,6 +394,23 @@
         },
     });
 
+    var element = document.querySelector('#chart_gauge');
+
+    let options = {
+        hasNeedle: true,
+        arcColors: ["rgb(44,151,222)","lightgray"],
+        arcDelimiters: [80],
+        rangeLabel: ["0%","100%"],
+        centralLabel: "80%",
+    };
+
+    GaugeChart
+        .gaugeChart(element, 160, options)
+        .updateNeedle(80);
+
+    var time = '14:45:20'.split(':').reverse().reduce((prev, curr, i) => prev + curr*Math.pow(60, i), 0);
+
+    alert(time);
 
 })(jQuery);
 

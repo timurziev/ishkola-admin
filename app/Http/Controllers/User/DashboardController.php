@@ -55,6 +55,11 @@ class DashboardController extends Controller
         $lesson = new Lesson;
         $lessons =  array_slice($lesson->cachedLessons(), 0, 5);
 
+        $t1 = Carbon::parse($lessons[0]['mestartdate']);
+        $t2 = Carbon::now();
+        $diff = $t1->diff($t2);
+//        dd($t1);
+
         return view('user.dashboard', ['counts' => $counts, 'lessons' => $lessons]);
     }
 

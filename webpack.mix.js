@@ -127,6 +127,8 @@ mix.scripts([
 
     'node_modules/gentelella/vendors/fullcalendar/dist/fullcalendar.js',
 
+    'node_modules/gauge-chart/dist/bundle.js',
+
     'resources/assets/admin/js/dashboard.js',
 ], 'public/assets/admin/js/dashboard.js').version();
 
