@@ -408,9 +408,6 @@
         .gaugeChart(element, 160, options)
         .updateNeedle(80);
 
-    var time = '14:45:20'.split(':').reverse().reduce((prev, curr, i) => prev + curr*Math.pow(60, i), 0);
-
-    alert(time);
 
 })(jQuery);
 
