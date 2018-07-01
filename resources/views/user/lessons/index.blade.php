@@ -24,11 +24,19 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach($lessons as $lesson)
+                                @foreach($lessons as $key => $lesson)
                                     <tr>
-                                        <td>@if(isset($lesson[0]))<a href="{{ $lesson[0]['downloadLink'] }}">@endif{{ $lesson['mename'] }}</a></td>
+                                        <td ><a class="{{ $lesson['meid'] }}" id="id{{ $key }}" href="">{{ $lesson['mename'] }}</a></td>
                                         <td>{{ $lesson['mestartdate'] }}</td>
                                         <td>{{ $lesson['meenddate'] }}</td>
+                                    </tr>
+                                    <tr class="load-{{ $lesson['meid'] }}" style="display: none">
+                                        <td><img src="{{ url('/') . '/uploads/images/loader.gif' }}" alt=""></td>
+                                    </tr>
+                                    <tr class="recs-{{ $lesson['meid'] }}" style="display: none">
+                                        <td>
+                                            <h4>Материалы:</h4>
+                                        </td>
                                     </tr>
                                 @endforeach
                             </tbody>
@@ -41,4 +49,14 @@
             </div>
         </div>
     </div>
+@endsection
+
+@section('scripts')
+    @parent
+    {{ Html::script(mix('assets/admin/js/dashboard.js')) }}
+@endsection
+
+@section('styles')
+    @parent
+    {{ Html::style(mix('assets/admin/css/dashboard.css')) }}
 @endsection

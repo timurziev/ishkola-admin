@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Auth;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Auth\User\User;
 use Illuminate\Support\Collection;
@@ -98,12 +99,12 @@ class Lesson extends Model
         return $response;
     }
 
-    public function tempLessons()
+    public function lessonsTemplate()
     {
         $lesson = new Lesson;
-        $email = 'ykcontacts@gmail.com';
+        $email = Auth::user()->email;
         $service_url ="https://room.nohchalla.com/mira/service/v2/persons/byLogin/$email";
-        $res = $lesson->sendRequest($service_url, [3]);
+        $res = $lesson->sendRequest($service_url, []);
         $id = $res['personid'];
 
         $service_url ="https://room.nohchalla.com/mira/service/v2/myMeasures/$id/webinars";
@@ -117,30 +118,41 @@ class Lesson extends Model
 
         $lessons = Cache::remember('lessons', $minutes, function () {
             $lesson = new Lesson;
-            $lessons = $lesson->tempLessons();
+            $lessons = $lesson->lessonsTemplate();
 
-            foreach ($lessons as $item) {
-                $url ="https://room.nohchalla.com/mira/service/v2/measures/" . $item['meid'] . "/webinarRecords";
+//            foreach ($lessons as $item) {
+//                $url ="https://room.nohchalla.com/mira/service/v2/measures/" . $item['meid'] . "/webinarRecords";
+//
+//                $records[] = array_merge($lesson->sendRequest($url, []), $item);
+//            }
 
-                $records[] = array_merge($lesson->sendRequest($url, []), $item);
-            }
-
-            return $lessons = $records;
+            return $lessons;
         });
 
         return $lessons;
     }
 
-    public function demoLessons()
+    public function records($id)
     {
-        $minutes = Carbon::now()->addMinutes(1);
+        $url1 ="https://room.nohchalla.com/mira/service/v2/measures/$id/webinarRecords";
+        $url2 ="https://room.nohchalla.com/mira/service/v2/measures/$id/resources";
 
-        $demo_lessons = Cache::remember('demo_lessons', $minutes, function () {
-            $lessons = $this->tempLessons();
+        $rec = $this->sendRequest($url1, []);
+        $res = $this->sendRequest($url2, []);
 
-            return $lessons;
-        });
-
-        return $demo_lessons;
+        return $records = array_merge($rec, $res);
     }
+
+//    public function demoLessons()
+//    {
+//        $minutes = Carbon::now()->addMinutes(30);
+//
+//        $demo_lessons = Cache::remember('demo_lessons', $minutes, function () {
+//            $lessons = $this->lessonsTemplate();
+//
+//            return $lessons;
+//        });
+//
+//        return $demo_lessons;
+//    }
 }

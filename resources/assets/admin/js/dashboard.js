@@ -409,5 +409,40 @@
         .updateNeedle(80);
 
 
+    $('a[id^="id"]').click(function(e) {
+        e.preventDefault();
+
+        var id = $(this).attr('class');
+        var items = $('.recs-' + id);
+
+        items.toggle();
+
+        if (!items.children().data("populated") && items.is(":visible")) {
+            $.ajax({
+                url: 'http://ishkola-admin:8080/user/records/' + id,
+                dataType: "json",
+                beforeSend: function() {
+                    $('.load-' + id).show();
+                },
+                complete: function() {
+                    $('.load-' + id).hide();
+                    if (!items.children().data("populated")) {
+                        items.children().append('<p>Нет материалов</p>').data("populated", true);
+                    }
+                },
+                success: function (data) {
+                    $.each(data, function (key, value) {
+                        if (key === 0) {
+                            console.log(value);
+                            items.children().append('<p><a href="' + value.viewLink + '" target="_blank"><b>Ссылка на запись</b></a></p>').data("populated", true);
+                        } else {
+                            items.children().append('<p><a href="' + value.link + '">' + value.fileidname + '</a></p>').data("populated", true);
+                        }
+                    });
+                },
+            });
+        }
+    });
+
 })(jQuery);
 

@@ -73,6 +73,13 @@ class LessonController extends Controller
         return view('user.lessons.table', ['schedules' => $schedules]);
     }
 
+    public function getRecords($id)
+    {
+        $lesson = new Lesson;
+
+        return $var = $lesson->records($id);
+    }
+
     /**
      * Show the form for creating a new resource.
      *

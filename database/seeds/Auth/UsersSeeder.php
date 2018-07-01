@@ -54,8 +54,8 @@ class UsersSeeder extends Seeder
             ],
             [
                 'name' => 'Ученик',
-                'email' => 'mail1@mail.ru',
-                'password' => bcrypt('111111'),
+                'email' => 'ykcontacts@gmail.com',
+                'password' => bcrypt('ykcontacts'),
                 'active' => true,
                 'confirmation_code' => \Ramsey\Uuid\Uuid::uuid4(),
                 'confirmed' => true,

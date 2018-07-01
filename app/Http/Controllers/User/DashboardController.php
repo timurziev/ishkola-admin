@@ -53,9 +53,7 @@ class DashboardController extends Controller
         }
 
         $lesson = new Lesson;
-        $lessons =  array_slice($lesson->demoLessons(), 0, 5);
-
-        $this->dispatch(new CacheLessons());
+        $lessons =  array_slice($lesson->cachedLessons(), 0, 5);
 
 
 

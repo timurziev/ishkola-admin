@@ -107,6 +107,8 @@ Route::group(['prefix' => 'user', 'as' => 'user.', 'namespace' => 'User'], funct
     Route::get('lessons', 'LessonController@index')->name('lessons');
     Route::get('lessons_table', 'LessonController@lessons')->name('lessons_table');
 
+    Route::get('records/{id}', 'LessonController@getRecords')->name('records');
+
     // Users
     Route::get('users/{user}', 'UserController@show')->name('users.show');
     Route::get('users/{user}/edit', 'UserController@edit')->name('users.edit');
