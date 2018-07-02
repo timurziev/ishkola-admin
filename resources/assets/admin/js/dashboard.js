@@ -460,7 +460,9 @@
                 },
                 success: function (data) {
                     $.each(data, function (key, value) {
-                        items.children().append('<p><a href="' + value.link + '">' + value.fileidname + '</a></p>').data("populated-res", true);
+                        if (!value.access_token) {
+                            items.children().append('<p><a href="' + value.link + '&usrsesid=' + data.session.access_token + '">' + value.fileidname + '</a></p>').data("populated-res", true);
+                        }
                     });
                 },
             });

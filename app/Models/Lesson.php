@@ -83,15 +83,22 @@ class Lesson extends Model
      *
      * @param  int  $url
      * @param  int  $parameters
+     * @param  int  $method
      * @return \Illuminate\Http\Response
      */
-    public function sendRequest($url, $parameters)
+    public function sendRequest($url, $parameters, $method)
     {
         $curl_data = $this->signin($url, $parameters);
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         $query = http_build_query($curl_data);
-        $url .= "?$query";
+
+        if ($method == "POST") {
+            curl_setopt($ch,CURLOPT_POSTFIELDS,$query);
+        } else {
+            $url .= "?$query";
+        }
+
         curl_setopt($ch, CURLOPT_URL, $url);
         $curl_response = curl_exec($ch);
         $response = json_decode($curl_response, true);
@@ -99,17 +106,26 @@ class Lesson extends Model
         return $response;
     }
 
+    public function getSessionId()
+    {
+        $parameters = ['login' => 'guest', 'password' => 'QyYp86Bx'];
+
+        $url = "https://room.nohchalla.com/mira/service/auth/login";
+
+        return $session = $this->sendRequest($url, $parameters, "POST");
+    }
+
     public function lessonsTemplate()
     {
         $lesson = new Lesson;
         $email = Auth::user()->email;
         $service_url ="https://room.nohchalla.com/mira/service/v2/persons/byLogin/$email";
-        $res = $lesson->sendRequest($service_url, []);
+        $res = $lesson->sendRequest($service_url, [], "GET");
         $id = $res['personid'];
 
         $service_url ="https://room.nohchalla.com/mira/service/v2/myMeasures/$id/webinars";
 
-        return $lessons = $lesson->sendRequest($service_url, []);
+        return $lessons = $lesson->sendRequest($service_url, [], "GET");
     }
 
     public function cachedLessons()
@@ -118,15 +134,8 @@ class Lesson extends Model
 
         $lessons = Cache::remember('lessons', $minutes, function () {
             $lesson = new Lesson;
-            $lessons = $lesson->lessonsTemplate();
 
-//            foreach ($lessons as $item) {
-//                $url ="https://room.nohchalla.com/mira/service/v2/measures/" . $item['meid'] . "/webinarRecords";
-//
-//                $records[] = array_merge($lesson->sendRequest($url, []), $item);
-//            }
-
-            return $lessons;
+            return $lessons = $lesson->lessonsTemplate();
         });
 
         return $lessons;
@@ -136,26 +145,17 @@ class Lesson extends Model
     {
         $url ="https://room.nohchalla.com/mira/service/v2/measures/$id/webinarRecords";
 
-        return $records = $this->sendRequest($url, []);
+        return $records = $this->sendRequest($url, [], "GET");
     }
 
     public function resources($id)
     {
-        $url2 ="https://room.nohchalla.com/mira/service/v2/measures/$id/resources";
+        $url ="https://room.nohchalla.com/mira/service/v2/measures/$id/resources";
+        $session = $this->getSessionId();
+        $res = $this->sendRequest($url, [], "GET");
 
-        return $resources = $this->sendRequest($url2, []);
+        $res['session'] = $session;
+
+        return $res;
     }
-
-//    public function demoLessons()
-//    {
-//        $minutes = Carbon::now()->addMinutes(30);
-//
-//        $demo_lessons = Cache::remember('demo_lessons', $minutes, function () {
-//            $lessons = $this->lessonsTemplate();
-//
-//            return $lessons;
-//        });
-//
-//        return $demo_lessons;
-//    }
 }
