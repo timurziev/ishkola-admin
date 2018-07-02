@@ -134,13 +134,16 @@ class Lesson extends Model
 
     public function records($id)
     {
-        $url1 ="https://room.nohchalla.com/mira/service/v2/measures/$id/webinarRecords";
+        $url ="https://room.nohchalla.com/mira/service/v2/measures/$id/webinarRecords";
+
+        return $records = $this->sendRequest($url, []);
+    }
+
+    public function resources($id)
+    {
         $url2 ="https://room.nohchalla.com/mira/service/v2/measures/$id/resources";
 
-        $rec = $this->sendRequest($url1, []);
-        $res = $this->sendRequest($url2, []);
-
-        return $records = array_merge($rec, $res);
+        return $resources = $this->sendRequest($url2, []);
     }
 
 //    public function demoLessons()

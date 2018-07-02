@@ -417,27 +417,50 @@
 
         items.toggle();
 
-        if (!items.children().data("populated") && items.is(":visible")) {
+        if (!items.children().data("populated-rec") && items.is(":visible")) {
+            ajaxRec();
+        }
+
+        if (!items.children().data("populated-res") && items.is(":visible")) {
+            ajaxRes();
+        }
+
+        function ajaxRec() {
             $.ajax({
                 url: 'http://ishkola-admin:8080/user/records/' + id,
                 dataType: "json",
-                beforeSend: function() {
+                beforeSend: function () {
                     $('.load-' + id).show();
                 },
-                complete: function() {
-                    $('.load-' + id).hide();
-                    if (!items.children().data("populated")) {
-                        items.children().append('<p>Нет материалов</p>').data("populated", true);
+                complete: function () {
+                    if (!items.children().data("populated-rec")) {
+                        items.children().append('<p>Нет записи занятия</p>').data("populated-rec", true);
                     }
                 },
                 success: function (data) {
                     $.each(data, function (key, value) {
-                        if (key === 0) {
-                            console.log(value);
-                            items.children().append('<p><a href="' + value.viewLink + '" target="_blank"><b>Ссылка на запись</b></a></p>').data("populated", true);
-                        } else {
-                            items.children().append('<p><a href="' + value.link + '">' + value.fileidname + '</a></p>').data("populated", true);
-                        }
+                        items.children().append('<p><a href="' + value.viewLink + '" target="_blank"><b>Ссылка на запись</b></a></p>').data("populated-rec", true);
+                    });
+                },
+            });
+        }
+
+        function ajaxRes() {
+            $.ajax({
+                url: 'http://ishkola-admin:8080/user/resources/' + id,
+                dataType: "json",
+                beforeSend: function () {
+                    $('.load-' + id).show();
+                },
+                complete: function () {
+                    $('.load-' + id).hide();
+                    if (!items.children().data("populated-res")) {
+                        items.children().append('<p>Нет материалов</p>').data("populated-res", true);
+                    }
+                },
+                success: function (data) {
+                    $.each(data, function (key, value) {
+                        items.children().append('<p><a href="' + value.link + '">' + value.fileidname + '</a></p>').data("populated-res", true);
                     });
                 },
             });

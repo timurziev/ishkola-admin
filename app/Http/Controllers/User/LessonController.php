@@ -80,6 +80,13 @@ class LessonController extends Controller
         return $var = $lesson->records($id);
     }
 
+    public function getResources($id)
+    {
+        $lesson = new Lesson;
+
+        return $var = $lesson->resources($id);
+    }
+
     /**
      * Show the form for creating a new resource.
      *

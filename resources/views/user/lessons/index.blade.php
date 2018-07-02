@@ -30,12 +30,12 @@
                                         <td>{{ $lesson['mestartdate'] }}</td>
                                         <td>{{ $lesson['meenddate'] }}</td>
                                     </tr>
-                                    <tr class="load-{{ $lesson['meid'] }}" style="display: none">
-                                        <td><img src="{{ url('/') . '/uploads/images/loader.gif' }}" alt=""></td>
-                                    </tr>
+
                                     <tr class="recs-{{ $lesson['meid'] }}" style="display: none">
                                         <td>
                                             <h4>Материалы:</h4>
+                                            <img class="load-{{ $lesson['meid'] }}" style="display: none; margin-bottom: 10px;" src="{{ url('/') . '/uploads/images/loader.gif' }}" alt="">
+                                            <br>
                                         </td>
                                     </tr>
                                 @endforeach
