@@ -413,15 +413,17 @@
         e.preventDefault();
 
         var id = $(this).attr('class');
-        var items = $('.recs-' + id);
+        var items = $('.items-' + id);
+        var records = $('.resources-' + id);
+        var resources = $('.resources-' + id);
 
         items.toggle();
 
-        if (!items.children().data("populated-rec") && items.is(":visible")) {
+        if (!items.children('.records').data("populated-rec") && items.is(":visible")) {
             ajaxRec();
         }
 
-        if (!items.children().data("populated-res") && items.is(":visible")) {
+        if (!items.children('.resources').data("populated-res") && items.is(":visible")) {
             ajaxRes();
         }
 
@@ -430,16 +432,17 @@
                 url: 'http://ishkola-admin:8080/user/records/' + id,
                 dataType: "json",
                 beforeSend: function () {
-                    $('.load-' + id).show();
+                    items.children('.records').children('img').show();
                 },
                 complete: function () {
-                    if (!items.children().data("populated-rec")) {
-                        items.children().append('<p>Нет записи занятия</p>').data("populated-rec", true);
+                    items.children('.records').children('img').hide();
+                    if (!items.children('.records').data("populated-rec")) {
+                        items.children('.records').append('<p>Нет записи занятия</p>').data("populated-rec", true);
                     }
                 },
                 success: function (data) {
                     $.each(data, function (key, value) {
-                        items.children().append('<p><a href="' + value.viewLink + '" target="_blank"><b>Ссылка на запись</b></a></p>').data("populated-rec", true);
+                        items.children('.records').append('<p><a href="' + value.viewLink + '" target="_blank"><b>Посмотреть запись</b></a></p>').data("populated-rec", true);
                     });
                 },
             });
@@ -450,18 +453,18 @@
                 url: 'http://ishkola-admin:8080/user/resources/' + id,
                 dataType: "json",
                 beforeSend: function () {
-                    $('.load-' + id).show();
+                    items.children('.resources').children('img').show();
                 },
                 complete: function () {
-                    $('.load-' + id).hide();
-                    if (!items.children().data("populated-res")) {
-                        items.children().append('<p>Нет материалов</p>').data("populated-res", true);
+                    items.children('.resources').children('img').hide();
+                    if (!items.children('.resources').data("populated-res")) {
+                        items.children('.resources').append('<p>Нет материалов</p>').data("populated-res", true);
                     }
                 },
                 success: function (data) {
                     $.each(data, function (key, value) {
                         if (!value.access_token) {
-                            items.children().append('<p><a href="' + value.link + '&usrsesid=' + data.session.access_token + '">' + value.fileidname + '</a></p>').data("populated-res", true);
+                            items.children('.resources').append('<p><a href="' + value.link + '&usrsesid=' + data.session.access_token + '">' + value.fileidname + '</a></p>').data("populated-res", true);
                         }
                     });
                 },
