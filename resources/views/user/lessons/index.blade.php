@@ -34,11 +34,11 @@
                                     <tr class="items-{{ $lesson['meid'] }}" style="display: none">
                                         <td class="resources">
                                             <h4>Материалы:</h4>
-                                            <img class="load-res" style="display: none; margin-bottom: 10px;" src="{{ url('/') . '/uploads/images/loader.gif' }}" alt="">
+                                            <img style="display: none; margin-bottom: 10px;" src="{{ url('/') . '/uploads/images/loader.gif' }}" alt="">
                                         </td>
                                         <td class="records">
                                             <h4>Запись занятия:</h4>
-                                            <img class="load-rec" style="display: none; margin-bottom: 10px;" src="{{ url('/') . '/uploads/images/loader.gif' }}" alt="">
+                                            <img style="display: none; margin-bottom: 10px;" src="{{ url('/') . '/uploads/images/loader.gif' }}" alt="">
                                         </td>
                                     </tr>
                                 @endforeach

@@ -34,19 +34,23 @@ class CacheLessons implements ShouldQueue
     {
         $minutes = Carbon::now()->addMinutes(60);
 
-        $lessons = Cache::remember('lessons', $minutes, function () {
-            $lesson = new Lesson;
-            $lessons = $lesson->tempLessons();
+        $lesson = new Lesson;
+        $lessons = $lesson->cachedLessons();
 
-            foreach ($lessons as $item) {
-                $url ="https://room.nohchalla.com/mira/service/v2/measures/" . $item['meid'] . "/webinarRecords";
+        foreach ($lessons as $key => $item) {
+            $resources = Cache::remember('resources-' . $item['meid'], $minutes, function () use ($item, $lesson) {
 
-                $records[] = array_merge($lesson->sendRequest($url, []), $item);
+                $url ="https://room.nohchalla.com/mira/service/v2/measures/" . $item['meid'] . "/resources";
+                $session = $lesson->getSessionId();
+                $resources = $lesson->sendRequest($url, [], "GET");
+                $resources['session'] = $session;
+
+                return $resources;
+            });
+
+            if ($key == 2) {
+                return $resources;
             }
-
-            return $lessons = $records;
-        });
-
-        return $lessons;
+        }
     }
 }

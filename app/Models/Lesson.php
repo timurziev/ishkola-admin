@@ -150,12 +150,18 @@ class Lesson extends Model
 
     public function resources($id)
     {
-        $url ="https://room.nohchalla.com/mira/service/v2/measures/$id/resources";
-        $session = $this->getSessionId();
-        $res = $this->sendRequest($url, [], "GET");
+        $minutes = Carbon::now()->addMinutes(60);
 
-        $res['session'] = $session;
+        $resources = Cache::remember('resources-' . $id, $minutes, function () use ($id) {
+            $url = "https://room.nohchalla.com/mira/service/v2/measures/$id/resources";
+            $session = $this->getSessionId();
+            $resources = $this->sendRequest($url, [], "GET");
 
-        return $res;
+            $resources['session'] = $session;
+
+            return $resources;
+        });
+
+        return $resources;
     }
 }
