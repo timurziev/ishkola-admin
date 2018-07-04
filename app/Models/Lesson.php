@@ -132,7 +132,7 @@ class Lesson extends Model
     {
         $minutes = Carbon::now()->addMinutes(60);
 
-        $lessons = Cache::remember('lessons', $minutes, function () {
+        $lessons = Cache::remember('lessons' . Auth::user()->email, $minutes, function () {
             $lesson = new Lesson;
 
             return $lessons = $lesson->lessonsTemplate();
