@@ -150,7 +150,9 @@ class Lesson extends Model
 
     public function resources($id)
     {
-        $resources = Cache::rememberForever('resources-' . $id, function () use ($id) {
+        $minutes = Carbon::now()->addMinutes(60);
+
+        $resources = Cache::remember('resources-' . $id, $minutes, function () use ($id) {
             $url = "https://room.nohchalla.com/mira/service/v2/measures/$id/resources";
             $session = $this->getSessionId();
             $resources = $this->sendRequest($url, [], "GET");
