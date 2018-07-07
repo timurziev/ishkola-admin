@@ -15,14 +15,17 @@ class CacheLessons implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
+    private $email;
+
     /**
      * Create a new job instance.
      *
+     * @param  int  $email
      * @return void
      */
-    public function __construct()
+    public function __construct($email)
     {
-        //
+        $this->email = $email;
     }
 
     /**
@@ -32,13 +35,11 @@ class CacheLessons implements ShouldQueue
      */
     public function handle()
     {
-        $minutes = Carbon::now()->addMinutes(60);
-
         $lesson = new Lesson;
-        $lessons = $lesson->cachedLessons();
+        $lessons = $lesson->cachedLessons($this->email);
 
         foreach ($lessons as $key => $item) {
-            $resources = Cache::remember('resources-' . $item['meid'], $minutes, function () use ($item, $lesson) {
+            $resources = Cache::rememberForever('resources-' . $item['meid'], function () use ($item, $lesson) {
 
                 $url ="https://room.nohchalla.com/mira/service/v2/measures/" . $item['meid'] . "/resources";
                 $session = $lesson->getSessionId();

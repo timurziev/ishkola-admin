@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\User;
 
+use Auth;
 use App\Models\Auth\User\User;
 use Arcanedev\LogViewer\Entities\Log;
 use Arcanedev\LogViewer\Entities\LogEntry;
@@ -53,9 +54,10 @@ class DashboardController extends Controller
         }
 
         $lesson = new Lesson;
-        $lessons =  array_slice($lesson->cachedLessons(), 0, 5);
+        $email = Auth::user()->email;
+        $lessons =  array_slice($lesson->cachedLessons($email), 0, 5);
+        $this->dispatch(new CacheLessons($email));
 
-        $this->dispatch(new CacheLessons());
 
 
 

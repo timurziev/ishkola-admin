@@ -128,11 +128,11 @@ class Lesson extends Model
         return $lessons = $lesson->sendRequest($service_url, [], "GET");
     }
 
-    public function cachedLessons()
+    public function cachedLessons($email)
     {
         $minutes = Carbon::now()->addMinutes(60);
 
-        $lessons = Cache::remember('lessons' . Auth::user()->email, $minutes, function () {
+        $lessons = Cache::remember('lessons-' . $email, $minutes, function () {
             $lesson = new Lesson;
 
             return $lessons = $lesson->lessonsTemplate();
@@ -150,9 +150,7 @@ class Lesson extends Model
 
     public function resources($id)
     {
-        $minutes = Carbon::now()->addMinutes(60);
-
-        $resources = Cache::remember('resources-' . $id, $minutes, function () use ($id) {
+        $resources = Cache::rememberForever('resources-' . $id, function () use ($id) {
             $url = "https://room.nohchalla.com/mira/service/v2/measures/$id/resources";
             $session = $this->getSessionId();
             $resources = $this->sendRequest($url, [], "GET");

@@ -18,7 +18,8 @@ class LessonController extends Controller
     public function index()
     {
         $lesson = new Lesson;
-        $lessons = $lesson->cachedLessons();
+        $email = Auth::user()->email;
+        $lessons = $lesson->cachedLessons($email);
         $lessons = collect($lessons);
         $lessons = Lesson::paginateArray($lessons, 20)->setPath('/user/lessons');
 
