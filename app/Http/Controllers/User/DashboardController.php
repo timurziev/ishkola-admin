@@ -53,10 +53,15 @@ class DashboardController extends Controller
             }
         }
 
-        $lesson = new Lesson;
-        $email = Auth::user()->email;
-        $lessons =  array_slice($lesson->cachedLessons($email), 0, 5);
-        $this->dispatch(new CacheLessons($email));
+        $lessons = null;
+
+        if (Auth::user()->hasRole('student')) {
+            $lesson = new Lesson;
+            $email = Auth::user()->email;
+            $lessons = array_slice($lesson->cachedLessons($email), 0, 5);
+            $this->dispatch(new CacheLessons($email));
+        }
+        
 
 
 

@@ -1,0 +1,40 @@
+PHP Warning:  PHP Startup: Unable to load dynamic library 'pdo_mysql' (tried: /usr/lib/php/20170718/pdo_mysql (/usr/lib/php/20170718/pdo_mysql: cannot open shared object file: No such file or directory), /usr/lib/php/20170718/pdo_mysql.so (/usr/lib/php/20170718/pdo_mysql.so: undefined symbol: pdo_parse_params)) in Unknown on line 0
+[2018-07-04 22:57:59] Processing: App\Jobs\CacheLessons
+PHP Warning:  PHP Startup: Unable to load dynamic library 'pdo_mysql' (tried: /usr/lib/php/20170718/pdo_mysql (/usr/lib/php/20170718/pdo_mysql: cannot open shared object file: No such file or directory), /usr/lib/php/20170718/pdo_mysql.so (/usr/lib/php/20170718/pdo_mysql.so: undefined symbol: pdo_parse_params)) in Unknown on line 0
+
+                                             
+  The "--supervisor" option does not exist.  
+                                             
+
+PHP Warning:  PHP Startup: Unable to load dynamic library 'pdo_mysql' (tried: /usr/lib/php/20170718/pdo_mysql (/usr/lib/php/20170718/pdo_mysql: cannot open shared object file: No such file or directory), /usr/lib/php/20170718/pdo_mysql.so (/usr/lib/php/20170718/pdo_mysql.so: undefined symbol: pdo_parse_params)) in Unknown on line 0
+[2018-07-04 23:00:56] Processing: App\Jobs\CacheLessons
+[2018-07-04 23:01:43] Processed:  App\Jobs\CacheLessons
+[2018-07-04 23:01:43] Processing: App\Jobs\CacheLessons
+[2018-07-04 23:01:43] Processed:  App\Jobs\CacheLessons
+[2018-07-04 23:01:43] Processing: App\Jobs\CacheLessons
+[2018-07-04 23:01:43] Processed:  App\Jobs\CacheLessons
+[2018-07-04 23:01:43] Processing: App\Jobs\CacheLessons
+[2018-07-04 23:01:43] Processed:  App\Jobs\CacheLessons
+[2018-07-04 23:01:43] Processing: App\Jobs\CacheLessons
+[2018-07-04 23:01:43] Processed:  App\Jobs\CacheLessons
+[2018-07-04 23:01:43] Processing: App\Jobs\CacheLessons
+[2018-07-04 23:01:43] Processed:  App\Jobs\CacheLessons
+[2018-07-04 23:06:29] Processing: App\Jobs\CacheLessons
+[2018-07-04 23:06:29] Processed:  App\Jobs\CacheLessons
+[2018-07-04 23:08:17] Processing: App\Jobs\CacheLessons
+[2018-07-04 23:08:17] Processed:  App\Jobs\CacheLessons
+[2018-07-04 23:37:21] Processing: App\Jobs\CacheLessons
+[2018-07-04 23:37:21] Processed:  App\Jobs\CacheLessons
+[2018-07-04 23:40:39] Processing: App\Jobs\CacheLessons
+[2018-07-04 23:40:39] Processed:  App\Jobs\CacheLessons
+[2018-07-04 23:42:16] Processing: App\Jobs\CacheLessons
+[2018-07-04 23:42:16] Processed:  App\Jobs\CacheLessons
+[2018-07-04 23:43:16] Processing: App\Jobs\CacheLessons
+[2018-07-04 23:43:16] Processed:  App\Jobs\CacheLessons
+[2018-07-04 23:48:40] Processing: App\Jobs\CacheLessons
+[2018-07-04 23:48:40] Processed:  App\Jobs\CacheLessons
+[2018-07-04 23:50:55] Processing: App\Jobs\CacheLessons
+[2018-07-04 23:50:55] Processed:  App\Jobs\CacheLessons
+[2018-07-04 23:55:25] Processing: App\Jobs\CacheLessons
+[2018-07-04 23:55:25] Processed:  App\Jobs\CacheLessons
+[2018-07-05 00:00:04] Processing: App\Jobs\CacheLessons

@@ -39,9 +39,11 @@
             <div class="menu_section">
                 <h3>{{ __('views.backend.section.navigation.sub_header_1') }}</h3>
                 <ul class="nav side-menu">
-                    <li class="">
-                        <a href="{{ route('user.lessons') }}"><i class="fa fa-book"></i> Занятия</a>
-                    </li>
+                    @if (Auth::user()->hasRole('student'))
+                        <li class="">
+                            <a href="{{ route('user.lessons') }}"><i class="fa fa-book"></i> Занятия</a>
+                        </li>
+                    @endif
                     <li class="">
                         <a href="{{ route('user.lessons_table') }}"><i class="fa fa-book"></i> Сводная таблица занятий</a>
                     </li>
