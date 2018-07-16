@@ -50,7 +50,7 @@ class CacheLessons implements ShouldQueue
                 return $resources;
             });
 
-            if ($key == 2) {
+            if ($key == 4) {
                 return $resources;
             }
         }

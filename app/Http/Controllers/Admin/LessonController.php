@@ -95,6 +95,7 @@ class LessonController extends Controller
     {
         $addDays = [];
         $date = [];
+        $time = [];
         $quantity = $request['quantity'] != null ? $request['quantity'] : $request['quantity'] = 40;
         $lesson = Lesson::create($request->all());
 
@@ -122,9 +123,13 @@ class LessonController extends Controller
         foreach ($mergedDate as $finalDate) {
             $fields = ['lesson_id' => $lesson->id, 'schedule' => $finalDate . ':00'];
             Schedule::create($fields);
+
+            $time[] = $finalDate;
         }
 
         $lesson->users()->attach($request['users']);
+
+        $lesson->createLessonAPI($lesson, $time, $request['users']);
 
         return redirect()->route('admin.lessons');
     }

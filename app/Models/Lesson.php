@@ -164,4 +164,24 @@ class Lesson extends Model
 
         return $resources;
     }
+
+    public function createLessonAPI($lesson, $time, $users)
+    {
+        foreach ($users as $id) {
+            $user = User::whereId($id)->first();
+
+            $student = $user->hasRole('student') ? $user->name : '';
+        }
+
+        $lang = Lang::whereId($lesson['lang_id'])->first();
+
+        foreach ($time as $key => $t) {
+            $parameters = ["mename" => $lang['name'] . " язык. $student. Занятие $key", "metype" => 1, "meeduform" => 1,
+                "mestartdate" => "$t:00.001",
+                "meenddate" => "$t:00.001"];
+
+            $service_url ="https://room.nohchalla.com/mira/service/v2/measures";
+            $res = $this->sendRequest($service_url, $parameters, "POST");
+        }
+    }
 }
