@@ -56,7 +56,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
     // Lessons
     Route::get('lessons', 'LessonController@index')->name('lessons');
 
-    Route::get('lessons/show', 'LessonController@show')->name('lessons.show');
+    Route::get('lessons/api', 'LessonController@scheduleAPI')->name('lessons.api');
 
     Route::get('lessons_table', 'LessonController@lessons')->name('lessons_table');
     Route::get('lessons/create', 'LessonController@create')->name('lessons.create');
@@ -64,8 +64,6 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
     Route::get('lessons/{lesson}/edit', 'LessonController@edit')->name('lessons.edit');
     Route::put('lessons/{lesson}', 'LessonController@update')->name('lessons.update');
     Route::get('lessons/{lesson}', 'LessonController@destroy')->name('lessons.destroy');
-
-
 
     // Schedules
     Route::get('schedule/{id}', function ($id) {

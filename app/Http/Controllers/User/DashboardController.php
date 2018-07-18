@@ -61,19 +61,9 @@ class DashboardController extends Controller
             $lessons = array_slice($lesson->cachedLessons($email), 0, 5);
             $this->dispatch(new CacheLessons($email));
         }
-        
-
-
-
-
-//        $t1 = Carbon::parse($lessons[0]['mestartdate']);
-//        $t2 = Carbon::now();
-//        $diff = $t1->diff($t2);
-//        dd($t1);
 
         return view('user.dashboard', ['counts' => $counts, 'lessons' => $lessons]);
     }
-
 
     public function getLogChartData(Request $request)
     {

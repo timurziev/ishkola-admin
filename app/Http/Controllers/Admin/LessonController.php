@@ -129,7 +129,7 @@ class LessonController extends Controller
 
         $lesson->users()->attach($request['users']);
 
-        $lesson->createLessonAPI($lesson, $time, $request['users']);
+//        $lesson->createLessonAPI($lesson, $time, $request['users']);
 
         return redirect()->route('admin.lessons');
     }
@@ -199,6 +199,14 @@ class LessonController extends Controller
     {
         $group  = Lesson::whereId($id)->firstOrFail();
         $group->delete();
+
+        return redirect()->back();
+    }
+
+    public function scheduleAPI()
+    {
+        $lesson = new Lesson();
+        $lesson->createLessonAPI();
 
         return redirect()->back();
     }

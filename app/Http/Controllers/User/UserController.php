@@ -17,6 +17,7 @@ class UserController extends Controller
     /**
      * Display a listing of the resource.
      *
+     * @param $role
      * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
