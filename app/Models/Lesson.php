@@ -171,44 +171,46 @@ class Lesson extends Model
 
         $schedules = Schedule::where('schedule', 'like', "%$date%")->get();
 
-        foreach ($schedules as $schedule) {
-            if ($schedule->lesson->group) {
-                $name = $schedule->lesson->group->name;
-                foreach ($schedule->lesson->group->users as $user) {
-                    $users[] = $user->miraID;
+        if ($schedules != null) {
+            foreach ($schedules as $schedule) {
+                if ($schedule->lesson->group) {
+                    $name = $schedule->lesson->group->name;
+                    foreach ($schedule->lesson->group->users as $user) {
+                        $users[] = $user->miraID;
+                    }
                 }
-            }
 
-            foreach ($schedule->lesson->users as $user) {
-                if ($user->hasRole('student')) {
-                    $name = $user->name;
-                    $studentID = $user->miraID;
+                foreach ($schedule->lesson->users as $user) {
+                    if ($user->hasRole('student')) {
+                        $name = $user->name;
+                        $studentID = $user->miraID;
+                    }
+                    if ($user->hasRole('teacher')) {
+                        $teacherID = $user->miraID;
+                    }
                 }
-                if ($user->hasRole('teacher')) {
-                    $teacherID = $user->miraID;
-                }
-            }
 
-            $addMin = $schedule->schedule->addMinutes($schedule->lesson->duration);
+                $addMin = $schedule->schedule->addMinutes($schedule->lesson->duration);
 
-            $parameters = ["mename" => $schedule->lesson->lang->name . " язык. $name", "metype" => 1, "meeduform" => 1,
-                "mestartdate" => "$schedule->schedule.001",
-                "meenddate" => "$addMin.001"];
+                $parameters = ["mename" => $schedule->lesson->lang->name . " язык. $name", "metype" => 1, "meeduform" => 1,
+                    "mestartdate" => "$schedule->schedule.001",
+                    "meenddate" => "$addMin.001"];
 
-            $service_url ="https://room.nohchalla.com/mira/service/v2/measures";
-            $measure = $this->sendRequest($service_url, $parameters, "POST");
+                $service_url ="https://room.nohchalla.com/mira/service/v2/measures";
+                $measure = $this->sendRequest($service_url, $parameters, "POST");
 
-            $service_url ="https://room.nohchalla.com/mira/service/v2/measures/".$measure['meid']."/tutors/$teacherID";
-            $this->sendRequest($service_url, [], "POST");
+                $service_url ="https://room.nohchalla.com/mira/service/v2/measures/".$measure['meid']."/tutors/$teacherID";
+                $this->sendRequest($service_url, [], "POST");
 
-            if (isset($users)) {
-                foreach ($users as $id) {
-                    $service_url ="https://room.nohchalla.com/mira/service/v2/measures/".$measure['meid']."/members/$id";
+                if (isset($users)) {
+                    foreach ($users as $id) {
+                        $service_url ="https://room.nohchalla.com/mira/service/v2/measures/".$measure['meid']."/members/$id";
+                        $this->sendRequest($service_url, [], "POST");
+                    }
+                } else {
+                    $service_url ="https://room.nohchalla.com/mira/service/v2/measures/".$measure['meid']."/members/$studentID";
                     $this->sendRequest($service_url, [], "POST");
                 }
-            } else {
-                $service_url ="https://room.nohchalla.com/mira/service/v2/measures/".$measure['meid']."/members/$studentID";
-                $this->sendRequest($service_url, [], "POST");
             }
         }
     }

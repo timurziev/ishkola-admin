@@ -8,11 +8,6 @@
                     <h2>Занятия</h2>
                     <ul class="nav navbar-right panel_toolbox" style="min-width: 0;">
                         <li>
-                            <form action="{{ route('admin.lessons.api') }}">
-                                <button class="btn btn-default">Запланировать занятия</button>
-                            </form>
-                        </li>
-                        <li>
                             <form action="{{ route('admin.lessons.create') }}">
                                 <button class="btn btn-default">Добавить новое</button>
                             </form>

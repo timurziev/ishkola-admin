@@ -11,6 +11,11 @@
                         @if(Request::get('date'))
                             <a href="{{ route('admin.lessons_table') }}" class="btn btn-default" style="border: 1px solid #169F85; float: left">Назад</a>
                         @endif
+                        <li>
+                            <form action="{{ route('admin.lessons.api') }}">
+                                <button class="btn btn-default">Запланировать занятия</button>
+                            </form>
+                        </li>
                         <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                         </li>
                     </ul>
