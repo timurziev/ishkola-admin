@@ -55,7 +55,7 @@
                         <label class="control-label col-md-3 col-sm-3 col-xs-12">Группа</label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
                             <select class="form-control" name="group_id">
-                                <option selected disabled value="">Не выбрана</option>
+                                <option {{ !Request::is('*/edit') ? 'selected' : '' }} value="">Не выбрана</option>
                                 @foreach($groups as $group)
                                     <option {{ Request::is('*/edit') && $lesson->group_id == $group->id ? 'selected' : '' }}
                                         value="{{ $group->id }}">{{ $group->name }}

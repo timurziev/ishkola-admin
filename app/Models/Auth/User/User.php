@@ -63,7 +63,7 @@ class User extends Authenticatable
         Sortable,
         Protectable;
 
-    public $sortable = ['name', 'email', 'created_at', 'updated_at'];
+    public $sortable = ['name', 'email', 'miraID', 'created_at', 'updated_at'];
 
     /**
      * The database table used by the model.

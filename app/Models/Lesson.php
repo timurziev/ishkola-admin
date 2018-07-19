@@ -8,6 +8,7 @@ use App\Models\Auth\User\User;
 use Illuminate\Support\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Facades\Mail;
 use Carbon\Carbon;
 use Cache;
 
@@ -176,13 +177,14 @@ class Lesson extends Model
                 if ($schedule->lesson->group) {
                     $name = $schedule->lesson->group->name;
                     foreach ($schedule->lesson->group->users as $user) {
-                        $users[] = $user->miraID;
+                        $users[] = $user;
                     }
                 }
 
                 foreach ($schedule->lesson->users as $user) {
                     if ($user->hasRole('student')) {
                         $name = $user->name;
+                        $email = $user->email;
                         $studentID = $user->miraID;
                     }
                     if ($user->hasRole('teacher')) {
@@ -202,14 +204,27 @@ class Lesson extends Model
                 $service_url ="https://room.nohchalla.com/mira/service/v2/measures/".$measure['meid']."/tutors/$teacherID";
                 $this->sendRequest($service_url, [], "POST");
 
+                $data = [
+                    "lang" => $schedule->lesson->lang->name . " язык",
+                    "date" => $schedule->schedule->format('d.m.Y H:i')
+                ];
+
                 if (isset($users)) {
-                    foreach ($users as $id) {
-                        $service_url ="https://room.nohchalla.com/mira/service/v2/measures/".$measure['meid']."/members/$id";
+                    foreach ($users as $user) {
+                        $service_url ="https://room.nohchalla.com/mira/service/v2/measures/".$measure['meid']."/members/$user->miraID";
                         $this->sendRequest($service_url, [], "POST");
+
+                        Mail::send( 'mail.email', $data, function ($message) use ($user){
+                            $message->to($user->email)->subject('Ishkola');
+                        });
                     }
                 } else {
                     $service_url ="https://room.nohchalla.com/mira/service/v2/measures/".$measure['meid']."/members/$studentID";
                     $this->sendRequest($service_url, [], "POST");
+
+                    Mail::send( 'mail.email', $data, function ($message) use ($email){
+                        $message->to($email)->subject('Ishkola');
+                    });
                 }
             }
         }
