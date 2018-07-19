@@ -184,7 +184,6 @@ class Lesson extends Model
                 foreach ($schedule->lesson->users as $user) {
                     if ($user->hasRole('student')) {
                         $name = $user->name;
-                        $email = $user->email;
                         $studentID = $user->miraID;
                     }
                     if ($user->hasRole('teacher')) {
@@ -204,27 +203,14 @@ class Lesson extends Model
                 $service_url ="https://room.nohchalla.com/mira/service/v2/measures/".$measure['meid']."/tutors/$teacherID";
                 $this->sendRequest($service_url, [], "POST");
 
-                $data = [
-                    "lang" => $schedule->lesson->lang->name . " язык",
-                    "date" => $schedule->schedule->format('d.m.Y H:i')
-                ];
-
                 if (isset($users)) {
                     foreach ($users as $user) {
                         $service_url ="https://room.nohchalla.com/mira/service/v2/measures/".$measure['meid']."/members/$user->miraID";
                         $this->sendRequest($service_url, [], "POST");
-
-                        Mail::send( 'mail.email', $data, function ($message) use ($user){
-                            $message->to($user->email)->subject('Ishkola');
-                        });
                     }
                 } else {
                     $service_url ="https://room.nohchalla.com/mira/service/v2/measures/".$measure['meid']."/members/$studentID";
                     $this->sendRequest($service_url, [], "POST");
-
-                    Mail::send( 'mail.email', $data, function ($message) use ($email){
-                        $message->to($email)->subject('Ishkola');
-                    });
                 }
             }
         }
