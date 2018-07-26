@@ -241,7 +241,10 @@ class LessonController extends Controller
         $payments = Payment::where('user_id', $request['user'])->get();
 
         foreach ($payments as $payment) {
-            $condition = in_array($payment->schedule_id, $request['schedule']);
+            $condition = null;
+            if ($request['schedule'] != null) {
+                $condition = in_array($payment->schedule_id, $request['schedule']);
+            }
             $condition ? $payment->update(['paid' => 1]) : $payment->update(['paid' => 0]);
         }
 
