@@ -118,15 +118,14 @@ class Lesson extends Model
 
     public function lessonsTemplate()
     {
-        $lesson = new Lesson;
         $email = Auth::user()->email;
         $service_url ="https://room.nohchalla.com/mira/service/v2/persons/byLogin/$email";
-        $res = $lesson->sendRequest($service_url, [], "GET");
+        $res = $this->sendRequest($service_url, [], "GET");
         $id = $res['personid'];
 
         $service_url ="https://room.nohchalla.com/mira/service/v2/myMeasures/$id/webinars";
 
-        return $lessons = $lesson->sendRequest($service_url, [], "GET");
+        return $lessons = $this->sendRequest($service_url, [], "GET");
     }
 
     public function cachedLessons($email)

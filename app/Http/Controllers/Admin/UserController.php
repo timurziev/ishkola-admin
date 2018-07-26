@@ -30,7 +30,12 @@ class UserController extends Controller
             $users = User::with('roles');
         }
 
-        return view('admin.users.index', ['users' => $users->sortable(['email' => 'asc'])->paginate()]);
+        if (isset($request['search'])) {
+            $search = $request['search'];
+            $users = $users->where('name', 'like', "%$search%");
+        }
+
+        return view('admin.users.index', ['users' => $users->sortable(['email' => 'asc'])->paginate(20)]);
     }
 
     /**

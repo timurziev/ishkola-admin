@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Models\Group;
 use App\Models\Schedule;
+use App\Models\Payment;
 use Illuminate\Http\Request;
 use App\Models\Lesson;
 use App\Models\Lang;
@@ -28,10 +29,11 @@ class LessonController extends Controller
     /**
      * Display a listing of the resource listed by date.
      *
+     * @param  int  $id
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function lessons(Request  $request)
+    public function lessons(Request  $request, $id = null)
     {
         $date = $request['date'];
         $data = $request['data'];
@@ -64,6 +66,18 @@ class LessonController extends Controller
             })->orWhereHas('lesson.lang', function ($q) use ($data) {
                 $q->where('name', 'LIKE', "%$data%");
             });
+        }
+
+        if ($id != null) {
+            $schedules = $schedules->whereHas('lesson.users', function($q) use ($id) {
+                $q->where('user_id', $id);
+            })->orWhereHas('lesson', function ($q) use ($id) {
+                $q->whereHas('group.users', function($q) use ($id) {
+                    $q->where('user_id', $id);
+                });
+            })->with(['payments' => function ($q) use ($id) {
+                $q->where('user_id', $id);
+            }]);
         }
 
         $schedules = $schedules->paginate(20);
@@ -122,12 +136,23 @@ class LessonController extends Controller
 
         foreach ($mergedDate as $finalDate) {
             $fields = ['lesson_id' => $lesson->id, 'schedule' => $finalDate . ':00'];
-            Schedule::create($fields);
+            $schedules[] = Schedule::create($fields);
 
             $time[] = $finalDate;
         }
 
         $lesson->users()->attach($request['users']);
+
+        foreach ($request['users'] as $id) {
+            $user = User::whereId($id)->first();
+            if ($user->hasRole('student')) {
+                $user_id = $user->id;
+            }
+        }
+
+        foreach ($schedules as $schedule) {
+            Payment::create(['user_id' => $user_id, 'schedule_id' => $schedule->id]);
+        }
 
 //        $lesson->createLessonAPI($lesson, $time, $request['users']);
 
@@ -207,6 +232,18 @@ class LessonController extends Controller
     {
         $lesson = new Lesson();
         $lesson->createLessonAPI();
+
+        return redirect()->back();
+    }
+
+    public function payment(Request $request)
+    {
+        $payments = Payment::where('user_id', $request['user'])->get();
+
+        foreach ($payments as $payment) {
+            $condition = in_array($payment->schedule_id, $request['schedule']);
+            $condition ? $payment->update(['paid' => 1]) : $payment->update(['paid' => 0]);
+        }
 
         return redirect()->back();
     }

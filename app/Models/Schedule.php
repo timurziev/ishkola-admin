@@ -23,4 +23,9 @@ class Schedule extends Model
     {
         return $this->belongsTo(Lesson::class);
     }
+
+    public function payments()
+    {
+        return $this->hasMany(Payment::class);
+    }
 }

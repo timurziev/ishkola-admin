@@ -57,30 +57,44 @@
                                     <th>Действие</th>
                                 </tr>
                             </thead>
-                            <tbody>
-                            @foreach($schedules as $schedule)
-                                <tr>
-                                    <th scope="row">{{ $schedule->lesson->lang->name }}</th>
-                                    @foreach($schedule->lesson->users as $user)
-                                        @if($user->userHasRole('student'))<td>{{ $user->name }}</td>@endif
+                            {{ Form::open(['route'=> 'admin.lessons.payment', 'method' => 'put'])  }}
+                                <tbody>
+                                    @foreach($schedules as $key => $schedule)
+                                        <tr>
+                                            <th scope="row">{{ $schedule->lesson->lang->name }}</th>
+                                            @foreach($schedule->lesson->users as $user)
+                                                @if($user->userHasRole('student'))<td>{{ $user->name }}</td>@endif
+                                            @endforeach
+                                            @if($schedule->lesson->group)<td>{{ $schedule->lesson->group->name }}</td>@endif
+                                            @foreach($schedule->lesson->users as $user)
+                                                @if($user->userHasRole('teacher'))<td>{{ $user->name }}</td>@endif
+                                            @endforeach
+                                            <td>{{ $schedule->schedule->format('d.m.Y') }}</td>
+                                            <td>{{ $schedule->schedule->format('H:i') }}</td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td>
+                                                <a href="{{ route('admin.lessons.edit', $schedule->lesson->id) }}" class="btn btn-info btn-xs">
+                                                    <i class="fa fa-pencil"></i>
+                                                </a>
+                                                <a href="{{ route('admin.schedule.destroy', $schedule->id) }}" class="btn btn-danger btn-xs" onclick="return confirm('Удалить занятие?');">
+                                                    <i class="fa fa-trash"></i>
+                                                </a>
+                                                    @foreach($schedule->payments as $payment)
+                                                        <label for="scales-{{ $key }}">Оплачено</label>
+                                                        <input type="checkbox" id="scales-{{ $key }}" name="schedule[]"
+                                                               value="{{ $payment->schedule_id }}" {{ $payment->paid ? 'checked' : '' }} />
+                                                        <input type="hidden" name="user" value="{{ $payment->user_id }}">
+                                                        <input type="hidden" name="paid" value="{{ $payment->paid }}">
+                                                    @endforeach
+                                            </td>
+                                        </tr>
                                     @endforeach
-                                    @if($schedule->lesson->group)<td>{{ $schedule->lesson->group->name }}</td>@endif
-                                    @foreach($schedule->lesson->users as $user)
-                                        @if($user->userHasRole('teacher'))<td>{{ $user->name }}</td>@endif
-                                    @endforeach
-                                    <td>{{ $schedule->schedule->format('d.m.Y') }}</td>
-                                    <td>{{ $schedule->schedule->format('H:i') }}</td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td>
-                                        <a href="{{ route('admin.lessons.edit', $schedule->lesson->id) }}" class="btn btn-info btn-xs"><i class="fa fa-pencil"></i></a>
-                                        <a href="{{ route('admin.schedule.destroy', $schedule->id) }}" class="btn btn-danger btn-xs" onclick="return confirm('Удалить занятие?');"><i class="fa fa-trash"></i></a>
-                                    </td>
-                                </tr>
-                            @endforeach
-                            </tbody>
+                                </tbody>
                         </table>
+                        <button type="submit" class="btn btn-default" style="border: 1px solid #169F85; float: right">Отправить</button>
+                        {{ Form::close() }}
                     </div>
                     <div class="pull-right">
                         {{ $schedules->links() }}

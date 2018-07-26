@@ -10,6 +10,16 @@
                         <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                         </li>
                     </ul>
+                    {{ Form::open(['route'=> 'admin.users', 'method' => 'get'])  }}
+                    <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
+                        <div class="input-group">
+                            <input type="text" class="form-control" name="search" placeholder="">
+                            <span class="input-group-btn">
+                                  <button class="btn btn-default" style="border-left: 1px solid rgba(221, 226, 232, 0.49);">Поиск</button>
+                                </span>
+                        </div>
+                    </div>
+                    {{ Form::close() }}
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content">
@@ -27,8 +37,10 @@
                                 @endif
                                 <th>@sortablelink('active', __('views.admin.users.index.table_header_3'),['page' => $users->currentPage()])</th>
                                 <th>@sortablelink('confirmed', __('views.admin.users.index.table_header_4'),['page' => $users->currentPage()])</th>
-                                <th>@sortablelink('created_at', __('views.admin.users.index.table_header_5'),['page' => $users->currentPage()])</th>
-                                <th>@sortablelink('updated_at', __('views.admin.users.index.table_header_6'),['page' => $users->currentPage()])</th>
+                                @if (Request::is('admin/users'))
+                                    <th>@sortablelink('created_at', __('views.admin.users.index.table_header_5'),['page' => $users->currentPage()])</th>
+                                    <th>@sortablelink('updated_at', __('views.admin.users.index.table_header_6'),['page' => $users->currentPage()])</th>
+                                @endif
                                 <th>Действие</th>
                             </tr>
                             </thead>
@@ -71,14 +83,19 @@
                                         @else
                                             <span class="label label-warning">{{ __('views.admin.users.index.not_confirmed') }}</span>
                                         @endif</td>
-                                    <td>{{ $user->created_at }}</td>
-                                    <td>{{ $user->updated_at }}</td>
+                                    @if (Request::is('admin/users'))
+                                        <td>{{ $user->created_at }}</td>
+                                        <td>{{ $user->updated_at }}</td>
+                                    @endif
                                     <td>
                                         <a class="btn btn-xs btn-primary" href="{{ route('admin.users.show', [$user->id]) }}" data-toggle="tooltip" data-placement="top" data-title="{{ __('views.admin.users.index.show') }}">
                                             <i class="fa fa-eye"></i>
                                         </a>
                                         <a class="btn btn-xs btn-info" href="{{ route('admin.users.edit', [$user->id]) }}" data-toggle="tooltip" data-placement="top" data-title="{{ __('views.admin.users.index.edit') }}">
                                             <i class="fa fa-pencil"></i>
+                                        </a>
+                                        <a class="btn btn-xs btn-success" href="{{ route('admin.users.user_lessons', [$user->id]) }}" data-toggle="tooltip" data-placement="top" data-title="Занятия">
+                                            <i class="fa fa-book"></i>
                                         </a>
                                         @if(!$user->hasRole('administrator'))
                                             <button class="btn btn-xs btn-danger user_destroy"

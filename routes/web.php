@@ -58,6 +58,8 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
 
     Route::get('lessons/api', 'LessonController@scheduleAPI')->name('lessons.api');
 
+    Route::put('lessons/payment', 'LessonController@payment')->name('lessons.payment');
+
     Route::get('lessons_table', 'LessonController@lessons')->name('lessons_table');
     Route::get('lessons/create', 'LessonController@create')->name('lessons.create');
     Route::put('lessons/store', 'LessonController@store')->name('lessons.store');
@@ -93,6 +95,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
     Route::get('roles/{role}', 'UserController@index')->name('roles');
     Route::get('users/{user}', 'UserController@show')->name('users.show');
     Route::get('users/{user}/edit', 'UserController@edit')->name('users.edit');
+    Route::get('users/user_lessons/{user}', 'LessonController@lessons')->name('users.user_lessons');
     Route::put('users/{user}', 'UserController@update')->name('users.update');
     Route::delete('users/{user}', 'UserController@destroy')->name('users.destroy');
     Route::get('permissions', 'PermissionController@index')->name('permissions');

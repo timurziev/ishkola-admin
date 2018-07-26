@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Models\Auth\Role\Role;
+use App\Models\Lesson;
 use App\Notifications\Auth\ConfirmEmail;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
@@ -73,10 +74,17 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
+        $API = new Lesson;
+        $email = $data['email'];
+        $service_url ="https://room.nohchalla.com/mira/service/v2/persons/byLogin/$email";
+        $result = $API->sendRequest($service_url, [], "GET");
+        $id = $result['errorCode'] == 404 ? null : $result['personid'];
+
         /** @var  $user User */
         $user = User::create([
             'name' => $data['name'],
             'email' => $data['email'],
+            'miraID' => $id,
             'password' => bcrypt($data['password']),
             'confirmation_code' => Uuid::uuid4(),
             'confirmed' => false
