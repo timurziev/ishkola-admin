@@ -78,7 +78,7 @@ class RegisterController extends Controller
         $email = $data['email'];
         $service_url ="https://room.nohchalla.com/mira/service/v2/persons/byLogin/$email";
         $result = $API->sendRequest($service_url, [], "GET");
-        $id = $result['errorCode'] == 404 ? null : $result['personid'];
+        $id = $result['personid'] ? $result['personid'] : null;
 
         /** @var  $user User */
         $user = User::create([

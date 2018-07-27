@@ -248,6 +248,22 @@ class LessonController extends Controller
             $condition ? $payment->update(['paid' => 1]) : $payment->update(['paid' => 0]);
         }
 
+        $schedule = Schedule::whereHas('payments', function ($q) {
+            $q->where('paid', 1);
+        })->first();
+
+        $schedule = $schedule->schedule->format('d.m.Y');
+
+        $user = User::whereId($request['user'])->first();
+        $id = $user->miraID;
+
+        $inst = new Lesson();
+
+        $phone = ["personworktel" => "Оплачено до $schedule"];
+
+        $service_url ="https://room.nohchalla.com/mira/service/v2/persons/$id";
+        $res = $inst->sendRequest($service_url, $phone, "PUT");
+
         return redirect()->back();
     }
 }

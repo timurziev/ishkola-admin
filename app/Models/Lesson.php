@@ -96,8 +96,11 @@ class Lesson extends Model
 
         if ($method == "POST") {
             curl_setopt($ch,CURLOPT_POSTFIELDS,$query);
-        } else {
+        } elseif ($method == "GET") {
             $url .= "?$query";
+        } else {
+            curl_setopt($ch,CURLOPT_POSTFIELDS,$query);
+            curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
         }
 
         curl_setopt($ch, CURLOPT_URL, $url);
