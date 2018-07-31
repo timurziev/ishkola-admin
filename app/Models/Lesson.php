@@ -153,7 +153,7 @@ class Lesson extends Model
 
     public function resources($id)
     {
-        $minutes = Carbon::now()->addMinutes(60);
+        $minutes = Carbon::now()->addMinutes(30);
 
         $resources = Cache::remember('resources-' . $id, $minutes, function () use ($id) {
             $url = "https://room.nohchalla.com/mira/service/v2/measures/$id/resources";
@@ -209,7 +209,16 @@ class Lesson extends Model
 
                 $data = [
                     "lang" => $schedule->lesson->lang->name . " язык",
-                    "date" => $schedule->schedule->format('d.m.Y H:i')
+                    "date" => $schedule->schedule->format('d.m.Y')
+                ];
+
+                $payment = Payment::where('schedule_id', $schedule->id)->where('user_id', $user->id)->first();
+
+                $next_schedule = Schedule::where('id', '>', $schedule->id)->first();
+                $next_payment = Payment::where('schedule_id', $next_schedule->id)->where('user_id', $user->id)->first();
+
+                $next_data = [
+                    "date" => $next_schedule->schedule->format('d.m.Y')
                 ];
 
                 if (isset($users)) {
@@ -217,10 +226,14 @@ class Lesson extends Model
                         $service_url = "https://room.nohchalla.com/mira/service/v2/measures/" . $measure['meid'] . "/members/$user->miraID";
                         $this->sendRequest($service_url, [], "POST");
 
-                        $payment = Payment::where('schedule_id', $schedule->id)->where('user_id', $user->id)->first();
-
                         if ($payment->paid == 0) {
                             Mail::send('mail.email', $data, function ($message) use ($user) {
+                                $message->to($user->email)->subject('Ishkola');
+                            });
+                        }
+
+                        if (isset($next_payment) && $next_payment->paid == 0) {
+                            Mail::send('mail.payment', $next_data, function ($message) use ($user) {
                                 $message->to($user->email)->subject('Ishkola');
                             });
                         }
@@ -229,10 +242,14 @@ class Lesson extends Model
                     $service_url = "https://room.nohchalla.com/mira/service/v2/measures/" . $measure['meid'] . "/members/$studentID";
                     $this->sendRequest($service_url, [], "POST");
 
-                    $payment = Payment::where('schedule_id', $schedule->id)->where('user_id', $user_id)->first();
-
                     if ($payment->paid == 0) {
                         Mail::send('mail.email', $data, function ($message) use ($email) {
+                            $message->to($email)->subject('Ishkola');
+                        });
+                    }
+
+                    if (isset($next_payment) && $next_payment->paid == 0) {
+                        Mail::send('mail.payment', $next_data, function ($message) use ($email) {
                             $message->to($email)->subject('Ishkola');
                         });
                     }

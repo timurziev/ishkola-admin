@@ -83,8 +83,10 @@
                                                 </a>
                                                     @foreach($schedule->payments as $payment)
                                                         <label for="scales-{{ $key }}">Оплачено</label>
-                                                        <input type="checkbox" id="scales-{{ $key }}" name="schedule[]"
+                                                        <div class="icheckbox_flat-green {{ $payment->paid ? 'checked' : '' }}" style="position: relative;">
+                                                            <input type="checkbox" class="flat" id="scales-{{ $key }}" name="schedule[]" style="position: absolute; opacity: 0; height: 20px; width: 20px; margin-top: 2px;"
                                                                value="{{ $payment->schedule_id }}" {{ $payment->paid ? 'checked' : '' }} />
+                                                        </div>
                                                         <input type="hidden" name="user" value="{{ $payment->user_id }}">
                                                         <input type="hidden" name="paid" value="{{ $payment->paid }}">
                                                     @endforeach

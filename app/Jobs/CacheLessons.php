@@ -37,7 +37,7 @@ class CacheLessons implements ShouldQueue
     {
         $lesson = new Lesson;
         $lessons = $lesson->cachedLessons($this->email);
-        $minutes = Carbon::now()->addMinutes(60);
+        $minutes = Carbon::now()->addMinutes(30);
 
         foreach ($lessons as $key => $item) {
             $resources = Cache::remember('resources-' . $item['meid'], $minutes, function () use ($item, $lesson) {

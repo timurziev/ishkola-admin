@@ -121,7 +121,6 @@ class LessonController extends Controller
             $date[] = $var->format('Y-m-d H:i');
         }
 
-
         while (count($addDays) < $quantity) {
             foreach ($newdate as $day) {
                 $addDays[] = $day->addDays(7)->format('Y-m-d H:i');
@@ -151,7 +150,13 @@ class LessonController extends Controller
         }
 
         foreach ($schedules as $schedule) {
-            Payment::create(['user_id' => $user_id, 'schedule_id' => $schedule->id]);
+            if ($schedule->lesson->group_id) {
+                foreach ($schedule->lesson->group->users as $user) {
+                    Payment::create(['user_id' => $user->id, 'schedule_id' => $schedule->id]);
+                }
+            } else {
+                Payment::create(['user_id' => $user_id, 'schedule_id' => $schedule->id]);
+            }
         }
 
 //        $lesson->createLessonAPI($lesson, $time, $request['users']);
@@ -252,17 +257,19 @@ class LessonController extends Controller
             $q->where('paid', 1);
         })->first();
 
-        $schedule = $schedule->schedule->format('d.m.Y');
+        if (isset($schedule)) {
+            $schedule = $schedule->schedule->format('d.m.Y');
 
-        $user = User::whereId($request['user'])->first();
-        $id = $user->miraID;
+            $user = User::whereId($request['user'])->first();
+            $id = $user->miraID;
 
-        $inst = new Lesson();
+            $inst = new Lesson();
 
-        $phone = ["personworktel" => "Оплачено до $schedule"];
+            $phone = ["personworktel" => "Оплачено до $schedule"];
 
-        $service_url ="https://room.nohchalla.com/mira/service/v2/persons/$id";
-        $res = $inst->sendRequest($service_url, $phone, "PUT");
+            $service_url ="https://room.nohchalla.com/mira/service/v2/persons/$id";
+            $inst->sendRequest($service_url, $phone, "PUT");
+        }
 
         return redirect()->back();
     }

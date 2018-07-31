@@ -472,5 +472,10 @@
         }
     });
 
+
+    $(".icheckbox_flat-green").click(function () {
+        $(this).toggleClass('checked');
+    });
+
 })(jQuery);
 

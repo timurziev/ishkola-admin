@@ -115,3 +115,23 @@
     opacity: .5;
     cursor: default;
 }
+
+.icheckbox_flat-green {
+    background-position: 0 0;
+}
+
+.icheckbox_flat-green, .iradio_flat-green {
+    display: inline-block;
+    vertical-align: middle;
+    margin: 0;
+    padding: 0;
+    width: 20px;
+    height: 20px;
+    background: url('https://colorlib.com/polygon/vendors/iCheck/skins/flat/green.png') no-repeat;
+    border: none;
+    cursor: pointer;
+}
+
+.icheckbox_flat-green.checked {
+    background-position: -22px 0;
+}
