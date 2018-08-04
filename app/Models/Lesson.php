@@ -110,11 +110,17 @@ class Lesson extends Model
         return $response;
     }
 
+    public static function miraURL($module, $func, $id = null, $param = null)
+    {
+        return "https://room.nohchalla.com/mira/service/v2/$module/$id/$func/$param";
+    }
+
     public function getSessionId()
     {
         $parameters = ['login' => 'guest', 'password' => 'QyYp86Bx'];
 
-        $url = "https://room.nohchalla.com/mira/service/auth/login";
+//        $url = "https://room.nohchalla.com/mira/service/auth/login";
+        $url = $this->miraURL('auth', 'login');
 
         return $session = $this->sendRequest($url, $parameters, "POST");
     }
@@ -122,20 +128,22 @@ class Lesson extends Model
     public function lessonsTemplate()
     {
         $email = Auth::user()->email;
-        $service_url ="https://room.nohchalla.com/mira/service/v2/persons/byLogin/$email";
+//        $service_url = "https://room.nohchalla.com/mira/service/v2/persons/byLogin/$email";
+        $service_url = $this->miraURL('persons', 'byLogin', null, $email);
         $res = $this->sendRequest($service_url, [], "GET");
         $id = $res['personid'];
 
-        $service_url ="https://room.nohchalla.com/mira/service/v2/myMeasures/$id/webinars";
+//        $url = "https://room.nohchalla.com/mira/service/v2/myMeasures/$id/webinars";
+        $url = $this->miraURL('myMeasures', 'webinars', $id);
 
-        return $lessons = $this->sendRequest($service_url, [], "GET");
+        return $lessons = $this->sendRequest($url, [], "GET");
     }
 
     public function cachedLessons($email)
     {
         $minutes = Carbon::now()->addMinutes(60);
 
-        $lessons = Cache::remember('lessons-' . $email, $minutes, function () {
+        $lessons = Cache::remember('lessonsss-' . $email, $minutes, function () {
             $lesson = new Lesson;
 
             return $lessons = $lesson->lessonsTemplate();
@@ -146,7 +154,8 @@ class Lesson extends Model
 
     public function records($id)
     {
-        $url ="https://room.nohchalla.com/mira/service/v2/measures/$id/webinarRecords";
+//        $url ="https://room.nohchalla.com/mira/service/v2/measures/$id/webinarRecords";
+        $url = $this->miraURL('measures', 'webinarRecords', $id);
 
         return $records = $this->sendRequest($url, [], "GET");
     }
@@ -156,7 +165,8 @@ class Lesson extends Model
         $minutes = Carbon::now()->addMinutes(30);
 
         $resources = Cache::remember('resources-' . $id, $minutes, function () use ($id) {
-            $url = "https://room.nohchalla.com/mira/service/v2/measures/$id/resources";
+//            $url = "https://room.nohchalla.com/mira/service/v2/measures/$id/resources";
+            $url = $this->miraURL('measures', 'resources', $id);
             $session = $this->getSessionId();
             $resources = $this->sendRequest($url, [], "GET");
 
@@ -201,10 +211,12 @@ class Lesson extends Model
                     "mestartdate" => "$schedule->schedule.001",
                     "meenddate" => "$addMin.001"];
 
-                $service_url ="https://room.nohchalla.com/mira/service/v2/measures";
+//                $service_url ="https://room.nohchalla.com/mira/service/v2/measures";
+                $service_url = $this->miraURL('measures', null);
                 $measure = $this->sendRequest($service_url, $parameters, "POST");
 
-                $service_url ="https://room.nohchalla.com/mira/service/v2/measures/".$measure['meid']."/tutors/$teacherID";
+//                $service_url = "https://room.nohchalla.com/mira/service/v2/measures/".$measure['meid']."/tutors/$teacherID";
+                $service_url = $this->miraURL('measures', 'tutors', $measure['meid'], $teacherID);
                 $this->sendRequest($service_url, [], "POST");
 
                 $data = [
@@ -223,7 +235,8 @@ class Lesson extends Model
 
                 if (isset($users)) {
                     foreach ($users as $user) {
-                        $service_url = "https://room.nohchalla.com/mira/service/v2/measures/" . $measure['meid'] . "/members/$user->miraID";
+//                        $service_url = "https://room.nohchalla.com/mira/service/v2/measures/" . $measure['meid'] . "/members/$user->miraID";
+                        $service_url = $this->miraURL('measures', 'members', $measure['meid'], $user->miraID);
                         $this->sendRequest($service_url, [], "POST");
 
                         if ($payment->paid == 0) {
@@ -239,7 +252,8 @@ class Lesson extends Model
                         }
                     }
                 } else {
-                    $service_url = "https://room.nohchalla.com/mira/service/v2/measures/" . $measure['meid'] . "/members/$studentID";
+//                    $service_url = "https://room.nohchalla.com/mira/service/v2/measures/" . $measure['meid'] . "/members/$studentID";
+                    $service_url = $this->miraURL('measures', 'members', $measure['meid'], $studentID);
                     $this->sendRequest($service_url, [], "POST");
 
                     if ($payment->paid == 0) {
