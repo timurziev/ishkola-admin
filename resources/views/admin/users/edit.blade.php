@@ -52,7 +52,23 @@
                     </div>
                 </div>
 
+                <div class="form-group">
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="phone" >Телефон</label>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <input placeholder="" id="phone" type="tel" class="form-control col-md-7 col-xs-12"
+                               name="phone" value="{{ $user->phone }}">
+                    </div>
+                </div>
+
                 @if(!$user->hasRole('administrator'))
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="notes" >Примечание</label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <input id="notes" type="text" class="form-control col-md-7 col-xs-12"
+                                   name="notes" value="{{ $user->notes }}">
+                        </div>
+                    </div>
+
                     <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="active" >
                             {{ __('views.admin.users.edit.active') }}
@@ -131,19 +147,49 @@
                 </div>
 
                 <div class="form-group">
-                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="roles">
-                        {{ __('views.admin.users.edit.roles') }}
-                    </label>
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="langs">Языки</label>
                     <div class="col-md-6 col-sm-6 col-xs-12">
-                        <select id="roles" name="roles[]" class="select2" multiple="multiple" style="width: 100%" autocomplete="off">
-                            @foreach($roles as $role)
-                                <option @if($user->roles->find($role->id)) selected="selected" @endif value="{{ $role->id }}">{{ $role->name }}</option>
+                        <select id="langs" name="langs[]" class="select2" multiple="multiple" style="width: 100%" autocomplete="off">
+                            @foreach($langs as $lang)
+                                <option @if($user->langs->find($lang->id)) selected="selected" @endif value="{{ $lang->id }}">
+                                    {{ $lang->name }}
+                                </option>
                             @endforeach
                         </select>
                     </div>
                 </div>
 
                 <div class="form-group">
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="roles">
+                        {{ __('views.admin.users.edit.roles') }}
+                    </label>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <select id="roles" name="roles[]" class="select2" multiple="multiple" style="width: 100%" autocomplete="off">
+                            @foreach($roles as $role)
+                                <option @if($user->roles->find($role->id)) selected="selected" @endif value="{{ $role->id }}">
+                                        {{ $role->name == 'administrator' ? 'администратор' : '' }}
+                                        {{ $role->name == 'moderator' ? 'модератор' : '' }}
+                                        {{ $role->name == 'teacher' ? 'преподаватель' : '' }}
+                                        {{ $role->name == 'student' ? 'ученик' : '' }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+
+                @foreach($user->langs as $lang)
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="discount">Скидка на {{ $lang->name }}</label>
+
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <input id="discount" type="text" class="form-control col-md-7 col-xs-12"
+                                       name="discount[]" value="@foreach($user->discounts as $discount){{ $discount->lang_name == $lang->name ? $discount->amount : '' }}@endforeach">
+                                <input type="hidden" name="discount_lang[]" value="{{ $lang->name }}">
+                            </div>
+                    </div>
+                @endforeach
+
+            <div class="form-group">
                     <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
                         <a class="btn btn-primary" href="{{ URL::previous() }}"> {{ __('views.admin.users.edit.cancel') }}</a>
                         <button type="submit" class="btn btn-success"> {{ __('views.admin.users.edit.save') }}</button>

@@ -50,13 +50,13 @@
                                 </a>
                             </li>
                             <li>
-                                <a href="{{ route('admin.roles', [$role = 4]) }}">
+                                <a href="{{ route('admin.roles', [$role = 3]) }}">
                                     <i aria-hidden="true"></i>
-                                    Учителя
+                                    Преподаватели
                                 </a>
                             </li>
                             <li>
-                                <a href="{{ route('admin.roles', [$role = 5]) }}">
+                                <a href="{{ route('admin.roles', [$role = 4]) }}">
                                     <i aria-hidden="true"></i>
                                     Ученики
                                 </a>

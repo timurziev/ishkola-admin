@@ -97,6 +97,9 @@ mix.copy([
 mix.scripts([
     'node_modules/select2/dist/js/select2.full.js',
     'resources/assets/admin/js/users/edit.js',
+
+    'node_modules/inputmask/dist/min/inputmask/inputmask.min.js',
+
 ], 'public/assets/admin/js/users/edit.js').version();
 
 mix.styles([

@@ -8,7 +8,7 @@
             <div class="count">{{ $counts['users'] }}</div>
         </div>
         <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
-            <span class="count_top"><i class="fa fa-briefcase"></i> Учителя</span>
+            <span class="count_top"><i class="fa fa-briefcase"></i> Преподаватели</span>
             <div class="count">{{ $counts['teachers'] }}</div>
         </div>
         <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">

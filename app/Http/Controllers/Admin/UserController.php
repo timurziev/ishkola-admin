@@ -6,6 +6,8 @@ use Auth;
 use App\Models\Auth\User\Avatar;
 use App\Models\Auth\Role\Role;
 use App\Models\Auth\User\User;
+use App\Models\Discount;
+use App\Models\Lang;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Validator;
@@ -78,7 +80,7 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        return view('admin.users.edit', ['user' => $user, 'roles' => Role::get()]);
+        return view('admin.users.edit', ['user' => $user, 'roles' => Role::get(), 'langs' => Lang::get()]);
     }
 
     /**
@@ -109,6 +111,8 @@ class UserController extends Controller
 
         $user->name = $request->get('name');
         $user->email = $request->get('email');
+        $user->phone = $request->get('phone');
+        $user->notes = $request->get('notes');
 
         if ($request['password'] !== null) {
             $user->password = bcrypt($request->get('password'));
@@ -129,6 +133,31 @@ class UserController extends Controller
 
             if ($request->get('roles')) {
                 $user->roles()->attach($request->get('roles'));
+            }
+        }
+
+        //langs
+        if ($request->has('langs')) {
+            $user->langs()->detach();
+
+            if ($request->get('langs')) {
+                $user->langs()->attach($request->get('langs'));
+            }
+        }
+
+        //discount
+        if ($request->has('discount')) {
+            $discount = Discount::where('user_id', $user->id);
+            $discount->delete();
+
+            foreach ($request['discount_lang'] as $key => $lang) {
+                if ($request['discount'][$key] != null) {
+
+                    $fields = ['user_id' => $user->id, 'lang_name' => $lang, 'amount' => $request['discount'][$key]];
+
+                    $discount->create($fields);
+
+                }
             }
         }
 
