@@ -123,7 +123,9 @@ Route::group(['prefix' => 'user', 'as' => 'user.', 'namespace' => 'User'], funct
 });
 
 
-Route::get('/', 'HomeController@index');
+Route::get('/', function () {
+    return redirect('login');
+});
 
 /**
  * Membership

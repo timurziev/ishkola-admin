@@ -9,6 +9,7 @@ use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use App\Models\Auth\User\User;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Ramsey\Uuid\Uuid;
@@ -80,6 +81,21 @@ class RegisterController extends Controller
         $result = $API->sendRequest($service_url, [], "GET");
         $id = isset($result['personid']) ? $result['personid'] : null;
 
+        if (!$id) {
+            $service_url ="https://room.nohchalla.com/mira/service/v2/persons";
+            $parameters = [
+                "pfirstname" => $data['name'],
+                "personemail" => $email,
+                "pilogin" => $email,
+                "pipassword" => $data['password'],
+                "isuser" => 1
+            ];
+
+            $result = $API->sendRequest($service_url, $parameters, "POST");
+
+            $id = $result;
+        }
+
         /** @var  $user User */
         $user = User::create([
             'name' => $data['name'],
@@ -93,6 +109,10 @@ class RegisterController extends Controller
         if (config('auth.users.default_role')) {
             $user->roles()->attach(Role::firstOrCreate(['name' => config('auth.users.default_role')]));
         }
+
+        Mail::send('mail.registered', $data, function ($message) use ($email) {
+            $message->to(env('MAIL_USERNAME'))->subject('Ishkola');
+        });
 
         return $user;
     }
