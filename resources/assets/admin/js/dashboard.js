@@ -361,9 +361,25 @@
     $('#calendar').fullCalendar({
         locale: 'ru',
         header: {
-            left: 'prev',
+            left: 'prev next',
             center: 'title',
-            right : 'next'
+            right : 'today month agendaWeek agendaDay',
+        },
+        views: {
+            agendaDay: {
+                type: 'agenda',
+                duration: { days: 1 },
+            },
+            agendaWeek: {
+                type: 'agenda',
+                duration: { days: 7 },
+            }
+        },
+        buttonText: {
+            today:    'сегодня',
+            month:    'месяц',
+            week:     'неделя',
+            day:      'день',
         },
         events: function(start, end, timezone, callback) {
             $.ajax({
@@ -374,14 +390,37 @@
                 },
             });
         },
+        eventClick: function(event) {
+            if (event.url) {
+                window.open(event.url);
+                return false;
+            }
+        },
+        timeFormat: 'H(:mm)',
     });
 
     $('#user-calendar').fullCalendar({
         locale: 'ru',
         header: {
-            left: 'prev',
+            left: 'prev next',
             center: 'title',
-            right : 'next'
+            right : 'today month agendaWeek agendaDay',
+        },
+        views: {
+            agendaDay: {
+                type: 'agenda',
+                duration: { days: 1 },
+            },
+            agendaWeek: {
+                type: 'agenda',
+                duration: { days: 7 },
+            }
+        },
+        buttonText: {
+            today:    'сегодня',
+            month:    'месяц',
+            week:     'неделя',
+            day:      'день',
         },
         events: function(start, end, timezone, callback) {
             $.ajax({
@@ -392,6 +431,7 @@
                 },
             });
         },
+        timeFormat: 'H(:mm)',
     });
 
     var element = document.querySelector('#chart_gauge');

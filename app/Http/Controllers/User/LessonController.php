@@ -45,13 +45,13 @@ class LessonController extends Controller
 
             foreach ($schedules as $schedule) {
                 foreach ($schedule->lesson->users as $user) {
-                    if ($user->userHasRole('student')) {
+                    if ($user->hasRole('student')) {
                         $student = $user->name;
                     }
                 }
                 $title = $schedule->lesson->lang->name;
                 $start = $schedule->schedule->format('Y-m-d H:i');;
-                $events[] = ['title' => ' | ' . $student . ' | ' . $title, 'start' => $start];
+                $events[] = ['title' => ' | ' . $student . ' | ' . $title, 'start' => $start, 'url' => 'user/lessons/'.$schedule->lesson->id.'/edit'];
             }
 
             return $events;
