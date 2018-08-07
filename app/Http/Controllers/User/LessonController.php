@@ -7,6 +7,8 @@ use App\Models\Schedule;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Lesson;
+use Carbon\Carbon;
+use Cache;
 
 class LessonController extends Controller
 {
@@ -22,6 +24,12 @@ class LessonController extends Controller
         $lessons = $lesson->cachedLessons($email);
         $lessons = collect($lessons);
         $lessons = Lesson::paginateArray($lessons, 20)->setPath('/user/lessons');
+
+        $minutes = Carbon::now()->addMinutes(15);
+
+        Cache::remember('session', $minutes, function () use ($lesson) {
+            return $session = $lesson->getSessionId();
+        });
 
         return view('user.lessons.index', ['lessons' => $lessons]);
     }

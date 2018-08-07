@@ -81,14 +81,14 @@ class Lesson extends Model
         ksort($ret_params);
         $ret_params['appid'] = $appid;
         $signstring = "$url?";
-        foreach($ret_params as $key => $val)
-        {
-            if
-            (($val != "")||(gettype($val) != "string"))
+
+        foreach($ret_params as $key => $val) {
+            if (($val != "")||(gettype($val) != "string"))
             {
                 $signstring .= "$key=$val&";
             }
         }
+
         $signstring .= "secretkey=$secretkey";
         $ret_params['sign'] = strtoupper(md5($signstring));
 
@@ -156,7 +156,7 @@ class Lesson extends Model
     {
         $minutes = Carbon::now()->addMinutes(60);
 
-        $lessons = Cache::remember('lessonsss-' . $email, $minutes, function () {
+        $lessons = Cache::remember('lessons-' . $email, $minutes, function () {
             $lesson = new Lesson;
 
             return $lessons = $lesson->lessonsTemplate();
@@ -174,19 +174,24 @@ class Lesson extends Model
 
     public function resources($id)
     {
-        $minutes = Carbon::now()->addMinutes(30);
+        $session = Cache::get('session');
 
-        $resources = Cache::remember('resources-' . $id, $minutes, function () use ($id) {
-            $url = $this->miraURL('measures', 'resources', $id);
-            $session = $this->getSessionId();
-            $resources = $this->sendRequest($url, [], "GET");
+        $res = Cache::get('resources-' . $id);
 
+        if ($res == null) {
+            $resources = Cache::rememberForever('resources-' . $id, function () use ($id) {
+                $url = $this->miraURL('measures', 'resources', $id);
+                $resources = $this->sendRequest($url, [], "GET");
+
+                return $resources;
+            });
             $resources['session'] = $session;
 
             return $resources;
-        });
-
-        return $resources;
+        } else {
+            $res['session'] = $session;
+            return $res;
+        }
     }
 
     public function createLessonAPI()
