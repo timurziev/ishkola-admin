@@ -13,7 +13,7 @@
                     {{ Form::open(['route'=> 'admin.users', 'method' => 'get'])  }}
                     <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
                         <div class="input-group">
-                            <input type="text" class="form-control" name="search" placeholder="">
+                            <input type="text" class="form-control" name="search"  value="{{ Request::get('search') }}" placeholder="">
                             <span class="input-group-btn">
                                   <button class="btn btn-default" style="border-left: 1px solid rgba(221, 226, 232, 0.49);">Поиск</button>
                                 </span>

@@ -212,6 +212,22 @@ class LessonController extends Controller
 
                 Schedule::create($fields);
             }
+
+            $schedules = Schedule::where('lesson_id', $id)->get();
+            foreach ($schedules as $schedule) {
+                if ($schedule->lesson->group_id) {
+                    foreach ($schedule->lesson->group->users as $user) {
+                        Payment::create(['user_id' => $user->id, 'schedule_id' => $schedule->id]);
+                    }
+                } else {
+                    foreach ($schedule->lesson->users as $user) {
+                        if ($user->hasRole('student')) {
+                            $user_id = $user->id;
+                        }
+                    }
+                    Payment::create(['user_id' => $user_id, 'schedule_id' => $schedule->id]);
+                }
+            }
         }
 
         $lesson->users()->sync($request['users']);
@@ -238,7 +254,7 @@ class LessonController extends Controller
         $lesson = new Lesson();
         $lesson->createLessonAPI();
 
-        return redirect()->back();
+        return redirect()->back()->with('message', 'Занятия успешно запланированы');
     }
 
     public function payment(Request $request)
@@ -265,10 +281,17 @@ class LessonController extends Controller
 
             $inst = new Lesson();
 
-            $phone = ["personworktel" => "Оплачено до $schedule"];
+            $phone = ["personworktel" => "Следующую оплату необходимо сделать до $schedule"];
 
             $service_url ="https://room.nohchalla.com/mira/service/v2/persons/$id";
             $inst->sendRequest($service_url, $phone, "PUT");
+        }
+
+        if ($request->has('comment')) {
+            foreach ($request['comment'] as $key => $comment)  {
+                $schedule = Schedule::whereId($request['schedule_id'][$key])->first();
+                $schedule->update(['comment' => $comment]);
+            }
         }
 
         return redirect()->back();

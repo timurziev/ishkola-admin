@@ -97,9 +97,6 @@ mix.copy([
 mix.scripts([
     'node_modules/select2/dist/js/select2.full.js',
     'resources/assets/admin/js/users/edit.js',
-
-    'node_modules/inputmask/dist/min/inputmask/inputmask.min.js',
-
 ], 'public/assets/admin/js/users/edit.js').version();
 
 mix.styles([
@@ -129,6 +126,8 @@ mix.scripts([
     'node_modules/datatables/media/js/jquery.dataTables.js',
 
     'node_modules/gentelella/vendors/fullcalendar/dist/fullcalendar.js',
+
+    'node_modules/gentelella/vendors/iCheck/icheck.min.js',
 
     'node_modules/gauge-chart/dist/bundle.js',
 

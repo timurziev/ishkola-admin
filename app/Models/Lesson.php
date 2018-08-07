@@ -263,7 +263,7 @@ class Lesson extends Model
                     $service_url = $this->miraURL('measures', 'members', $measure['meid'], $studentID);
                     $this->sendRequest($service_url, [], "POST");
 
-                    if ($payment->paid == 0) {
+                    if (isset($payment->paid) && $payment->paid == 0) {
                         Mail::send('mail.email', $data, function ($message) use ($email) {
                             $message->to($email)->subject('Ishkola');
                         });

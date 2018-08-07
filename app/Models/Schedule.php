@@ -17,7 +17,7 @@ class Schedule extends Model
         'schedule'
     ];
 
-    protected $fillable = ['lesson_id', 'schedule'];
+    protected $fillable = ['lesson_id', 'schedule', 'comment'];
 
     public function lesson()
     {

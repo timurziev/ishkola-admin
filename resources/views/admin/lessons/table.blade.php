@@ -13,7 +13,7 @@
                         @endif
                         <li>
                             <form action="{{ route('admin.lessons.api') }}">
-                                <button class="btn btn-default">Запланировать занятия</button>
+                                <button class="btn btn-default" onclick="return confirm('Вы действительно хотите запланировать занятия?');">Запланировать занятия</button>
                             </form>
                         </li>
                         <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
@@ -31,7 +31,7 @@
                     {{ Form::open(['route'=> 'admin.lessons_table', 'method' => 'get'])  }}
                         <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
                             <div class="input-group">
-                                <input type="text" class="form-control" name="data" placeholder="Введите имя учителя или язык...">
+                                <input type="text" class="form-control" name="data" value="{{ Request::get('data') }}" placeholder="Введите имя учителя или язык...">
                                 <span class="input-group-btn">
                                   <button class="btn btn-default" style="border-left: 1px solid rgba(221, 226, 232, 0.49);">Поиск</button>
                                 </span>
@@ -48,9 +48,10 @@
                                 <tr>
                                     <th>Язык</th>
                                     <th>Группа/ученик</th>
-                                    <th>Преподаватель</th>
+                                    <th>Преподавател</th>
                                     <th>Дата</th>
                                     <th>Время</th>
+                                    <th>Комментарий (нажмите на поле, чтобы оставить комментарий)</th>
                                     <th>К оплате</th>
                                     <th>Остаток</th>
                                     <th>Оплата</th>
@@ -71,6 +72,11 @@
                                             @endforeach
                                             <td>{{ $schedule->schedule->format('d.m.Y') }}</td>
                                             <td>{{ $schedule->schedule->format('H:i') }}</td>
+                                            <td class="schedule_comment">
+                                                <p class="{{ $schedule->comment ? '' : 'hidden'}}"><input type="text" id="comment" name="comment[]" value="{{ $schedule->comment }}" class="form-control col-md-7 col-xs-12"></p>
+
+                                                <input type="hidden" name="schedule_id[]" value="{{ $schedule->id }}">
+                                            </td>
                                             <td></td>
                                             <td></td>
                                             <td></td>
@@ -84,7 +90,7 @@
                                                     @foreach($schedule->payments as $payment)
                                                         <label for="scales-{{ $key }}">Оплачено</label>
                                                         <div class="icheckbox_flat-green {{ $payment->paid ? 'checked' : '' }}" style="position: relative;">
-                                                            <input type="checkbox" class="flat" id="scales-{{ $key }}" name="schedule[]" style="position: absolute; opacity: 0; height: 20px; width: 20px; margin-top: 0;"
+                                                            <input type="checkbox" id="scales-{{ $key }}" name="schedule[]" style="position: absolute; opacity: 0; height: 20px; width: 20px; margin-top: 0;"
                                                                value="{{ $payment->schedule_id }}" {{ $payment->paid ? 'checked' : '' }} />
                                                         </div>
                                                         <input type="hidden" name="user" value="{{ $payment->user_id }}">
@@ -95,7 +101,11 @@
                                     @endforeach
                                 </tbody>
                         </table>
-                        <button type="submit" class="btn btn-default" style="border: 1px solid #169F85; float: right">Отправить</button>
+                        @if (session('message'))
+                            <div style="color: green;">{{ session('message') }}</div>
+                        @endif
+
+                        <button type="submit" class="btn btn-default" style="border: 1px solid #169F85; float: right">Сохранить</button>
                         {{ Form::close() }}
                     </div>
                     <div class="pull-right">

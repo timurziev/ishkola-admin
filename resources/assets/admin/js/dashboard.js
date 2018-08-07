@@ -440,20 +440,6 @@
         timeFormat: 'H(:mm)',
     });
 
-    var element = document.querySelector('#chart_gauge');
-
-    let options = {
-        hasNeedle: true,
-        arcColors: ["rgb(44,151,222)","lightgray"],
-        arcDelimiters: [80],
-        rangeLabel: ["0%","100%"],
-        centralLabel: "80%",
-    };
-
-    GaugeChart
-        .gaugeChart(element, 160, options)
-        .updateNeedle(80);
-
 
     $('a[id^="id"]').click(function(e) {
         e.preventDefault();
@@ -521,6 +507,10 @@
 
     $(".icheckbox_flat-green").click(function () {
         $(this).toggleClass('checked');
+    });
+
+    $(".schedule_comment").click(function () {
+        $(this).children().removeClass('hidden');
     });
 
 })(jQuery);

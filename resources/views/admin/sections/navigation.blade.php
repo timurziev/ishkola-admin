@@ -76,7 +76,7 @@
                                 <a href="{{ route('admin.lessons') }}"> Занятия</a>
                             </li>
                             <li class="">
-                                <a href="{{ route('admin.lessons_table') }}"> Сводная таблица занятий</a>
+                                <a href="{{ route('admin.lessons_table') }}"> Планирование</a>
                             </li>
                         </ul>
                     </li>

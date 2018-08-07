@@ -34,7 +34,9 @@ class UserController extends Controller
 
         if (isset($request['search'])) {
             $search = $request['search'];
-            $users = $users->where('name', 'like', "%$search%");
+            $users = $users->where('name', 'like', "%$search%")->orWhereHas('langs', function ($q) use ($search) {
+                $q->where('name', 'LIKE', "%$search%");
+            });
         }
 
         return view('admin.users.index', ['users' => $users->sortable(['email' => 'asc'])->paginate(20)]);
@@ -156,7 +158,6 @@ class UserController extends Controller
                     $fields = ['user_id' => $user->id, 'lang_name' => $lang, 'amount' => $request['discount'][$key]];
 
                     $discount->create($fields);
-
                 }
             }
         }
