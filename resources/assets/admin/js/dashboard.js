@@ -510,7 +510,13 @@
     });
 
     $(".schedule_comment").click(function () {
+        $(this).children(".comment-pen").hide();
         $(this).children().removeClass('hidden');
+    });
+
+    $(".schedule").click(function () {
+
+        $(".schedule-loader").show();
     });
 
 })(jQuery);

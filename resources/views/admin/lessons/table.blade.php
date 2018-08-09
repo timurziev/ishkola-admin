@@ -13,8 +13,9 @@
                         @endif
                         <li>
                             <form action="{{ route('admin.lessons.api') }}">
-                                <button class="btn btn-default" onclick="return confirm('Вы действительно хотите запланировать занятия?');">Запланировать занятия</button>
+                                <button class="btn btn-default schedule" onclick="return confirm('Вы действительно хотите запланировать занятия?');">Запланировать занятия</button>
                             </form>
+                            <img class="schedule-loader" style="display: none; margin-bottom: 10px;" src="{{ url('/') . '/uploads/images/loader.gif' }}" alt="">
                         </li>
                         <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                         </li>
@@ -51,11 +52,12 @@
                                     <th>Преподавател</th>
                                     <th>Дата</th>
                                     <th>Время</th>
-                                    <th>Комментарий (нажмите на поле, чтобы оставить комментарий)</th>
+                                    <th>Комментарий</th>
                                     <th>К оплате</th>
                                     <th>Остаток</th>
                                     <th>Оплата</th>
                                     <th>Действие</th>
+                                    <th>Статус</th>
                                 </tr>
                             </thead>
                             {{ Form::open(['route'=> 'admin.lessons.payment', 'method' => 'put'])  }}
@@ -73,7 +75,10 @@
                                             <td>{{ $schedule->schedule->format('d.m.Y') }}</td>
                                             <td>{{ $schedule->schedule->format('H:i') }}</td>
                                             <td class="schedule_comment">
-                                                <p class="{{ $schedule->comment ? '' : 'hidden'}}"><input type="text" id="comment" name="comment[]" value="{{ $schedule->comment }}" class="form-control col-md-7 col-xs-12"></p>
+                                                <label for="comment-{{ $key }}" href="" class="comment-pen btn btn-success btn-xs {{ $schedule->comment ? 'hidden' : ''}}">
+                                                    <i class="fa fa-pencil-square-o"></i>
+                                                </label>
+                                                <p class="{{ $schedule->comment ? '' : 'hidden'}}"><input type="text" id="comment-{{ $key }}" name="comment[]" value="{{ $schedule->comment }}" class="form-control col-md-7 col-xs-12"></p>
 
                                                 <input type="hidden" name="schedule_id[]" value="{{ $schedule->id }}">
                                             </td>
@@ -87,15 +92,17 @@
                                                 <a href="{{ route('admin.schedule.destroy', $schedule->id) }}" class="btn btn-danger btn-xs" onclick="return confirm('Удалить занятие?');">
                                                     <i class="fa fa-trash"></i>
                                                 </a>
-                                                    @foreach($schedule->payments as $payment)
-                                                        <label for="scales-{{ $key }}">Оплачено</label>
-                                                        <div class="icheckbox_flat-green {{ $payment->paid ? 'checked' : '' }}" style="position: relative;">
-                                                            <input type="checkbox" id="scales-{{ $key }}" name="schedule[]" style="position: absolute; opacity: 0; height: 20px; width: 20px; margin-top: 0;"
+                                            </td>
+                                            <td>
+                                                @foreach($schedule->payments as $payment)
+                                                    <div class="icheckbox_flat-green {{ $payment->paid ? 'checked' : '' }}" style="position: relative;">
+                                                        <input type="checkbox" id="scales-{{ $key }}" name="schedule[]" style="position: absolute; opacity: 0; height: 20px; width: 20px; margin-top: 0;"
                                                                value="{{ $payment->schedule_id }}" {{ $payment->paid ? 'checked' : '' }} />
-                                                        </div>
-                                                        <input type="hidden" name="user" value="{{ $payment->user_id }}">
-                                                        <input type="hidden" name="paid" value="{{ $payment->paid }}">
-                                                    @endforeach
+                                                    </div>
+                                                    <input type="hidden" name="user" value="{{ $payment->user_id }}">
+                                                    <input type="hidden" name="paid" value="{{ $payment->paid }}">
+                                                    <label for="scales-{{ $key }}">{{ $payment->paid ? 'Оплачено' : 'Неоплачено' }}</label>
+                                                @endforeach
                                             </td>
                                         </tr>
                                     @endforeach

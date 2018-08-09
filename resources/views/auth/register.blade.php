@@ -20,6 +20,21 @@
                                    required/>
                         </div>
                         <div>
+                            <input type="tel" name="phone" class="form-control"
+                                   placeholder="Телефон"
+                                   required/>
+                        </div><br>
+                        <div>
+                            <select class="form-control" name="lang" required>
+                                <option value="" default>Выберите язык</option>
+                            @foreach(App\Models\Lang::all() as $lang)
+                                    <option @if (Request::is('*/edit') && $group->lang_id == $lang->id) selected @endif
+                                    value="{{ $lang->id }}">{{ $lang->name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div><br>
+                        <div>
                             <input type="password" name="password" class="form-control"
                                    placeholder="{{ __('views.auth.register.input_2') }}"
                                    required=""/>
@@ -55,7 +70,7 @@
 
                         <div class="separator">
                             <p class="change_link">{{ __('views.auth.register.message') }}
-                                <a href="{{ route('login') }}" class="to_register"> {{ __('views.auth.register.action_2') }} </a>
+                                <a href="{{ route('login') }}" class="to_register blue"> {{ __('views.auth.register.action_2') }} </a>
                             </p>
 
                             <div class="clearfix"></div>

@@ -39,7 +39,7 @@
                                     <th>Скидка</th>
                                 @endif
                                 @if (Request::is('admin/users'))
-                                    <th>@sortablelink('active', __('views.admin.users.index.table_header_3'),['page' => $users->currentPage()])</th>
+                                    {{--<th>@sortablelink('active', __('views.admin.users.index.table_header_3'),['page' => $users->currentPage()])</th>--}}
                                     <th>@sortablelink('confirmed', __('views.admin.users.index.table_header_4'),['page' => $users->currentPage()])</th>
                                     <th>@sortablelink('created_at', __('views.admin.users.index.table_header_5'),['page' => $users->currentPage()])</th>
                                 @endif
@@ -83,13 +83,13 @@
                                         </td>
                                     @endif
                                     @if (Request::is('admin/users'))
-                                        <td>
-                                            @if($user->active)
-                                                <span class="label label-primary">{{ __('views.admin.users.index.active') }}</span>
-                                            @else
-                                                <span class="label label-danger">{{ __('views.admin.users.index.inactive') }}</span>
-                                            @endif
-                                        </td>
+                                        {{--<td>--}}
+                                            {{--@if($user->active)--}}
+                                                {{--<span class="label label-primary">{{ __('views.admin.users.index.active') }}</span>--}}
+                                            {{--@else--}}
+                                                {{--<span class="label label-danger">{{ __('views.admin.users.index.inactive') }}</span>--}}
+                                            {{--@endif--}}
+                                        {{--</td>--}}
                                         <td>
                                         @if($user->confirmed)
                                             <span class="label label-success">{{ __('views.admin.users.index.confirmed') }}</span>

@@ -252,9 +252,11 @@ class LessonController extends Controller
     public function scheduleAPI()
     {
         $lesson = new Lesson();
-        $lesson->createLessonAPI();
+        $lesson = $lesson->createLessonAPI();
 
-        return redirect()->back()->with('message', 'Занятия успешно запланированы');
+        $message = $lesson ? 'Занятия успешно запланированы' : 'Нет занятий для планирования';
+
+        return redirect()->back()->with('message', $message);
     }
 
     public function payment(Request $request)

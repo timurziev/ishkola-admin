@@ -57,6 +57,7 @@ class RegisterController extends Controller
         $rules = [
             'name' => 'required|max:255',
             'email' => 'required|email|max:255|unique:users',
+            'phone' => 'required',
             'password' => 'required|min:6|confirmed',
         ];
 
@@ -100,15 +101,20 @@ class RegisterController extends Controller
         $user = User::create([
             'name' => $data['name'],
             'email' => $data['email'],
+            'phone' => $data['phone'],
             'miraID' => $id,
             'password' => bcrypt($data['password']),
             'confirmation_code' => Uuid::uuid4(),
             'confirmed' => false
         ]);
 
-        if (config('auth.users.default_role')) {
-            $user->roles()->attach(Role::firstOrCreate(['name' => config('auth.users.default_role')]));
+        if ($data['lang']) {
+            $user->langs()->attach($data['lang']);
         }
+
+//        if (config('auth.users.default_role')) {
+//            $user->roles()->attach(Role::firstOrCreate(['name' => config('auth.users.default_role')]));
+//        }
 
         Mail::send('mail.registered', $data, function ($message) use ($email) {
             $message->to(env('MAIL_USERNAME'))->subject('Ishkola');

@@ -200,7 +200,7 @@ class Lesson extends Model
 
         $schedules = Schedule::where('schedule', 'like', "%$date%")->get();
 
-        if ($schedules != null) {
+        if (count($schedules)) {
             foreach ($schedules as $schedule) {
                 if ($schedule->lesson->group) {
                     $name = $schedule->lesson->group->name;
@@ -281,6 +281,7 @@ class Lesson extends Model
                     }
                 }
             }
+            return true;
         }
     }
 }
