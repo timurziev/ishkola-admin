@@ -177,17 +177,19 @@
                     </div>
                 </div>
 
-                @foreach($user->langs as $lang)
-                    <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="discount">Скидка на {{ $lang->name }}</label>
+                @if($user->hasRole('student'))
+                    @foreach($user->langs as $lang)
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="discount">Скидка на {{ $lang->name }}</label>
 
-                            <div class="col-md-6 col-sm-6 col-xs-12">
-                                <input id="discount" type="text" class="form-control col-md-7 col-xs-12"
-                                       name="discount[]" value="@foreach($user->discounts as $discount){{ $discount->lang_name == $lang->name ? $discount->amount : '' }}@endforeach">
-                                <input type="hidden" name="discount_lang[]" value="{{ $lang->name }}">
-                            </div>
-                    </div>
-                @endforeach
+                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                    <input id="discount" type="text" class="form-control col-md-7 col-xs-12"
+                                           name="discount[]" value="@foreach($user->discounts as $discount){{ $discount->lang_name == $lang->name ? $discount->amount : '' }}@endforeach">
+                                    <input type="hidden" name="discount_lang[]" value="{{ $lang->name }}">
+                                </div>
+                        </div>
+                    @endforeach
+                @endif
 
             <div class="form-group">
                     <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">

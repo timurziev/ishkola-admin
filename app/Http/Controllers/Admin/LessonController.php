@@ -71,10 +71,8 @@ class LessonController extends Controller
         if ($id != null) {
             $schedules = $schedules->whereHas('lesson.users', function($q) use ($id) {
                 $q->where('user_id', $id);
-            })->orWhereHas('lesson', function ($q) use ($id) {
-                $q->whereHas('group.users', function($q) use ($id) {
+            })->orWhereHas('users', function ($q) use ($id) {
                     $q->where('user_id', $id);
-                });
             })->with(['payments' => function ($q) use ($id) {
                 $q->where('user_id', $id);
             }]);
@@ -82,7 +80,7 @@ class LessonController extends Controller
 
         $schedules = $schedules->paginate(20);
 
-        return view('admin.lessons.table', ['schedules' => $schedules]);
+        return view('admin.lessons.table', ['schedules' => $schedules, 'user_id' => $id]);
     }
 
     /**
@@ -142,6 +140,10 @@ class LessonController extends Controller
 
         $lesson->users()->attach($request['users']);
 
+//        if ($lesson->group_id) {
+//            $lesson->users()->attach($lesson->group->users);
+//        }
+
         foreach ($request['users'] as $id) {
             $user = User::whereId($id)->first();
             if ($user->hasRole('student')) {
@@ -152,6 +154,7 @@ class LessonController extends Controller
         foreach ($schedules as $schedule) {
             if ($schedule->lesson->group_id) {
                 foreach ($schedule->lesson->group->users as $user) {
+                    $schedule->users()->attach($user->id);
                     Payment::create(['user_id' => $user->id, 'schedule_id' => $schedule->id]);
                 }
             } else {
@@ -294,6 +297,42 @@ class LessonController extends Controller
                 $schedule = Schedule::whereId($request['schedule_id'][$key])->first();
                 $schedule->update(['comment' => $comment]);
             }
+        }
+
+        return redirect()->back();
+    }
+
+    public function destroySchedule($id, $user_id)
+    {
+        $deleted = Schedule::whereId($id)->whereHas('payments', function ($q) use ($user_id) {
+            $q->where('user_id', $user_id);
+        })->with(['payments' => function ($q) use ($user_id) {
+            $q->where('user_id', $user_id);
+        }])->first();
+
+        $next = Schedule::whereHas('payments', function ($q) use ($user_id) {
+            $q->where('paid', 0)->where('user_id', $user_id);
+        })->whereHas('lesson.users', function($q) use ($user_id) {
+            $q->where('user_id', $user_id);
+        })->orWhereHas('users', function ($q) use ($user_id) {
+            $q->where('user_id', $user_id);
+        })->whereHas('payments', function ($q) use ($user_id) {
+            $q->where('paid', 0)->where('user_id', $user_id);
+        })->with(['payments' => function ($q) use ($user_id) {
+            $q->where('user_id', $user_id);
+        }])->orderBy('schedule', 'desc')->get();
+
+        $next = $next->where('schedule', '<', $deleted->schedule)->first();
+
+
+        if($deleted->lesson->group_id) {
+            $deleted->users()->detach($user_id);
+        } else {
+            $deleted->delete();
+        }
+
+        if ($deleted->payments[0]->paid && isset($next->payments)) {
+            $next->payments[0]->update(['paid' => 1]);
         }
 
         return redirect()->back();

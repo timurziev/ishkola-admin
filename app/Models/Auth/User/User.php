@@ -4,6 +4,7 @@ namespace App\Models\Auth\User;
 
 use App\Models\Auth\User\Traits\Ables\Protectable;
 use App\Models\Auth\User\Traits\Attributes\UserAttributes;
+use App\Models\Schedule;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -118,5 +119,10 @@ class User extends Authenticatable
     public function avatar()
     {
         return $this->hasOne(Avatar::class);
+    }
+
+    public function schedules()
+    {
+        return $this->hasMany(Schedule::class);
     }
 }

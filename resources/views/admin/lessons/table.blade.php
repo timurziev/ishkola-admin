@@ -5,7 +5,7 @@
         <div class="col-md-12 col-sm-12 col-xs-12">
             <div class="x_panel">
                 <div class="x_title">
-                    <h2>Занятия</h2>
+                    <h2>Планирование</h2>
 
                     <ul class="nav navbar-right panel_toolbox" style="min-width: 0;">
                         @if(Request::get('date'))
@@ -30,7 +30,7 @@
                         </div>
                     </div>
                     {{ Form::open(['route'=> 'admin.lessons_table', 'method' => 'get'])  }}
-                        <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
+                        <div class="col-md-4 col-sm-4 col-xs-12 form-group pull-right top_search">
                             <div class="input-group">
                                 <input type="text" class="form-control" name="data" value="{{ Request::get('data') }}" placeholder="Введите имя учителя или язык...">
                                 <span class="input-group-btn">
@@ -49,7 +49,7 @@
                                 <tr>
                                     <th>Язык</th>
                                     <th>Группа/ученик</th>
-                                    <th>Преподавател</th>
+                                    <th>Преподаватель</th>
                                     <th>Дата</th>
                                     <th>Время</th>
                                     <th>Комментарий</th>
@@ -57,7 +57,9 @@
                                     <th>Остаток</th>
                                     <th>Оплата</th>
                                     <th>Действие</th>
-                                    <th>Статус</th>
+                                    @if(Request::is('admin/users/user_lessons/*'))
+                                        <th>Статус</th>
+                                    @endif
                                 </tr>
                             </thead>
                             {{ Form::open(['route'=> 'admin.lessons.payment', 'method' => 'put'])  }}
@@ -89,21 +91,23 @@
                                                 <a href="{{ route('admin.lessons.edit', $schedule->lesson->id) }}" class="btn btn-info btn-xs">
                                                     <i class="fa fa-pencil"></i>
                                                 </a>
-                                                <a href="{{ route('admin.schedule.destroy', $schedule->id) }}" class="btn btn-danger btn-xs" onclick="return confirm('Удалить занятие?');">
+                                                <a href="{{ route('admin.schedule.destroy', [$schedule->id, $user_id]) }}" class="btn btn-danger btn-xs" onclick="return confirm('Удалить занятие?');">
                                                     <i class="fa fa-trash"></i>
                                                 </a>
                                             </td>
-                                            <td>
-                                                @foreach($schedule->payments as $payment)
-                                                    <div class="icheckbox_flat-green {{ $payment->paid ? 'checked' : '' }}" style="position: relative;">
-                                                        <input type="checkbox" id="scales-{{ $key }}" name="schedule[]" style="position: absolute; opacity: 0; height: 20px; width: 20px; margin-top: 0;"
-                                                               value="{{ $payment->schedule_id }}" {{ $payment->paid ? 'checked' : '' }} />
-                                                    </div>
-                                                    <input type="hidden" name="user" value="{{ $payment->user_id }}">
-                                                    <input type="hidden" name="paid" value="{{ $payment->paid }}">
-                                                    <label for="scales-{{ $key }}">{{ $payment->paid ? 'Оплачено' : 'Неоплачено' }}</label>
-                                                @endforeach
-                                            </td>
+                                            @if(Request::is('admin/users/user_lessons/*'))
+                                                <td>
+                                                    @foreach($schedule->payments as $payment)
+                                                        <div class="icheckbox_flat-green {{ $payment->paid ? 'checked' : '' }}" style="position: relative;">
+                                                            <input type="checkbox" id="scales-{{ $key }}" name="schedule[]" style="position: absolute; opacity: 0; height: 20px; width: 20px; margin-top: 0;"
+                                                                   value="{{ $payment->schedule_id }}" {{ $payment->paid ? 'checked' : '' }} />
+                                                        </div>
+                                                        <input type="hidden" name="user" value="{{ $payment->user_id }}">
+                                                        <input type="hidden" name="paid" value="{{ $payment->paid }}">
+                                                        <label for="scales-{{ $key }}">{{ $payment->paid ? 'Оплачено' : 'Неоплачено' }}</label>
+                                                    @endforeach
+                                                </td>
+                                            @endif
                                         </tr>
                                     @endforeach
                                 </tbody>

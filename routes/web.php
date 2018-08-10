@@ -68,11 +68,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
     Route::get('lessons/{lesson}', 'LessonController@destroy')->name('lessons.destroy');
 
     // Schedules
-    Route::get('schedule/{id}', function ($id) {
-        \App\Models\Schedule::whereId($id)->delete();
-
-        return redirect()->back();
-    })->name('schedule.destroy');
+    Route::get('schedule/{id}/{user_id}', 'LessonController@destroySchedule')->name('schedule.destroy');
 
     // Groups
     Route::get('groups', 'GroupController@index')->name('groups');
