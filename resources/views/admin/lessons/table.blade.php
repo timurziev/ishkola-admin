@@ -115,7 +115,7 @@
                         @if (session('message'))
                             <div style="color: green;">{{ session('message') }}</div>
                         @endif
-
+                        <div class="red payment-message" style="font-size: 16px;display: none">Не забудьте сохранить изменения.</div>
                         <button type="submit" class="btn btn-default" style="border: 1px solid #169F85; float: right">Сохранить</button>
                         {{ Form::close() }}
                     </div>

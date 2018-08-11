@@ -507,6 +507,7 @@
 
     $(".icheckbox_flat-green").click(function () {
         $(this).toggleClass('checked');
+        $(".payment-message").show();
     });
 
     $(".schedule_comment").click(function () {
@@ -515,7 +516,6 @@
     });
 
     $(".schedule").click(function () {
-
         $(".schedule-loader").show();
     });
 
