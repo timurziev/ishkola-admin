@@ -37,7 +37,7 @@ class LessonController extends Controller
     {
         $date = $request['date'];
         $data = $request['data'];
-        $schedules = Schedule::orderBy('schedule', 'asc');
+        $schedules = Schedule::orderBy('schedule', 'desc');
 
         if ($request->ajax()) {
             $schedules = Schedule::orderBy('schedule', 'asc')->get();
@@ -320,9 +320,9 @@ class LessonController extends Controller
             $q->where('paid', 0)->where('user_id', $user_id);
         })->with(['payments' => function ($q) use ($user_id) {
             $q->where('user_id', $user_id);
-        }])->orderBy('schedule', 'desc')->get();
+        }])->orderBy('schedule', 'asc')->get();
 
-        $next = $next->where('schedule', '<', $deleted->schedule)->first();
+        $next = $next->where('schedule', '>', $deleted->schedule)->first();
 
 
         if($deleted->lesson->group_id) {

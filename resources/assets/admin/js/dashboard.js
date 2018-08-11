@@ -504,10 +504,17 @@
         }
     });
 
-
     $(".icheckbox_flat-green").click(function () {
         $(this).toggleClass('checked');
-        $(".payment-message").show();
+
+        window.onbeforeunload = confirmExit;
+        function confirmExit(){
+            return false;
+        }
+    });
+
+    $(".btn-default").click(function () {
+        window.onbeforeunload = null;
     });
 
     $(".schedule_comment").click(function () {
@@ -518,6 +525,7 @@
     $(".schedule").click(function () {
         $(".schedule-loader").show();
     });
+
 
 })(jQuery);
 
