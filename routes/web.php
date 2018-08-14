@@ -61,6 +61,8 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
     Route::put('lessons/payment', 'LessonController@payment')->name('lessons.payment');
 
     Route::get('lessons_table', 'LessonController@lessons')->name('lessons_table');
+    Route::post('lessons_table', 'LessonController@lessons')->name('lessons_table');
+
     Route::get('lessons/create', 'LessonController@create')->name('lessons.create');
     Route::put('lessons/store', 'LessonController@store')->name('lessons.store');
     Route::get('lessons/{lesson}/edit', 'LessonController@edit')->name('lessons.edit');

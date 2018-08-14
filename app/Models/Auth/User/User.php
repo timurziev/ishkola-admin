@@ -109,13 +109,6 @@ class User extends Authenticatable
         return $this->hasMany(Discount::class);
     }
 
-    public function userHasRole($role)
-    {
-        if($this->roles()->where('name', $role)->first()) {
-            return true;
-        }
-    }
-
     public function avatar()
     {
         return $this->hasOne(Avatar::class);

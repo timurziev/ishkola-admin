@@ -382,6 +382,25 @@
             day:      'день',
         },
         events: function(start, end, timezone, callback) {
+            $('#submit').on('submit', function (e) {
+                e.preventDefault();
+                $('#calendar').fullCalendar('removeEvents');
+                var teacher = $('#teacher').val();
+                $.ajax({
+                    type: 'POST',
+                    url: 'http://ishkola-admin:8080/admin/lessons_table/?teacher=' + teacher,
+                    dataType: 'json',
+                    success: function(data) {
+                        callback(data);
+
+                        var events = [];
+                        events['events'] = data;
+
+                        $('#calendar').fullCalendar('updateEvents', events);
+                    }
+                });
+            });
+
             $.ajax({
                 url: 'http://ishkola-admin:8080/admin/lessons_table',
                 dataType: 'json',
@@ -398,6 +417,8 @@
         },
         timeFormat: 'H(:mm)',
     });
+
+
 
     $('#user-calendar').fullCalendar({
         locale: 'ru',

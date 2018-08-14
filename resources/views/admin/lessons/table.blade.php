@@ -68,11 +68,11 @@
                                         <tr>
                                             <th scope="row">{{ $schedule->lesson->lang->name }}</th>
                                             @foreach($schedule->lesson->users as $user)
-                                                @if($user->userHasRole('student'))<td>{{ $user->name }}</td>@endif
+                                                @if($user->hasRole('student'))<td>{{ $user->name }}</td>@endif
                                             @endforeach
                                             @if($schedule->lesson->group)<td>{{ $schedule->lesson->group->name }}</td>@endif
                                             @foreach($schedule->lesson->users as $user)
-                                                @if($user->userHasRole('teacher'))<td>{{ $user->name }}</td>@endif
+                                                @if($user->hasRole('teacher'))<td>{{ $user->name }}</td>@endif
                                             @endforeach
                                             <td>{{ $schedule->schedule->format('d.m.Y') }}</td>
                                             <td>{{ $schedule->schedule->format('H:i') }}</td>

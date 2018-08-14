@@ -37,11 +37,11 @@
                                     <tr>
                                         <th scope="row">{{ $lesson->lang->name }}</th>
                                         @foreach($lesson->users as $user)
-                                            @if($user->userHasRole('student'))<td>{{ $user->name }}</td>@endif
+                                            @if($user->hasRole('student'))<td>{{ $user->name }}</td>@endif
                                         @endforeach
                                         @if($lesson->group)<td>{{ $lesson->group->name }}</td>@endif
                                         @foreach($lesson->users as $user)
-                                            @if($user->userHasRole('teacher'))<td>{{ $user->name }}</td>@endif
+                                            @if($user->hasRole('teacher'))<td>{{ $user->name }}</td>@endif
                                         @endforeach
                                         <td>{{ $lesson->duration }}</td>
                                         <td>{{ $lesson->format }}</td>

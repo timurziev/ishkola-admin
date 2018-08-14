@@ -37,10 +37,20 @@ class LessonController extends Controller
     {
         $date = $request['date'];
         $data = $request['data'];
+        $teacherId = $request['teacher'];
+
         $schedules = Schedule::orderBy('schedule', 'desc');
 
         if ($request->ajax()) {
-            $schedules = Schedule::orderBy('schedule', 'asc')->get();
+            $schedules = Schedule::orderBy('schedule', 'asc');
+
+            if ($teacherId !== null) {
+                $schedules = $schedules->whereHas('lesson.users', function ($q) use ($teacherId) {
+                    $q->where('user_id', $teacherId);
+                });
+            }
+
+            $schedules = $schedules->get();
 
             foreach ($schedules as $schedule) {
                 foreach ($schedule->lesson->users as $user) {

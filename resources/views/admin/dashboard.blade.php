@@ -34,7 +34,22 @@
             <div class="x_panel">
                 <div class="x_title">
                     <h2>Календарь занятий</h2>
+
                     <ul class="nav navbar-right panel_toolbox" style="min-width: 0;">
+                        <li>
+                            <form action="{{ route('admin.lessons_table') }}" id="submit" method="POST">
+                                <div style="width: 250px;">
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <select class="form-control" name="teacher" id="teacher">
+                                            @foreach(App\Models\Auth\User\User::whereHas('roles', function ($q) { $q->where('name', 'teacher'); })->get() as $user)
+                                                <option class="teacher" value="{{ $user->id }}">{{ $user->name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                                <button class="btn btn-default">Выбрать</button>
+                            </form>
+                        </li>
                         <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                         </li>
                     </ul>

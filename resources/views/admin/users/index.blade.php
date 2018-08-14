@@ -60,7 +60,7 @@
                                         @endforeach
                                     </td>
                                     <td>{{ $user->langs->pluck('name')->implode(',') }}</td>
-                                    {{--@if(Request::is('admin/roles/*') && $user->userHasRole('teacher'))--}}
+                                    {{--@if(Request::is('admin/roles/*') && $user->hasRole('teacher'))--}}
                                         {{--<td>--}}
                                             {{--@foreach($user->rates as $rate)--}}
                                                 {{--{{ $rate->lang_name }}:--}}
@@ -75,7 +75,7 @@
                                     @if(Request::is('admin/roles/*'))
                                         <th>{{ Illuminate\Support\Str::words($user->notes, $words = 7, $end = '...')  }}</th>
                                     @endif
-                                    @if(Request::is('admin/roles/*') && $user->userHasRole('student'))
+                                    @if(Request::is('admin/roles/*') && $user->hasRole('student'))
                                         <td>
                                             @foreach($user->discounts as $discount)
                                                 {{ $discount->lang_name . ' - ' . $discount->amount }}
