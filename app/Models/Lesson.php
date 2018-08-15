@@ -238,14 +238,16 @@ class Lesson extends Model
                     "date" => $schedule->schedule->format('d.m.Y')
                 ];
 
-                $payment = Payment::where('schedule_id', $schedule->id)->where('user_id', $user->id)->first();
-
+                $payment = Payment::where('schedule_id', $schedule->id)->where('user_id', $user_id)->first();
                 $next_schedule = Schedule::where('id', '>', $schedule->id)->first();
-                $next_payment = Payment::where('schedule_id', $next_schedule->id)->where('user_id', $user->id)->first();
 
-                $next_data = [
-                    "date" => $next_schedule->schedule->format('d.m.Y')
-                ];
+                if ($next_schedule) {
+                    $next_payment = Payment::where('schedule_id', $next_schedule->id)->where('user_id', $user->id)->first();
+
+                    $next_data = [
+                        "date" => $next_schedule->schedule->format('d.m.Y')
+                    ];
+                }
 
                 if (isset($users)) {
                     foreach ($users as $user) {

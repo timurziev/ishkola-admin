@@ -13,6 +13,7 @@ use App\Models\Auth\User\Traits\Scopes\UserScopes;
 use App\Models\Auth\User\Traits\Relations\UserRelations;
 use Kyslik\ColumnSortable\Sortable;
 use App\Models\Lang;
+use App\Models\Lesson;
 use App\Models\Rate;
 use App\Models\Discount;
 
@@ -126,5 +127,26 @@ class User extends Authenticatable
         })->first();
 
         return $user->id;
+    }
+
+    public static function sendPayment($userId)
+    {
+        $schedule = Schedule::whereHas('payments', function ($q) use ($userId) {
+            $q->where('paid', 0)->where('user_id', $userId);
+        })->first();
+
+        if (isset($schedule)) {
+            $schedule = $schedule->schedule->subDays(2)->format('d.m.Y');
+
+            $user = User::whereId($userId)->first();
+            $id = $user->miraID;
+
+            $inst = new Lesson();
+
+            $phone = ["personworktel" => "Следующую оплату необходимо сделать до $schedule"];
+
+            $service_url ="https://room.nohchalla.com/mira/service/v2/persons/$id";
+            $inst->sendRequest($service_url, $phone, "PUT");
+        }
     }
 }

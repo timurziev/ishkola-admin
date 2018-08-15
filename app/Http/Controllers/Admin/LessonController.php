@@ -295,23 +295,7 @@ class LessonController extends Controller
             $condition ? $payment->update(['paid' => 1]) : $payment->update(['paid' => 0]);
         }
 
-        $schedule = Schedule::whereHas('payments', function ($q) {
-            $q->where('paid', 1);
-        })->first();
-
-        if (isset($schedule)) {
-            $schedule = $schedule->schedule->format('d.m.Y');
-
-            $user = User::whereId($request['user'])->first();
-            $id = $user->miraID;
-
-            $inst = new Lesson();
-
-            $phone = ["personworktel" => "Следующую оплату необходимо сделать до $schedule"];
-
-            $service_url ="https://room.nohchalla.com/mira/service/v2/persons/$id";
-            $inst->sendRequest($service_url, $phone, "PUT");
-        }
+        User::sendPayment($request['user']);
 
         if ($request->has('comment')) {
             foreach ($request['comment'] as $key => $comment)  {
@@ -355,6 +339,8 @@ class LessonController extends Controller
         if ($deleted->payments[0]->paid && isset($next->payments)) {
             $next->payments[0]->update(['paid' => 1]);
         }
+
+        User::sendPayment($user_id);
 
         return redirect()->back();
     }
