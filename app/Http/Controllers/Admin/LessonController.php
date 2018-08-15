@@ -17,11 +17,23 @@ class LessonController extends Controller
     /**
      * Display a listing of the resource.
      *
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request  $request)
     {
-        $lessons = Lesson::paginate(20);
+        $data = $request['data'];
+        $lessons = Lesson::orderBy('created_at');
+
+        if ($data != null) {
+            $lessons = $lessons->whereHas('users', function($q) use ($data) {
+                $q->where('name', 'LIKE', "%$data%");
+            })->orWhereHas('lang', function ($q) use ($data) {
+                $q->where('name', 'LIKE', "%$data%");
+            });
+        }
+
+        $lessons = $lessons->paginate(20);
 
         return view('admin.lessons.index', ['lessons' => $lessons]);
     }
@@ -117,7 +129,10 @@ class LessonController extends Controller
     {
         $datetimes = $addedDays = $schedules = $DBSchedules = $interGetDays = $interAddedDays = [];
         $quantity = $request['quantity'] ?? 40;
-        $user_id = User::userIdByRole($request['users'], 'student');
+
+        if (!$request['group_id']) {
+            $user_id = User::userIdByRole($request['users'], 'student');
+        }
         $teacher_id = User::userIdByRole($request['users'], 'teacher');
 
         foreach ($request['datetimes'] as $times) {

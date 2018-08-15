@@ -39,46 +39,39 @@
             <div class="menu_section">
                 <h3>{{ __('views.backend.section.navigation.sub_header_1') }}</h3>
                 <ul class="nav side-menu">
-                    <li class="">
-                        <a><i class="fa fa-user"></i> {{ __('views.backend.section.navigation.menu_1_1') }} <span class="fa fa-chevron-down"></span></a>
-                        <ul class="nav child_menu">
-                            <li>
-                                <a href="{{ route('admin.users') }}">
-                                    <i aria-hidden="true"></i>
-                                    Все пользователи
-                                    <span class="badge bg-orange">@if ($count['users_unconfirmed'] > 0){{ $count['users_unconfirmed'] }} @endif</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="{{ route('admin.roles', [$role = 3]) }}">
-                                    <i aria-hidden="true"></i>
-                                    Преподаватели
-                                </a>
-                            </li>
-                            <li>
-                                <a href="{{ route('admin.roles', [$role = 4]) }}">
-                                    <i aria-hidden="true"></i>
-                                    Ученики
-                                </a>
-                            </li>
-                        </ul>
+                    <li>
+                        <a href="{{ route('admin.users') }}">
+                            <i class="fa fa-user"></i>
+                            <i aria-hidden="true"></i>
+                            Все пользователи
+                            <span class="badge bg-orange">@if ($count['users_unconfirmed'] > 0){{ $count['users_unconfirmed'] }} @endif</span>
+                        </a>
                     </li>
                     <li>
-                        <a href="{{ route('admin.langs') }}"><i class="fa fa-language"></i> Языки</a>
+                        <a href="{{ route('admin.roles', [$role = 3]) }}">
+                            <i class="fa fa-briefcase"></i>
+                            <i aria-hidden="true"></i>
+                            Преподаватели
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('admin.roles', [$role = 4]) }}">
+                            <i class="fa fa-mortar-board"></i>
+                            <i aria-hidden="true"></i>
+                            Ученики
+                        </a>
                     </li>
                     <li>
                         <a href="{{ route('admin.groups') }}"><i class="fa fa-group"></i> Группы</a>
                     </li>
-                    <li class="">
-                        <a><i class="fa fa-book"></i> Занятия <span class="fa fa-chevron-down"></span></a>
-                        <ul class="nav child_menu">
-                            <li class="">
-                                <a href="{{ route('admin.lessons') }}"> Занятия</a>
-                            </li>
-                            <li class="">
-                                <a href="{{ route('admin.lessons_table') }}"> Планирование</a>
-                            </li>
-                        </ul>
+                    <li>
+                        <a href="{{ route('admin.lessons') }}"><i class="fa fa-book"></i> Занятия</a>
+                    </li>
+                    <li>
+                        <a href="{{ route('admin.lessons_table') }}"><i class="fa fa-calendar"></i> Планирование</a>
+                    </li>
+                    <li>
+                        <a href="{{ route('admin.langs') }}"><i class="fa fa-language"></i> Языки</a>
                     </li>
                     {{--<li>--}}
                         {{--<a href="{{ route('admin.permissions') }}">--}}

@@ -15,6 +15,16 @@
                         <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                         </li>
                     </ul>
+                    {{ Form::open(['route'=> 'admin.lessons', 'method' => 'get'])  }}
+                    <div class="col-md-4 col-sm-4 col-xs-12 form-group pull-right top_search">
+                        <div class="input-group">
+                            <input type="text" class="form-control" name="data" value="{{ Request::get('data') }}" placeholder="Введите имя учителя или язык...">
+                            <span class="input-group-btn">
+                                  <button class="btn btn-default" style="border-left: 1px solid rgba(221, 226, 232, 0.49);">Поиск</button>
+                                </span>
+                        </div>
+                    </div>
+                    {{ Form::close() }}
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content">
