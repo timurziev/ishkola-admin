@@ -115,50 +115,48 @@ class LessonController extends Controller
      */
     public function store(Request $request)
     {
-        $addDays = [];
-        $date = [];
-        $time = [];
-        $quantity = $request['quantity'] != null ? $request['quantity'] : $request['quantity'] = 40;
-        $lesson = Lesson::create($request->all());
+        $datetimes = $addedDays = $schedules = $DBSchedules = $interGetDays = $interAddedDays = [];
+        $quantity = $request['quantity'] ?? 40;
+        $user_id = User::userIdByRole($request['users'], 'student');
+        $teacher_id = User::userIdByRole($request['users'], 'teacher');
 
-        foreach ($request['datetimes'] as $datetime) {
-            $newdate[] = Carbon::createFromFormat('d.m.Y H:i', $datetime, 'Europe/Moscow');
+        foreach ($request['datetimes'] as $times) {
+            $date[] = Carbon::createFromFormat('d.m.Y H:i', $times, 'Europe/Moscow');
+
+            $time = Carbon::createFromFormat('d.m.Y H:i', $times, 'Europe/Moscow');
+            $datetimes[] = $time->format('Y-m-d H:i');
+
+            $interGetDays[] = Carbon::createFromFormat('d.m.Y H:i', $times, 'Europe/Moscow')->format('Y-m-d H');
         }
 
-        foreach ($newdate as $var) {
-            $date[] = $var->format('Y-m-d H:i');
-        }
+        while (count(array_merge($datetimes, $addedDays)) < $quantity) {
+            foreach ($date as $day) {
+                $addedDays[] = $day->addDays(7)->format('Y-m-d H:i');
 
-        while (count($addDays) < $quantity) {
-            foreach ($newdate as $day) {
-                $addDays[] = $day->addDays(7)->format('Y-m-d H:i');
+                $interAddedDays[] = $day->format('Y-m-d H');
             }
         }
 
-        $mergedDate = array_merge($date, $addDays);
+        $teacherSchedules = Schedule::whereHas('lesson.users', function($q) use ($teacher_id) {
+            $q->where('user_id', $teacher_id);
+        })->pluck('schedule');
 
-        $number = count($mergedDate) - $request['quantity'];
-
-        array_splice($mergedDate, - $number);
-
-        foreach ($mergedDate as $finalDate) {
-            $fields = ['lesson_id' => $lesson->id, 'schedule' => $finalDate . ':00'];
-            $schedules[] = Schedule::create($fields);
-
-            $time[] = $finalDate;
+        foreach ($teacherSchedules as $schedule) {
+            $DBSchedules[] = Carbon::createFromFormat('Y-m-d H:i:s', $schedule, 'Europe/Moscow')->format('Y-m-d H');
         }
 
+        $intersect = array_intersect($DBSchedules, array_merge($interGetDays, $interAddedDays));
+
+        if ($intersect) {
+            return redirect()->back()->with(['message' => 'Обнаружены повторяющиеся даты', 'intersect' => $intersect]);
+        }
+
+        $lesson = Lesson::create($request->all());
         $lesson->users()->attach($request['users']);
 
-//        if ($lesson->group_id) {
-//            $lesson->users()->attach($lesson->group->users);
-//        }
-
-        foreach ($request['users'] as $id) {
-            $user = User::whereId($id)->first();
-            if ($user->hasRole('student')) {
-                $user_id = $user->id;
-            }
+        foreach (array_merge($datetimes, $addedDays) as $finalDate) {
+            $fields = ['lesson_id' => $lesson->id, 'schedule' => $finalDate . ':00'];
+            $schedules[] = Schedule::create($fields);
         }
 
         foreach ($schedules as $schedule) {
@@ -171,8 +169,6 @@ class LessonController extends Controller
                 Payment::create(['user_id' => $user_id, 'schedule_id' => $schedule->id]);
             }
         }
-
-//        $lesson->createLessonAPI($lesson, $time, $request['users']);
 
         return redirect()->route('admin.lessons');
     }

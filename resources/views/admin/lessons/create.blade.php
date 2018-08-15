@@ -139,7 +139,10 @@
                         <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
                             <button type="submit" class="btn btn-success" style="margin-bottom: 0; padding-right: 10px">{{ Request::is('*/edit') ? 'Отправить' : 'Создать' }}</button>
                             @if (session('message'))
-                                {{ session('message') }}
+                                <span class="red">{{ session('message') }}</span>
+                                @foreach(session('intersect') as $date)
+                                    <span>{{ $date . ' часов, ' }}</span>
+                                @endforeach
                             @endif
                         </div>
                     </div>

@@ -118,4 +118,13 @@ class User extends Authenticatable
     {
         return $this->hasMany(Schedule::class);
     }
+
+    public static function userIdByRole($ids, $arg)
+    {
+        $user = User::whereIn('id', $ids)->whereHas('roles', function ($q) use ($arg) {
+            $q->where('name', $arg);
+        })->first();
+
+        return $user->id;
+    }
 }
