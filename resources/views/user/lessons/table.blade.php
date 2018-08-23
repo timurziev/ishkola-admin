@@ -41,26 +41,40 @@
                                width="100%">
                             <thead>
                                 <tr>
-                                    <th>Язык</th>
+                                    @if(!Auth::user()->hasRole('teacher'))
+                                        <th>Язык</th>
+                                    @endif
                                     <th>Группа/ученик</th>
-                                    <th>Учитель</th>
+                                    @if(!Auth::user()->hasRole('teacher'))
+                                        <th>Учитель</th>
+                                    @endif
                                     <th>Дата</th>
                                     <th>Время</th>
+                                    <th>Ставка</th>
+                                    <th>К оплате</th>
+                                    <th>Статус</th>
                                 </tr>
                             </thead>
                             <tbody>
                             @foreach($schedules as $schedule)
                                 <tr>
-                                    <th scope="row">{{ $schedule->lesson->lang->name }}</th>
+                                    @if(!Auth::user()->hasRole('teacher'))
+                                        <th scope="row">{{ $schedule->lesson->lang->name }}</th>
+                                    @endif
                                     @foreach($schedule->lesson->users as $user)
-                                        @if($user->userHasRole('student'))<td>{{ $user->name }}</td>@endif
+                                        @if($user->hasRole('student'))<td>{{ $user->name }}</td>@endif
                                     @endforeach
                                     @if($schedule->lesson->group)<td>{{ $schedule->lesson->group->name }}</td>@endif
-                                    @foreach($schedule->lesson->users as $user)
-                                        @if($user->userHasRole('teacher'))<td>{{ $user->name }}</td>@endif
-                                    @endforeach
+                                    @if(!Auth::user()->hasRole('teacher'))
+                                        @foreach($schedule->lesson->users as $user)
+                                            @if($user->hasRole('teacher'))<td>{{ $user->name }}</td>@endif
+                                        @endforeach
+                                    @endif
                                     <td>{{ $schedule->schedule->format('d.m.Y') }}</td>
                                     <td>{{ $schedule->schedule->format('H:i') }}</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
                                 </tr>
                             @endforeach
                             </tbody>

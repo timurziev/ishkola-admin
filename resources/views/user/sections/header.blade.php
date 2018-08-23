@@ -13,9 +13,11 @@
                         <span class=" fa fa-angle-down"></span>
                     </a>
                     <ul class="dropdown-menu dropdown-usermenu pull-right">
-                        <li>
-                            <a href="{{ route('user.users.show', auth()->user()->id) }}">Профиль</a>
-                        </li>
+                        @if(!Auth::user()->hasRole('student'))
+                            <li>
+                                <a href="{{ route('user.users.show', auth()->user()->id) }}">Профиль</a>
+                            </li>
+                        @endif
                         <li>
                             <a href="{{ route('user.users.edit', auth()->user()->id) }}">Редактировать</a>
                         </li>

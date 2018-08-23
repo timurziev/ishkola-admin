@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Lesson;
 use App\Jobs\CacheLessons;
+use Cache;
 
 class DashboardController extends Controller
 {
@@ -61,6 +62,12 @@ class DashboardController extends Controller
             $lessons = array_slice($lesson->cachedLessons($email), 0, 5);
             $this->dispatch(new CacheLessons($email));
         }
+
+        $lesson = new Lesson;
+        $minutes = Carbon::now()->addMinutes(15);
+        Cache::remember('session', $minutes, function () use ($lesson) {
+            return $session = $lesson->getSessionId();
+        });
 
         return view('user.dashboard', ['counts' => $counts, 'lessons' => $lessons]);
     }

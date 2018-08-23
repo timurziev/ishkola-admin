@@ -3,7 +3,7 @@
   "This action unauthorized.": "This action unauthorized.",
   "Whoops, looks like something went wrong.": "Whoops, looks like something went wrong.",
   "************************** Auth **************************": "Auth i18n",
-  "auth.failed": "These credentials do not match our records.",
+  "auth.failed": "Неправильный логин или пароль.",
   "auth.throttle": "Too many login attempts. Please try again in :seconds seconds.",
   "auth.active": "Your account has been suspended",
   "auth.notconfirmed": "Your account is not confirmed. Check your e-mail or <a href=':url'/> re-request</a> a confirmation email.",

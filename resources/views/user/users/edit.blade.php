@@ -34,23 +34,23 @@
                     </div>
                 </div>
 
-                <div class="form-group">
-                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="email">
-                        {{ __('views.admin.users.edit.email') }}
-                        <span class="required">*</span>
-                    </label>
-                    <div class="col-md-6 col-sm-6 col-xs-12">
-                        <input id="email" type="email" class="form-control col-md-7 col-xs-12 @if($errors->has('email')) parsley-error @endif"
-                               name="email" value="{{ $user->email }}" required>
-                        @if($errors->has('email'))
-                            <ul class="parsley-errors-list filled">
-                                @foreach($errors->get('email') as $error)
-                                    <li class="parsley-required">{{ $error }}</li>
-                                @endforeach
-                            </ul>
-                        @endif
-                    </div>
-                </div>
+                {{--<div class="form-group">--}}
+                    {{--<label class="control-label col-md-3 col-sm-3 col-xs-12" for="email">--}}
+                        {{--{{ __('views.admin.users.edit.email') }}--}}
+                        {{--<span class="required">*</span>--}}
+                    {{--</label>--}}
+                    {{--<div class="col-md-6 col-sm-6 col-xs-12">--}}
+                        {{--<input id="email" type="email" class="form-control col-md-7 col-xs-12 @if($errors->has('email')) parsley-error @endif"--}}
+                               {{--name="email" value="{{ $user->email }}" required>--}}
+                        {{--@if($errors->has('email'))--}}
+                            {{--<ul class="parsley-errors-list filled">--}}
+                                {{--@foreach($errors->get('email') as $error)--}}
+                                    {{--<li class="parsley-required">{{ $error }}</li>--}}
+                                {{--@endforeach--}}
+                            {{--</ul>--}}
+                        {{--@endif--}}
+                    {{--</div>--}}
+                {{--</div>--}}
 
                 <div class="form-group">
                     <label class="control-label col-md-3 col-sm-3 col-xs-12" for="password">

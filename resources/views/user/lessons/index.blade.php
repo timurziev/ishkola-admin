@@ -18,17 +18,15 @@
                                width="100%">
                             <thead>
                                 <tr>
-                                    <th>Информация</th>
+                                    <th>Занятия</th>
                                     <th>Дата начала</th>
-                                    <th>Дата окончания</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach($lessons as $key => $lesson)
                                     <tr>
                                         <td ><a class="{{ $lesson['meid'] }}" id="id{{ $key }}" href="">{{ $lesson['mename'] }}</a></td>
-                                        <td>{{ $lesson['mestartdate'] }}</td>
-                                        <td>{{ $lesson['meenddate'] }}</td>
+                                        <td>{{ \Carbon\Carbon::parse($lesson['mestartdate'])->format('d.m.Y H:i') }}</td>
                                     </tr>
 
                                     <tr class="items-{{ $lesson['meid'] }}" style="display: none">

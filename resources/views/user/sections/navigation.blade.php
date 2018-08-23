@@ -25,7 +25,7 @@
         <!-- sidebar menu -->
         <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
             <div class="menu_section">
-                <h3>{{ __('views.backend.section.navigation.sub_header_0') }}</h3>
+                {{--<h3>{{ __('views.backend.section.navigation.sub_header_0') }}</h3>--}}
                 <ul class="nav side-menu">
                     <li>
                         <a href="{{ route('user.dashboard') }}">
@@ -34,21 +34,24 @@
                             Главная
                         </a>
                     </li>
-                </ul>
-            </div>
-            <div class="menu_section">
-                <h3>{{ __('views.backend.section.navigation.sub_header_1') }}</h3>
-                <ul class="nav side-menu">
                     @if (Auth::user()->hasRole('student'))
                         <li class="">
-                            <a href="{{ route('user.lessons') }}"><i class="fa fa-book"></i> Занятия</a>
+                            <a href="{{ route('user.lessons') }}"><i class="fa fa-book"></i> Все записи</a>
                         </li>
                     @endif
-                    <li class="">
-                        <a href="{{ route('user.lessons_table') }}"><i class="fa fa-book"></i> Сводная таблица занятий</a>
-                    </li>
+                    @if(!Auth::user()->hasRole('student'))
+                        <li class="">
+                            <a href="{{ route('user.lessons_table') }}"><i class="fa fa-book"></i> Все занятия</a>
+                        </li>
+                    @endif
                 </ul>
             </div>
+            {{--<div class="menu_section">--}}
+                {{--<h3>{{ __('views.backend.section.navigation.sub_header_1') }}</h3>--}}
+                {{--<ul class="nav side-menu">--}}
+                    {{----}}
+                {{--</ul>--}}
+            {{--</div>--}}
         </div>
         <!-- /sidebar menu -->
     </div>

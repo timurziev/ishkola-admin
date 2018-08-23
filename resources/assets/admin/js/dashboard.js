@@ -315,6 +315,10 @@
     function setCalendar(inst) {
         $(inst).daterangepicker({
             singleDatePicker: true,
+            // ranges: {
+            //     "Предыдущий месяц": [moment().startOf('month'), moment().endOf('month')],
+            //     "Следующий месяц": [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+            // },
             locale: {
                 format: 'DD.MM.YYYY',
                 separator: " - ",

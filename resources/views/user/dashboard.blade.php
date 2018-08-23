@@ -30,7 +30,7 @@
     </div>
 
     <div class="row">
-        @if(Auth::user()->userHasRole('teacher'))
+
             <div class="col-md-12">
                 <div class="x_panel">
                     <div class="x_title">
@@ -47,7 +47,7 @@
                     </div>
                 </div>
             </div>
-        @else
+        @if(Auth::user()->hasRole('student'))
             <div class="col-md-4">
                 <div class="x_panel">
                     <div class="x_title">
@@ -68,20 +68,25 @@
                                     </a>
                                     <div class="media-body">
                                         <p><a href="" class="{{ $lesson['meid'] }}" id="id{{ $key }}">{{ $lesson['mename'] }}</a></p>
-                                        <p>Начало: {{ \Carbon\Carbon::parse($lesson['mestartdate'])->format('H:i:s') }}</p>
+                                        <p>Начало: {{ \Carbon\Carbon::parse($lesson['mestartdate'])->format('H:i') }}</p>
                                         {{--<p>Окончание: {{ \Carbon\Carbon::parse($lesson['meenddate'])->format('H:i:s') }}</p>--}}
-                                        <div class="items-{{ $lesson['meid'] }}" style="display: none">
-                                            <div class="records">
-                                                <h4>Запись занятия:</h4>
-                                                <img style="display: none; margin-bottom: 10px;" src="{{ url('/') . '/uploads/images/loader.gif' }}" alt="">
-                                            </div>
-                                            <div class="resources">
-                                                <h4>Материалы:</h4>
-                                                <img style="display: none; margin-bottom: 10px;" src="{{ url('/') . '/uploads/images/loader.gif' }}" alt="">
-                                            </div>
-                                        </div>
+                                        <table class="table table-striped table-bordered dt-responsive nowrap">
+                                            <tbody>
+                                                <tr class="items-{{ $lesson['meid'] }}" style="display: none">
+                                                    <td class="records">
+                                                        <h4>Запись занятия:</h4>
+                                                        <img style="display: none; margin-bottom: 10px;" src="{{ asset('/uploads/images/loader.gif') }}" alt="">
+                                                    </td>
+                                                </tr>
+                                                <tr class="items-{{ $lesson['meid'] }}" style="display: none">
+                                                    <td class="resources">
+                                                        <h4>Материалы:</h4>
+                                                        <img style="display: none; margin-bottom: 10px;" src="{{ asset('/uploads/images/loader.gif') }}" alt="">
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
                                     </div>
-
                                 </article>
                             @endforeach
                         @endif
@@ -101,9 +106,22 @@
                     <div class="x_content">
                         <div class="dashboard-widget-content">
                             <ul class="quick-list">
-                                <li style="overflow: visible;"><i class="fa fa-clock-o"></i>{{ $lessons[0]['mename'] }}</li>
-                                <li><i class="fa fa-clock-o"></i><a href="#">Начало: {{ \Carbon\Carbon::parse($lessons[0]['mestartdate'])->format('H:i:s') }}</a></li>
-                                <li><i class="fa fa-clock-o"></i><a href="#">Конец: {{ \Carbon\Carbon::parse($lessons[0]['meenddate'])->format('H:i:s') }}</a></li>
+                                <li style="font-size: 16px"><i class="fa fa-calendar"></i><a href="#">Дата: {{ \Carbon\Carbon::parse($lessons[0]['mestartdate'])->format('Y-m-d H:i:s') }}</a></li>
+                                <li style="overflow: visible;"><i class="fa fa-bullhorn"></i>{{ $lessons[0]['mename'] }}</li>
+                                <li><i class="fa fa-clock-o"></i><a href="#">Начало: {{ \Carbon\Carbon::parse($lessons[0]['mestartdate'])->format('H:i') }}</a></li>
+                                <li><i class="fa fa-clock-o"></i><a href="#">Конец: {{ \Carbon\Carbon::parse($lessons[0]['meenddate'])->format('H:i') }}</a></li>
+                                <li style="overflow: visible;"><i class="fa fa-check-square-o"></i>
+                                    Статус:
+                                    @if (\App\Models\Schedule::where('schedule', \Carbon\Carbon::parse($lessons[0]['mestartdate'])
+                                        ->format('Y-m-d H:i:s'))
+                                        ->whereHas('lesson.users', function ($q) { $q->where('user_id', Auth::user()->id); })
+                                        ->with('payments')->first()->payments[0]->paid)
+                                        <span class="label label-success">Оплачено</span>
+                                    @else
+                                        <span class="label label-danger">Неоплачено</span>
+                                    @endif
+                                </li>
+                                <li><a href="{{ $lessons[0]['link'] }}" target="_blank"><button class="btn btn-info">Подключиться</button></a></li>
                             </ul>
 
                             {{--<div class="sidebar-widget" id="chart_gauge">--}}
