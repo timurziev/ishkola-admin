@@ -106,16 +106,16 @@
                     <div class="x_content">
                         <div class="dashboard-widget-content">
                             <ul class="quick-list">
-                                <li style="font-size: 16px"><i class="fa fa-calendar"></i><a href="#">Дата: {{ \Carbon\Carbon::parse($lessons[0]['mestartdate'])->format('Y-m-d H:i:s') }}</a></li>
+                                <li style="overflow: visible; font-size: 16px"><i class="fa fa-calendar"></i><a href="#">Дата: {{ \Carbon\Carbon::parse($lessons[0]['mestartdate'])->format('Y-m-d H:i:s') }}</a></li>
                                 <li style="overflow: visible;"><i class="fa fa-bullhorn"></i>{{ $lessons[0]['mename'] }}</li>
                                 <li><i class="fa fa-clock-o"></i><a href="#">Начало: {{ \Carbon\Carbon::parse($lessons[0]['mestartdate'])->format('H:i') }}</a></li>
                                 <li><i class="fa fa-clock-o"></i><a href="#">Конец: {{ \Carbon\Carbon::parse($lessons[0]['meenddate'])->format('H:i') }}</a></li>
                                 <li style="overflow: visible;"><i class="fa fa-check-square-o"></i>
                                     Статус:
-                                    @if (\App\Models\Schedule::where('schedule', \Carbon\Carbon::parse($lessons[0]['mestartdate'])
+                                    @if (isset(\App\Models\Schedule::where('schedule', \Carbon\Carbon::parse($lessons[0]['mestartdate'])
                                         ->format('Y-m-d H:i:s'))
                                         ->whereHas('lesson.users', function ($q) { $q->where('user_id', Auth::user()->id); })
-                                        ->with('payments')->first()->payments[0]->paid)
+                                        ->with('payments')->first()->payments[0]->paid))
                                         <span class="label label-success">Оплачено</span>
                                     @else
                                         <span class="label label-danger">Неоплачено</span>

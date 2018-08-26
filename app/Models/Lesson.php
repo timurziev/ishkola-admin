@@ -230,6 +230,8 @@ class Lesson extends Model
                 $service_url = $this->miraURL('measures', null);
                 $measure = $this->sendRequest($service_url, $parameters, "POST");
 
+                $schedule->update(['meid' => $measure['meid']]);
+
                 $service_url = $this->miraURL('measures', 'tutors', $measure['meid'], $teacherID);
                 $this->sendRequest($service_url, [], "POST");
 

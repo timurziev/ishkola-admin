@@ -18,6 +18,7 @@ class CreateSchedulesTable extends Migration
             $table->integer('lesson_id')->unsigned();
             $table->dateTime('schedule');
             $table->string('comment')->nullable();
+            $table->integer('meid')->nullable();
             $table->foreign('lesson_id')->references('id')->on('lessons')->onDelete('cascade');
             $table->timestamps();
         });
