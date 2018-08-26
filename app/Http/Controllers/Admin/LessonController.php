@@ -222,22 +222,22 @@ class LessonController extends Controller
     public function update(Request $request, $id)
     {
         $lesson = Lesson::whereId($id)->firstOrFail();
+        $schedules = [];
 
-        $lesson->update($request->all());
+//        $lesson->update($request->all());
 
-        if ($request['datetimes'] != null) {
-            $schedules = Schedule::where('lesson_id', $id);
-            $schedules->delete();
+        if ($request['edit-datetimes'] != null) {
+//            $schedules = Schedule::where('lesson_id', $id);
+//            $schedules->delete();
 
-            foreach ($request['datetimes'] as $date) {
+            foreach ($request['edit-datetimes'] as $date) {
                 $newdate = Carbon::createFromFormat('d.m.Y H:i', $date, 'Europe/Moscow')->format('Y-m-d H:i');
 
                 $fields = ['lesson_id' => $id, 'schedule' => $newdate . ':00'];
 
-                Schedule::create($fields);
+                $schedules[] = Schedule::create($fields);
             }
 
-            $schedules = Schedule::where('lesson_id', $id)->get();
             foreach ($schedules as $schedule) {
                 if ($schedule->lesson->group_id) {
                     foreach ($schedule->lesson->group->users as $user) {
@@ -295,7 +295,7 @@ class LessonController extends Controller
             $condition ? $payment->update(['paid' => 1]) : $payment->update(['paid' => 0]);
         }
 
-        User::sendPayment($request['user']);
+        User::sendPaymentInfo($request['user']);
 
         if ($request->has('comment')) {
             foreach ($request['comment'] as $key => $comment)  {
@@ -309,11 +309,15 @@ class LessonController extends Controller
 
     public function destroySchedule($id, $user_id)
     {
-        $deleted = Schedule::whereId($id)->whereHas('payments', function ($q) use ($user_id) {
+        $deleting = Schedule::whereId($id)->whereHas('payments', function ($q) use ($user_id) {
             $q->where('user_id', $user_id);
         })->with(['payments' => function ($q) use ($user_id) {
             $q->where('user_id', $user_id);
         }])->first();
+
+        $lesson = new Lesson();
+        $url = $lesson->miraURL('measures', null, $deleting->meid);
+        $lesson->sendRequest($url, [], "DELETE");
 
         $next = Schedule::whereHas('payments', function ($q) use ($user_id) {
             $q->where('paid', 0)->where('user_id', $user_id);
@@ -327,20 +331,20 @@ class LessonController extends Controller
             $q->where('user_id', $user_id);
         }])->orderBy('schedule', 'asc')->get();
 
-        $next = $next->where('schedule', '>', $deleted->schedule)->first();
+        $next = $next->where('schedule', '>', $deleting->schedule)->first();
 
 
-        if($deleted->lesson->group_id) {
-            $deleted->users()->detach($user_id);
+        if($deleting->lesson->group_id) {
+            $deleting->users()->detach($user_id);
         } else {
-            $deleted->delete();
+            $deleting->delete();
         }
 
-        if ($deleted->payments[0]->paid && isset($next->payments)) {
+        if ($deleting->payments[0]->paid && isset($next->payments)) {
             $next->payments[0]->update(['paid' => 1]);
         }
 
-        User::sendPayment($user_id);
+        User::sendPaymentInfo($user_id);
 
         return redirect()->back();
     }

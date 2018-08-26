@@ -286,6 +286,10 @@
         event.preventDefault();
         count++;
         var cloned = $('#parent-input').clone();
+        if (cloned.length === 0) {
+            cloned = $('#edit-parent-input').clone();
+            cloned.find('input').attr('name', 'edit-datetimes[]');
+        }
         cloned.find('input').attr('id', 'reserve-' + count);
         cloned.insertAfter("#reserve").appendTo(".controls");
         cloned.find('#date-time').remove();

@@ -91,7 +91,7 @@
                                                 <a href="{{ route('admin.lessons.edit', $schedule->lesson->id) }}" class="btn btn-info btn-xs">
                                                     <i class="fa fa-pencil"></i>
                                                 </a>
-                                                <a href="{{ route('admin.schedule.destroy', [$schedule->id, $user_id]) }}" class="btn btn-danger btn-xs" onclick="return confirm('Удалить занятие?');">
+                                                <a href="{{ route('admin.schedule.destroy', [$schedule->id, App\Models\Auth\User\User::userIdByRole($schedule->lesson->users->pluck('id'), 'student')]) }}" class="btn btn-danger btn-xs" onclick="return confirm('Удалить занятие?');">
                                                     <i class="fa fa-trash"></i>
                                                 </a>
                                             </td>

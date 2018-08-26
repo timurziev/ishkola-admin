@@ -108,11 +108,12 @@ class Lesson extends Model
         $curl_data = $this->signin($url, $parameters);
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch,CURLOPT_CUSTOMREQUEST,$method);
         $query = http_build_query($curl_data);
 
         if ($method == "POST") {
             curl_setopt($ch,CURLOPT_POSTFIELDS,$query);
-        } elseif ($method == "GET") {
+        } elseif ($method == "GET" || $method == "DELETE") {
             $url .= "?$query";
         } else {
             curl_setopt($ch,CURLOPT_POSTFIELDS,$query);

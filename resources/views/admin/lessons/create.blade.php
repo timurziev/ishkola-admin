@@ -101,20 +101,15 @@
                             <div class="controls">
                                 @if (Request::is('*/edit'))
                                     @foreach($lesson->schedules as $key => $schedule)
-                                    <div class="input-prepend input-group datetimes" @if($key != 0) id="parent-input-{{ $key }}" @else id="parent-input" @endif>
-                                        <span class="add-on input-group-addon">
-                                            <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
-                                        </span>
-                                        <input type="text" name="datetimes[]" id="reserve" class="form-control datetime" value="{{ $schedule->schedule->format('d.m.Y H:i') }}">
-                                        {{--@if($key == 0)--}}
-                                            {{--<a href="" id="date-time" style="top: 9px; position: absolute; padding-left: 8px;">--}}
-                                                {{--<i class="glyphicon glyphicon-plus"></i>--}}
-                                            {{--</a>--}}
-                                        {{--@endif--}}
-                                        <a href="" @if($key == 0) class="hide" @else class="remove" @endif id="remove-date" style="top: 9px; position: absolute; margin-left: 8px;">
-                                            <i class="glyphicon glyphicon-remove"></i>
-                                        </a>
-                                    </div>
+                                        <div class="input-prepend input-group datetimes" @if($key != 0) id="parent-input-{{ $key }}" @else id="edit-parent-input" @endif>
+                                            <span class="add-on input-group-addon">
+                                                <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
+                                            </span>
+                                            <input type="text" name="datetimes[]" id="reserve" class="form-control datetime" value="{{ $schedule->schedule->format('d.m.Y H:i') }}">
+                                            <a href="" class="remove hide" id="remove-date" style="top: 9px; position: absolute; margin-left: 8px;">
+                                                <i class="glyphicon glyphicon-remove"></i>
+                                            </a>
+                                        </div>
                                     @endforeach
                                 @else
                                     <div class="input-prepend input-group datetimes" id="parent-input">
@@ -122,9 +117,6 @@
                                             <i class="fa fa-calendar"></i>
                                         </span>
                                         <input type="text" name="datetimes[]" id="reserve" class="form-control datetime" value="">
-                                        {{--<a href="" id="date-time" style="top: 9px; position: absolute; padding-left: 8px;">--}}
-                                            {{--<i class="glyphicon glyphicon-plus"></i>--}}
-                                        {{--</a>--}}
                                         <a href="" class="hide" id="remove-date" style="top: 9px; position: absolute; margin-left: 25px;">
                                             <i class="glyphicon glyphicon-remove"></i>
                                         </a>

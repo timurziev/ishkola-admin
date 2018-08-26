@@ -129,7 +129,7 @@ class User extends Authenticatable
         return $user->id;
     }
 
-    public static function sendPayment($userId)
+    public static function sendPaymentInfo($userId)
     {
         $schedule = Schedule::whereHas('payments', function ($q) use ($userId) {
             $q->where('paid', 0)->where('user_id', $userId);
