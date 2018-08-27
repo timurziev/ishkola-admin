@@ -4,6 +4,7 @@ namespace App\Http\Controllers\User;
 
 use Auth;
 use App\Models\Schedule;
+use App\Services\MirapolisApi;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Lesson;
@@ -82,18 +83,18 @@ class LessonController extends Controller
         return view('user.lessons.table', ['schedules' => $schedules]);
     }
 
-    public function getRecords($id)
+    public function getRecords($id, MirapolisApi $mirapolis)
     {
         $lesson = new Lesson;
 
-        return $var = $lesson->records($id);
+        return $var = $lesson->records($id, $mirapolis);
     }
 
-    public function getResources($id)
+    public function getResources($id, MirapolisApi $mirapolis)
     {
         $lesson = new Lesson;
 
-        return $var = $lesson->resources($id);
+        return $var = $lesson->resources($id, $mirapolis);
     }
 
     /**

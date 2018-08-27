@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Models\Group;
 use App\Models\Schedule;
 use App\Models\Payment;
+use App\Services\MirapolisApi;
 use Illuminate\Http\Request;
 use App\Models\Lesson;
 use App\Models\Lang;
@@ -283,7 +284,7 @@ class LessonController extends Controller
         return redirect()->back()->with('message', $message);
     }
 
-    public function payment(Request $request)
+    public function payment(Request $request, MirapolisApi $mirapolis)
     {
         $payments = Payment::where('user_id', $request['user'])->get();
 
@@ -295,7 +296,7 @@ class LessonController extends Controller
             $condition ? $payment->update(['paid' => 1]) : $payment->update(['paid' => 0]);
         }
 
-        User::sendPaymentInfo($request['user']);
+        User::sendPaymentInfo($request['user'], $mirapolis);
 
         if ($request->has('comment')) {
             foreach ($request['comment'] as $key => $comment)  {
@@ -307,7 +308,7 @@ class LessonController extends Controller
         return redirect()->back();
     }
 
-    public function destroySchedule($id, $user_id)
+    public function destroySchedule($id, $user_id, MirapolisApi $mirapolis)
     {
         $deleting = Schedule::whereId($id)->whereHas('payments', function ($q) use ($user_id) {
             $q->where('user_id', $user_id);
@@ -315,9 +316,8 @@ class LessonController extends Controller
             $q->where('user_id', $user_id);
         }])->first();
 
-        $lesson = new Lesson();
-        $url = $lesson->miraURL('measures', null, $deleting->meid);
-        $lesson->sendRequest($url, [], "DELETE");
+        $url = $mirapolis->miraURL('measures', null, $deleting->meid);
+        $mirapolis->sendRequest($url, [], "DELETE");
 
         $next = Schedule::whereHas('payments', function ($q) use ($user_id) {
             $q->where('paid', 0)->where('user_id', $user_id);
@@ -344,7 +344,7 @@ class LessonController extends Controller
             $next->payments[0]->update(['paid' => 1]);
         }
 
-        User::sendPaymentInfo($user_id);
+        User::sendPaymentInfo($user_id, $mirapolis);
 
         return redirect()->back();
     }

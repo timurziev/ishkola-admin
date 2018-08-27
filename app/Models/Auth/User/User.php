@@ -129,7 +129,7 @@ class User extends Authenticatable
         return $user->id;
     }
 
-    public static function sendPaymentInfo($userId)
+    public static function sendPaymentInfo($userId, $mirapolis)
     {
         $schedule = Schedule::whereHas('payments', function ($q) use ($userId) {
             $q->where('paid', 0)->where('user_id', $userId);
@@ -141,12 +141,11 @@ class User extends Authenticatable
             $user = User::whereId($userId)->first();
             $id = $user->miraID;
 
-            $inst = new Lesson();
-
             $phone = ["personworktel" => "Следующую оплату необходимо сделать до $schedule"];
 
-            $service_url ="https://room.nohchalla.com/mira/service/v2/persons/$id";
-            $inst->sendRequest($service_url, $phone, "PUT");
+
+            $service_url = $mirapolis->miraURL('persons', null, $id);
+            $mirapolis->sendRequest($service_url, $phone, "PUT");
         }
     }
 }

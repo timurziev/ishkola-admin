@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Auth;
+use App\Services\MirapolisApi;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Auth\User\User;
 use Illuminate\Support\Collection;
@@ -66,91 +67,25 @@ class Lesson extends Model
         return new LengthAwarePaginator($items->forPage($page, $perPage), $items->count(), $perPage, $page, $options);
     }
 
-    /**
-     * Sign into Mirafox API.
-     *
-     * @param  int  $url
-     * @param  array  $parameters
-     * @return \Illuminate\Http\Response
-     */
-    public function signin($url, $parameters)
-    {
-        $appid = 'system';
-        $secretkey = 'yU7RFszU';
-        $ret_params = $parameters;
-        ksort($ret_params);
-        $ret_params['appid'] = $appid;
-        $signstring = "$url?";
-
-        foreach($ret_params as $key => $val) {
-            if (($val != "")||(gettype($val) != "string"))
-            {
-                $signstring .= "$key=$val&";
-            }
-        }
-
-        $signstring .= "secretkey=$secretkey";
-        $ret_params['sign'] = strtoupper(md5($signstring));
-
-        return $ret_params;
-    }
-
-    /**
-     * Send request and return array of items from Mirafox API.
-     *
-     * @param  int  $url
-     * @param  array  $parameters
-     * @param  string  $method
-     * @return \Illuminate\Http\Response
-     */
-    public function sendRequest($url, $parameters, $method)
-    {
-        $curl_data = $this->signin($url, $parameters);
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($ch,CURLOPT_CUSTOMREQUEST,$method);
-        $query = http_build_query($curl_data);
-
-        if ($method == "POST") {
-            curl_setopt($ch,CURLOPT_POSTFIELDS,$query);
-        } elseif ($method == "GET" || $method == "DELETE") {
-            $url .= "?$query";
-        } else {
-            curl_setopt($ch,CURLOPT_POSTFIELDS,$query);
-            curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
-        }
-
-        curl_setopt($ch, CURLOPT_URL, $url);
-        $curl_response = curl_exec($ch);
-        $response = json_decode($curl_response, true);
-
-        return $response;
-    }
-
-    public static function miraURL($module, $func, $id = null, $param = null)
-    {
-        return "https://room.nohchalla.com/mira/service/v2/$module/$id/$func/$param";
-    }
-
-    public function getSessionId()
+    public function getSessionId(MirapolisApi $mirapolis)
     {
         $parameters = ['login' => 'guest', 'password' => 'QyYp86Bx'];
 
-        $url = $this->miraURL('auth', 'login');
+        $url = $mirapolis->miraURL('auth', 'login');
 
-        return $session = $this->sendRequest($url, $parameters, "POST");
+        return $session = $mirapolis->sendRequest($url, $parameters, "POST");
     }
 
-    public function lessonsTemplate()
+    public function lessonsTemplate(MirapolisApi $mirapolis)
     {
         $email = Auth::user()->email;
-        $service_url = $this->miraURL('persons', 'byLogin', null, $email);
-        $res = $this->sendRequest($service_url, [], "GET");
+        $service_url = $mirapolis->miraURL('persons', 'byLogin', null, $email);
+        $res = $mirapolis->sendRequest($service_url, [], "GET");
         $id = $res['personid'];
 
-        $url = $this->miraURL('myMeasures', 'webinars', $id);
+        $url = $mirapolis->miraURL('myMeasures', 'webinars', $id);
 
-        return $lessons = $this->sendRequest($url, [], "GET");
+        return $lessons = $mirapolis->sendRequest($url, [], "GET");
     }
 
     public function cachedLessons($email)
@@ -158,31 +93,30 @@ class Lesson extends Model
         $minutes = Carbon::now()->addMinutes(60);
 
         $lessons = Cache::remember('lessons-' . $email, $minutes, function () {
-            $lesson = new Lesson;
 
-            return $lessons = $lesson->lessonsTemplate();
+            return $lessons = $this->lessonsTemplate();
         });
 
         return $lessons;
     }
 
-    public function records($id)
+    public function records($id, $mirapolis)
     {
-        $url = $this->miraURL('measures', 'webinarRecords', $id);
+        $url = $mirapolis->miraURL('measures', 'webinarRecords', $id);
 
-        return $records = $this->sendRequest($url, [], "GET");
+        return $records = $mirapolis->sendRequest($url, [], "GET");
     }
 
-    public function resources($id)
+    public function resources($id, $mirapolis)
     {
         $session = Cache::get('session');
 
         $res = Cache::get('resources-' . $id);
 
         if ($res == null) {
-            $resources = Cache::rememberForever('resources-' . $id, function () use ($id) {
-                $url = $this->miraURL('measures', 'resources', $id);
-                $resources = $this->sendRequest($url, [], "GET");
+            $resources = Cache::rememberForever('resources-' . $id, function () use ($id, $mirapolis) {
+                $url = $mirapolis->miraURL('measures', 'resources', $id);
+                $resources = $mirapolis->sendRequest($url, [], "GET");
 
                 return $resources;
             });
@@ -195,7 +129,7 @@ class Lesson extends Model
         }
     }
 
-    public function createLessonAPI()
+    public function createLessonAPI(MirapolisApi $mirapolis)
     {
         $date = Carbon::now()->addDay()->format('Y-m-d');
 
@@ -228,13 +162,13 @@ class Lesson extends Model
                     "mestartdate" => "$schedule->schedule.001",
                     "meenddate" => "$addMin.001"];
 
-                $service_url = $this->miraURL('measures', null);
-                $measure = $this->sendRequest($service_url, $parameters, "POST");
+                $service_url = $mirapolis->miraURL('measures', null);
+                $measure = $mirapolis->sendRequest($service_url, $parameters, "POST");
 
                 $schedule->update(['meid' => $measure['meid']]);
 
-                $service_url = $this->miraURL('measures', 'tutors', $measure['meid'], $teacherID);
-                $this->sendRequest($service_url, [], "POST");
+                $service_url = $mirapolis->miraURL('measures', 'tutors', $measure['meid'], $teacherID);
+                $mirapolis->sendRequest($service_url, [], "POST");
 
                 $data = [
                     "lang" => $schedule->lesson->lang->name . " язык",
@@ -254,8 +188,8 @@ class Lesson extends Model
 
                 if (isset($users)) {
                     foreach ($users as $user) {
-                        $service_url = $this->miraURL('measures', 'members', $measure['meid'], $user->miraID);
-                        $this->sendRequest($service_url, [], "POST");
+                        $service_url = $mirapolis->miraURL('measures', 'members', $measure['meid'], $user->miraID);
+                        $mirapolis->sendRequest($service_url, [], "POST");
 
                         if ($payment->paid == 0) {
                             Mail::send('mail.email', $data, function ($message) use ($user) {
@@ -270,8 +204,8 @@ class Lesson extends Model
                         }
                     }
                 } else {
-                    $service_url = $this->miraURL('measures', 'members', $measure['meid'], $studentID);
-                    $this->sendRequest($service_url, [], "POST");
+                    $service_url = $mirapolis->miraURL('measures', 'members', $measure['meid'], $studentID);
+                    $mirapolis->sendRequest($service_url, [], "POST");
 
                     if (isset($payment->paid) && $payment->paid == 0) {
                         Mail::send('mail.email', $data, function ($message) use ($email) {
